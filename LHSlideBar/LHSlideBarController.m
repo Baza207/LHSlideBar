@@ -13,6 +13,7 @@
 #define SLIDE_BAR_OFFSET    40
 #define SLIDE_BAR_SCALE     0.9
 #define SLIDE_BAR_ALPHA     0.6
+#define SLIDE_BAR_ANIM_TIME 0.25
 
 @implementation LHSlideBarController
 
@@ -26,36 +27,26 @@
     return [self init];
 }
 
-- (id)init
-{
-    if (!self)
-        self = [super init];
-    
-    if (self)
-    {
-        CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
-        
-        _slideBarTableVC = [[LHTableViewController alloc] initWithStyle:UITableViewStylePlain withController:self];
-        [[_slideBarTableVC view] setFrame:CGRectMake(0, 0, viewSize.width-SLIDE_BAR_OFFSET, viewSize.height)];
-        [_slideBarTableVC setSlideBarViewControllers:_leftViewControllers];
-        [self setViewController:_slideBarTableVC toPosition:LHSlideBarPosOffLeft animated:NO];
-        [[self view] addSubview:[_slideBarTableVC view]];
-        
-        blackoutView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewSize.width, viewSize.height)];
-        [blackoutView setBackgroundColor:[UIColor blackColor]];
-        [blackoutView setAlpha:0.0];
-        [blackoutView setHidden:YES];
-        [[self view] insertSubview:blackoutView belowSubview:[_slideBarTableVC view]];
-    }
-    return self;
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
+    
+    blackoutView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewSize.width, viewSize.height)];
+    [blackoutView setBackgroundColor:[UIColor blackColor]];
+    [blackoutView setAlpha:0.0];
+    [blackoutView setHidden:YES];
+    [[self view] addSubview:blackoutView];
+    
+    _slideBarTableVC = [[LHTableViewController alloc] initWithStyle:UITableViewStylePlain withController:self];
+    [[_slideBarTableVC view] setFrame:CGRectMake(0, 0, viewSize.width-SLIDE_BAR_OFFSET, viewSize.height)];
+    [_slideBarTableVC setSlideBarViewControllers:_leftViewControllers];
+    [self setViewController:_slideBarTableVC toPosition:LHSlideBarPosOffLeft animated:NO];
+    [[self view] addSubview:[_slideBarTableVC view]];
+    
     if (_leftViewControllers && [_leftViewControllers count] > 0)
-        [self pushViewControllerAtIndex:0 animated:YES];
+        [self pushViewControllerAtIndex:0 animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,28 +92,16 @@
     if (viewController)
     {
         [[self view] insertSubview:[newViewController view] belowSubview:[viewController view]];
-        [self removeViewController:viewController animated:animated];
+        [[viewController view] removeFromSuperview];
+        [viewController removeFromParentViewController];
     }
     else
-        [[self view] insertSubview:[newViewController view] belowSubview:[_slideBarTableVC view]];
+        [[self view] insertSubview:[newViewController view] belowSubview:blackoutView];
     
     [self addChildViewController:newViewController];
     [self didMoveToParentViewController:newViewController];
     
     [self scaleViewController:newViewController byPercent:1.0 animated:animated];
-}
-
-- (void)removeViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-//    if (animated)
-//    {
-//        
-//    }
-//    else
-    {
-        [[viewController view] removeFromSuperview];
-        [viewController removeFromParentViewController];
-    }
 }
 
 - (void)setViewController:(UIViewController *)viewController toPosition:(LHSlideBarPos)position animated:(BOOL)animated
@@ -185,7 +164,7 @@
     
     if (animated)
     {
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:SLIDE_BAR_ANIM_TIME
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
@@ -223,7 +202,7 @@
 {
     if (animated)
     {
-        [UIView animateWithDuration:0.25
+        [UIView animateWithDuration:SLIDE_BAR_ANIM_TIME
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
