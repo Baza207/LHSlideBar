@@ -259,6 +259,16 @@
     return viewSize;
 }
 
+#pragma mark - Touch Methods
+
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    UITouch *touch = [touches anyObject];
+    CGPoint touchPoint = [touch locationInView:[self view]];
+    if (CGRectContainsPoint([blackoutView frame], touchPoint))
+        [self pushViewControllerAtIndex:_currentIndex animated:YES];
+}
+
 @end
 
 
