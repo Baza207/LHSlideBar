@@ -7,15 +7,27 @@
 //
 
 #import "LHAppDelegate.h"
+#import "LHSlideBarController.h"
+
+#import "ViewControllerOne.h"
+#import "ViewControllerTwo.h"
+#import "ViewControllerThree.h"
 
 @implementation LHAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    ViewControllerOne *vcOne = [[ViewControllerOne alloc] initWithNibName:@"ViewControllerOne" bundle:nil];
+    ViewControllerTwo *vcTwo = [[ViewControllerTwo alloc] initWithNibName:@"ViewControllerTwo" bundle:nil];
+    ViewControllerThree *vcThree = [[ViewControllerThree alloc] initWithNibName:@"ViewControllerThree" bundle:nil];
+    
+    NSArray *viewControllers = @[vcOne, vcTwo, vcThree];
+    _slideBarController = [[LHSlideBarController alloc] initWithViewControllers:viewControllers];
+    [_window setRootViewController:_slideBarController];
+    [_window makeKeyAndVisible];
+    
     return YES;
 }
 

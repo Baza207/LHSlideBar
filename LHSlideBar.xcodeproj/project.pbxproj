@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		180A261E1790AD4F0072E321 /* ViewControllerTwo.m in Sources */ = {isa = PBXBuildFile; fileRef = 180A261C1790AD4E0072E321 /* ViewControllerTwo.m */; };
+		180A261F1790AD4F0072E321 /* ViewControllerTwo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 180A261D1790AD4F0072E321 /* ViewControllerTwo.xib */; };
+		180A26231790AD5C0072E321 /* ViewControllerThree.m in Sources */ = {isa = PBXBuildFile; fileRef = 180A26211790AD5C0072E321 /* ViewControllerThree.m */; };
+		180A26241790AD5C0072E321 /* ViewControllerThree.xib in Resources */ = {isa = PBXBuildFile; fileRef = 180A26221790AD5C0072E321 /* ViewControllerThree.xib */; };
+		18CA2AA71790A26F0029C39E /* LHTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 18CA2AA61790A26F0029C39E /* LHTableViewController.m */; };
 		2A8226291790701F0075F4C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A8226281790701F0075F4C8 /* UIKit.framework */; };
 		2A82262B1790701F0075F4C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A82262A1790701F0075F4C8 /* Foundation.framework */; };
 		2A82262D1790701F0075F4C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A82262C1790701F0075F4C8 /* CoreGraphics.framework */; };
@@ -16,9 +21,21 @@
 		2A82263B1790701F0075F4C8 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A82263A1790701F0075F4C8 /* Default.png */; };
 		2A82263D1790701F0075F4C8 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A82263C1790701F0075F4C8 /* Default@2x.png */; };
 		2A82263F1790701F0075F4C8 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A82263E1790701F0075F4C8 /* Default-568h@2x.png */; };
+		2A8226461790710F0075F4C8 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A8226451790710F0075F4C8 /* QuartzCore.framework */; };
+		2A822649179071650075F4C8 /* LHSlideBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A822648179071650075F4C8 /* LHSlideBarController.m */; };
+		2A82264D17907AC90075F4C8 /* ViewControllerOne.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A82264B17907AC90075F4C8 /* ViewControllerOne.m */; };
+		2A82264E17907AC90075F4C8 /* ViewControllerOne.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A82264C17907AC90075F4C8 /* ViewControllerOne.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		180A261B1790AD4E0072E321 /* ViewControllerTwo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerTwo.h; sourceTree = "<group>"; };
+		180A261C1790AD4E0072E321 /* ViewControllerTwo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerTwo.m; sourceTree = "<group>"; };
+		180A261D1790AD4F0072E321 /* ViewControllerTwo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewControllerTwo.xib; sourceTree = "<group>"; };
+		180A26201790AD5B0072E321 /* ViewControllerThree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerThree.h; sourceTree = "<group>"; };
+		180A26211790AD5C0072E321 /* ViewControllerThree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerThree.m; sourceTree = "<group>"; };
+		180A26221790AD5C0072E321 /* ViewControllerThree.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewControllerThree.xib; sourceTree = "<group>"; };
+		18CA2AA51790A26F0029C39E /* LHTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHTableViewController.h; sourceTree = "<group>"; };
+		18CA2AA61790A26F0029C39E /* LHTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHTableViewController.m; sourceTree = "<group>"; };
 		2A8226251790701F0075F4C8 /* LHSlideBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LHSlideBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A8226281790701F0075F4C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2A82262A1790701F0075F4C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -32,6 +49,12 @@
 		2A82263A1790701F0075F4C8 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		2A82263C1790701F0075F4C8 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		2A82263E1790701F0075F4C8 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		2A8226451790710F0075F4C8 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		2A822647179071650075F4C8 /* LHSlideBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHSlideBarController.h; sourceTree = "<group>"; };
+		2A822648179071650075F4C8 /* LHSlideBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHSlideBarController.m; sourceTree = "<group>"; };
+		2A82264A17907AC90075F4C8 /* ViewControllerOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerOne.h; sourceTree = "<group>"; };
+		2A82264B17907AC90075F4C8 /* ViewControllerOne.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerOne.m; sourceTree = "<group>"; };
+		2A82264C17907AC90075F4C8 /* ViewControllerOne.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewControllerOne.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +62,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A8226461790710F0075F4C8 /* QuartzCore.framework in Frameworks */,
 				2A8226291790701F0075F4C8 /* UIKit.framework in Frameworks */,
 				2A82262B1790701F0075F4C8 /* Foundation.framework in Frameworks */,
 				2A82262D1790701F0075F4C8 /* CoreGraphics.framework in Frameworks */,
@@ -48,6 +72,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		180A26251790B0CF0072E321 /* Test View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2A82264A17907AC90075F4C8 /* ViewControllerOne.h */,
+				2A82264B17907AC90075F4C8 /* ViewControllerOne.m */,
+				2A82264C17907AC90075F4C8 /* ViewControllerOne.xib */,
+				180A261B1790AD4E0072E321 /* ViewControllerTwo.h */,
+				180A261C1790AD4E0072E321 /* ViewControllerTwo.m */,
+				180A261D1790AD4F0072E321 /* ViewControllerTwo.xib */,
+				180A26201790AD5B0072E321 /* ViewControllerThree.h */,
+				180A26211790AD5C0072E321 /* ViewControllerThree.m */,
+				180A26221790AD5C0072E321 /* ViewControllerThree.xib */,
+			);
+			name = "Test View Controllers";
+			sourceTree = "<group>";
+		};
 		2A82261C1790701E0075F4C8 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +108,7 @@
 		2A8226271790701F0075F4C8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2A8226451790710F0075F4C8 /* QuartzCore.framework */,
 				2A8226281790701F0075F4C8 /* UIKit.framework */,
 				2A82262A1790701F0075F4C8 /* Foundation.framework */,
 				2A82262C1790701F0075F4C8 /* CoreGraphics.framework */,
@@ -80,6 +121,11 @@
 			children = (
 				2A8226371790701F0075F4C8 /* LHAppDelegate.h */,
 				2A8226381790701F0075F4C8 /* LHAppDelegate.m */,
+				2A822647179071650075F4C8 /* LHSlideBarController.h */,
+				2A822648179071650075F4C8 /* LHSlideBarController.m */,
+				18CA2AA51790A26F0029C39E /* LHTableViewController.h */,
+				18CA2AA61790A26F0029C39E /* LHTableViewController.m */,
+				180A26251790B0CF0072E321 /* Test View Controllers */,
 				2A82262F1790701F0075F4C8 /* Supporting Files */,
 			);
 			path = LHSlideBar;
@@ -155,6 +201,9 @@
 				2A82263B1790701F0075F4C8 /* Default.png in Resources */,
 				2A82263D1790701F0075F4C8 /* Default@2x.png in Resources */,
 				2A82263F1790701F0075F4C8 /* Default-568h@2x.png in Resources */,
+				2A82264E17907AC90075F4C8 /* ViewControllerOne.xib in Resources */,
+				180A261F1790AD4F0072E321 /* ViewControllerTwo.xib in Resources */,
+				180A26241790AD5C0072E321 /* ViewControllerThree.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -167,6 +216,11 @@
 			files = (
 				2A8226351790701F0075F4C8 /* main.m in Sources */,
 				2A8226391790701F0075F4C8 /* LHAppDelegate.m in Sources */,
+				2A822649179071650075F4C8 /* LHSlideBarController.m in Sources */,
+				2A82264D17907AC90075F4C8 /* ViewControllerOne.m in Sources */,
+				18CA2AA71790A26F0029C39E /* LHTableViewController.m in Sources */,
+				180A261E1790AD4F0072E321 /* ViewControllerTwo.m in Sources */,
+				180A26231790AD5C0072E321 /* ViewControllerThree.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -209,7 +263,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -233,7 +287,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -281,6 +335,7 @@
 				2A8226441790701F0075F4C8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

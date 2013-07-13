@@ -8,8 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class LHSlideBarController;
+
 @interface LHAppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) LHSlideBarController *slideBarController;
 
 @end
