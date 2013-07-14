@@ -380,7 +380,6 @@
 
 
 #pragma mark - UIViewController Category
-
 @implementation UIViewController (LHSlideBarController)
 @dynamic slideBarController;
 
