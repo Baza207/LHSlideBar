@@ -10,11 +10,12 @@
 #import "LHSlideBarController.h"
 #import "LHTableViewController.h"
 
-#define SLIDE_BAR_OFFSET    40
-#define SLIDE_BAR_SCALE     0.9
-#define SLIDE_BAR_ALPHA     0.8
-#define SLIDE_BAR_ANIM_TIME 0.25
-#define SHADOW_WIDTH        40
+#define SLIDE_BAR_OFFSET        40
+#define SLIDE_BAR_SCALE         0.96
+#define SLIDE_BAR_ALPHA         0.8
+#define SLIDE_BAR_ANIM_TIME     0.25
+#define SLIDE_BAR_MIN_ANIM_TIME 0.1
+#define SHADOW_WIDTH            40
 
 @implementation LHSlideBarController
 
@@ -32,11 +33,19 @@
 {
     [super viewDidLoad];
     
+    _isLeftSlideBarShowing = NO;
+    _slideBarIsDragging = NO;
+    
     CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
+    
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureChanged:)];
+    [panGestureRecognizer setMaximumNumberOfTouches:1];
+    [panGestureRecognizer setMinimumNumberOfTouches:1];
+    [[self view] addGestureRecognizer:panGestureRecognizer];
     
     leftSlideBarHolder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewSize.width, viewSize.height)];
     [leftSlideBarHolder setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
-    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:NO];
+    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:NO animTime:0];
     [leftSlideBarHolder setBackgroundColor:[UIColor clearColor]];
     [[self view] addSubview:leftSlideBarHolder];
     
@@ -64,7 +73,7 @@
 
 - (void)showLeftSlideBar:(id)sender
 {
-    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenterLeft animated:YES];
+    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:SLIDE_BAR_ANIM_TIME];
 }
 
 #pragma mark - Custom Setter and Getter Methods
@@ -81,7 +90,7 @@
 {
     __weak UIViewController *newViewController = [_leftViewControllers objectAtIndex:index];
     [self swapViewController:_currentViewController forNewViewController:newViewController inSlideBarHolder:slideBarHolder animated:animated];
-    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:YES];
+    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:animated animTime:SLIDE_BAR_ANIM_TIME];
     _currentViewController = newViewController;
     _currentIndex = index;
     
@@ -110,11 +119,11 @@
     [self scaleViewController:newViewController byPercent:1.0 animated:animated];
 }
 
-- (void)setSlideBarHolder:(UIView *)slideBarHolder toPosition:(LHSlideBarPos)position animated:(BOOL)animated
+- (void)setSlideBarHolder:(UIView *)slideBarHolder toPosition:(LHSlideBarPos)position animated:(BOOL)animated animTime:(NSTimeInterval)animTime
 {
-    CGRect rect = CGRectNull;
-    CGRect curRect = [slideBarHolder frame];
-    CGSize size = curRect.size;
+//    CGRect rect = CGRectNull;
+    CGPoint center = [slideBarHolder center];
+    CGPoint curCenter = [[self view] center];
     
     CGFloat scalePercent = 1.0;
     CGFloat blackoutAlpha = 0.0;
@@ -123,23 +132,7 @@
     {
         case LHSlideBarPosCenter:
         {
-            rect = CGRectMake(0, 0, size.width, size.height);
-            scalePercent = SLIDE_BAR_SCALE;
-            blackoutAlpha = SLIDE_BAR_ALPHA;
-            break;
-        }
-        
-        case LHSlideBarPosCenterLeft:
-        {
-            rect = CGRectMake(0, 0, size.width, size.height);
-            scalePercent = SLIDE_BAR_SCALE;
-            blackoutAlpha = SLIDE_BAR_ALPHA;
-            break;
-        }
-            
-        case LHSlideBarPosCenterRight:
-        {
-            rect = CGRectMake(SLIDE_BAR_OFFSET, 0, size.width, size.height);
+            center = CGPointMake(curCenter.x, curCenter.y - 20);
             scalePercent = SLIDE_BAR_SCALE;
             blackoutAlpha = SLIDE_BAR_ALPHA;
             break;
@@ -147,7 +140,7 @@
             
         case LHSlideBarPosOffLeft:
         {
-            rect = CGRectMake(-size.width, 0, size.width, size.height);
+            center = CGPointMake(-curCenter.x, curCenter.y - 20);
             scalePercent = 1.0;
             blackoutAlpha = 0.0;
             break;
@@ -155,7 +148,7 @@
             
         case LHSlideBarPosOffRight:
         {
-            rect = CGRectMake(size.width, 0, size.width, size.height);
+            center = CGPointMake([[self view] bounds].size.width + curCenter.x, curCenter.y - 20);
             scalePercent = 1.0;
             blackoutAlpha = 0.0;
             break;
@@ -167,21 +160,49 @@
     
     if (animated)
     {
-        [UIView animateWithDuration:SLIDE_BAR_ANIM_TIME
+        [UIView animateWithDuration:animTime
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             [slideBarHolder setFrame:rect];
+                             [slideBarHolder setCenter:center];
                              [self scaleView:[_currentViewController view] byPercent:scalePercent];
                          }
                          completion:^(BOOL finished) {
-                             
+                             [self setLeftSlideBarIsShowingWithPos:position];
                          }];
     }
     else
     {
-        [slideBarHolder setFrame:rect];
+        [slideBarHolder setCenter:center];
         [self scaleView:[_currentViewController view] byPercent:scalePercent];
+        [self setLeftSlideBarIsShowingWithPos:position];
+    }
+}
+
+- (void)setLeftSlideBarIsShowingWithPos:(LHSlideBarPos)position
+{
+    switch (position)
+    {
+        case LHSlideBarPosCenter:
+        {
+            _isLeftSlideBarShowing = YES;
+            break;
+        }
+            
+        case LHSlideBarPosOffLeft:
+        {
+            _isLeftSlideBarShowing = NO;
+            break;
+        }
+            
+        case LHSlideBarPosOffRight:
+        {
+            _isLeftSlideBarShowing = NO;
+            break;
+        }
+            
+        default:
+            break;
     }
 }
 
@@ -192,10 +213,10 @@
     if (view == nil)
         return;
     
-    CATransform3D transform3D = CATransform3DIdentity;
-    transform3D = CATransform3DScale(transform3D, percent, percent, 1);
-    
-    [[view layer] setTransform:transform3D];
+//    CATransform3D transform3D = CATransform3DIdentity;
+//    transform3D = CATransform3DScale(transform3D, percent, percent, 1);
+//    
+//    [[view layer] setTransform:transform3D];
 }
 
 - (void)scaleViewController:(UIViewController *)viewController byPercent:(double)percent animated:(BOOL)animated
@@ -238,14 +259,107 @@
     return viewSize;
 }
 
-#pragma mark - Touch Methods
+#pragma mark - Touch and Touch Methods
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
+    if (_slideBarIsDragging)
+        return;
+    
     UITouch *touch = [touches anyObject];
     CGPoint touchPoint = [touch locationInView:[self view]];
-    if (CGRectContainsPoint([leftSlideBarShadow frame], touchPoint))
-        [self pushViewControllerAtIndex:_currentIndex inSlideBarHolder:leftSlideBarHolder animated:YES];
+    
+    if (_isLeftSlideBarShowing)
+    {
+        if (CGRectContainsPoint([leftSlideBarShadow frame], touchPoint))
+            [self pushViewControllerAtIndex:_currentIndex inSlideBarHolder:leftSlideBarHolder animated:YES];
+    }
+}
+
+- (void)panGestureChanged:(UIPanGestureRecognizer *)gesture
+{
+    CGPoint translation = [gesture translationInView:[self view]];
+    
+    switch ([gesture state])
+    {
+        case UIGestureRecognizerStateBegan:
+        {
+            _slideBarIsDragging = YES;
+            break;
+        }
+            
+        case UIGestureRecognizerStateChanged:
+        {
+            BOOL moveHolder = NO;
+            CGPoint newPoint = CGPointMake([leftSlideBarHolder center].x + translation.x,
+                                           [leftSlideBarHolder center].y);
+            if (translation.x > 0)
+            {
+                // Dragging Left to Right
+                if (newPoint.x < [[self view] center].x)
+                    moveHolder = YES;
+            }
+            else if (translation.x < 0)
+            {
+                // Dragging Right to Left
+                if (newPoint.x >= -[[self view] center].x)
+                    moveHolder = YES;
+            }
+            
+            if (moveHolder)
+            {
+                [leftSlideBarHolder setCenter:newPoint];
+                [gesture setTranslation:CGPointMake(0, 0) inView:[self view]];
+            }
+            break;
+        }
+            
+        case UIGestureRecognizerStateEnded:
+        {
+            CGPoint velocity = [gesture velocityInView:[self view]];
+            NSTimeInterval animDuration = SLIDE_BAR_ANIM_TIME;
+            LHSlideBarPos pos = LHSlideBarPosNull;
+            
+            // Left SlideBar is Hidden
+            
+            if (velocity.x > 0)
+            {
+                // Dragging Left to Right
+                pos = LHSlideBarPosCenter;
+                
+                CGFloat percent = translation.x / [self view].bounds.size.width;
+                animDuration = SLIDE_BAR_ANIM_TIME * percent;
+            }
+            else if (velocity.x < 0)
+            {
+                // Dragging Right to Left
+                pos = LHSlideBarPosOffLeft;
+                
+                CGFloat percent = 1 - (fabs(translation.x) / [self view].bounds.size.width);
+                animDuration = SLIDE_BAR_ANIM_TIME * percent;
+            }
+            else
+            {
+                // Zero Velocity
+                if (_isLeftSlideBarShowing)
+                    pos = LHSlideBarPosOffLeft;
+            }
+            
+            if (animDuration > SLIDE_BAR_ANIM_TIME)
+                animDuration = SLIDE_BAR_ANIM_TIME;
+            if (animDuration < SLIDE_BAR_MIN_ANIM_TIME)
+                animDuration = SLIDE_BAR_MIN_ANIM_TIME;
+            
+            [self setSlideBarHolder:leftSlideBarHolder toPosition:pos animated:YES animTime:animDuration];
+            
+            _slideBarIsDragging = NO;
+            
+            break;
+        }
+        
+        default:
+            break;
+    }
 }
 
 @end
@@ -275,8 +389,8 @@
 
 @end
 
-#pragma mark - UIView Category
 
+#pragma mark - UIView Category
 @implementation UIView (LinearGradient)
 
 - (void)addLinearGradientInDirection:(Direction)direction

@@ -25,9 +25,8 @@ typedef enum {
 } Direction;
 
 typedef enum {
-    LHSlideBarPosCenter = 0,
-    LHSlideBarPosCenterLeft,
-    LHSlideBarPosCenterRight,
+    LHSlideBarPosNull = -1,
+    LHSlideBarPosCenter,
     LHSlideBarPosOffLeft,
     LHSlideBarPosOffRight
 } LHSlideBarPos;
@@ -41,6 +40,8 @@ typedef enum {
 @property (strong, readonly, nonatomic) LHTableViewController *slideBarTableVC;
 @property (weak, readonly, nonatomic) UIViewController *currentViewController;
 @property (assign, readonly, nonatomic) NSUInteger currentIndex;
+@property (assign, readonly, nonatomic) BOOL isLeftSlideBarShowing;
+@property (assign, readonly, nonatomic) BOOL slideBarIsDragging;
 
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController;
 
