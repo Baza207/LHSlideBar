@@ -17,6 +17,14 @@ typedef enum {
 } LHViewTag;
 
 typedef enum {
+    directionNone,
+    directionLeft,
+    directionRight,
+    directionUp,
+    directionDown
+} Direction;
+
+typedef enum {
     LHSlideBarPosCenter = 0,
     LHSlideBarPosCenterLeft,
     LHSlideBarPosCenterRight,
@@ -26,7 +34,7 @@ typedef enum {
 
 @interface LHSlideBarController : UIViewController
 {
-    UIView *blackoutView;
+    UIView *leftSlideBarHolder, *leftSlideBarShadow;
 }
 
 @property (strong, readonly, nonatomic) NSArray *leftViewControllers;
@@ -38,15 +46,19 @@ typedef enum {
 
 - (id)initWithViewControllers:(NSArray *)viewControllers;
 - (void)setViewControllers:(NSArray *)viewControllers;
-- (void)pushViewControllerAtIndex:(NSUInteger)index animated:(BOOL)animated;
-- (void)showSlideBar:(id)sender;
+- (void)pushViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
+- (void)showLeftSlideBar:(id)sender;
 
 @end
 
 
 // UIViewController+LHSlideBarController
 @interface UIViewController (LHSlideBarController)
-
 @property (strong, nonatomic) LHSlideBarController *slideBarController;
+@end
 
+
+// UIView+LinearGradient
+@interface UIView (LinearGradient)
+- (void)addLinearGradientInDirection:(Direction)direction;
 @end

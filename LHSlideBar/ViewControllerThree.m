@@ -36,7 +36,7 @@
 
 - (IBAction)backButtonPressed:(id)sender
 {
-    [[self slideBarController] showSlideBar:sender];
+    [[self slideBarController] showLeftSlideBar:sender];
 }
 
 @end

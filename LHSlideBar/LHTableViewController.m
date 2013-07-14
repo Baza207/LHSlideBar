@@ -84,7 +84,7 @@
     {
         case 0:
         {
-            [_slideBarController pushViewControllerAtIndex:[indexPath row] animated:YES];
+            [_slideBarController pushViewControllerAtIndex:[indexPath row] inSlideBarHolder:[[self view] superview] animated:YES];
             [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
