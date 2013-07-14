@@ -35,6 +35,7 @@
     CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
     
     leftSlideBarHolder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewSize.width, viewSize.height)];
+    [leftSlideBarHolder setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
     [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:NO];
     [leftSlideBarHolder setBackgroundColor:[UIColor clearColor]];
     [[self view] addSubview:leftSlideBarHolder];
@@ -45,6 +46,7 @@
     [leftSlideBarHolder addSubview:[_slideBarTableVC view]];
     
     leftSlideBarShadow = [[UIView alloc] initWithFrame:CGRectMake([[_slideBarTableVC view] bounds].size.width, 0, SHADOW_WIDTH, viewSize.height)];
+    [leftSlideBarShadow setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
     [leftSlideBarShadow setBackgroundColor:[UIColor clearColor]];
     [leftSlideBarShadow addLinearGradientInDirection:directionRight];
     [leftSlideBarHolder addSubview:leftSlideBarShadow];
