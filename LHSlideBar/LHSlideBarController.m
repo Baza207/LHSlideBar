@@ -57,7 +57,7 @@
     leftSlideBarShadow = [[UIView alloc] initWithFrame:CGRectMake([[_slideBarTableVC view] bounds].size.width, 0, SHADOW_WIDTH, viewSize.height)];
     [leftSlideBarShadow setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
     [leftSlideBarShadow setBackgroundColor:[UIColor clearColor]];
-    [leftSlideBarShadow addLinearGradientInDirection:directionRight];
+    [leftSlideBarShadow addLinearGradientInDirection:DirectionRight];
     [leftSlideBarHolder addSubview:leftSlideBarShadow];
     
     if (_leftViewControllers && [_leftViewControllers count] > 0)
@@ -123,7 +123,7 @@
 {
 //    CGRect rect = CGRectNull;
     CGPoint center = [slideBarHolder center];
-    CGPoint curCenter = [[self view] center];
+    CGPoint selfCenter = [[self view] center];
     
     CGFloat scalePercent = 1.0;
     CGFloat blackoutAlpha = 0.0;
@@ -132,7 +132,7 @@
     {
         case LHSlideBarPosCenter:
         {
-            center = CGPointMake(curCenter.x, curCenter.y - 20);
+            center = CGPointMake(selfCenter.x, selfCenter.y - 20);
             scalePercent = SLIDE_BAR_SCALE;
             blackoutAlpha = SLIDE_BAR_ALPHA;
             break;
@@ -140,7 +140,7 @@
             
         case LHSlideBarPosOffLeft:
         {
-            center = CGPointMake(-curCenter.x, curCenter.y - 20);
+            center = CGPointMake(-selfCenter.x, selfCenter.y - 20);
             scalePercent = 1.0;
             blackoutAlpha = 0.0;
             break;
@@ -148,7 +148,7 @@
             
         case LHSlideBarPosOffRight:
         {
-            center = CGPointMake([[self view] bounds].size.width + curCenter.x, curCenter.y - 20);
+            center = CGPointMake([[self view] bounds].size.width + selfCenter.x, selfCenter.y - 20);
             scalePercent = 1.0;
             blackoutAlpha = 0.0;
             break;
@@ -213,10 +213,10 @@
     if (view == nil)
         return;
     
-//    CATransform3D transform3D = CATransform3DIdentity;
-//    transform3D = CATransform3DScale(transform3D, percent, percent, 1);
-//    
-//    [[view layer] setTransform:transform3D];
+    CATransform3D transform3D = CATransform3DIdentity;
+    transform3D = CATransform3DScale(transform3D, percent, percent, 1);
+    
+    [[view layer] setTransform:transform3D];
 }
 
 - (void)scaleViewController:(UIViewController *)viewController byPercent:(double)percent animated:(BOOL)animated
@@ -237,6 +237,13 @@
     {
         [self scaleView:[viewController view] byPercent:percent];
     }
+}
+
+- (CGFloat)progressPercentForLeftHolderView
+{
+    CGFloat difference = (-[[self view] center].x) - [[self view] center].x;
+    CGFloat progress = [leftSlideBarHolder center].x / difference;
+    return progress + 0.5;
 }
 
 #pragma mark - Size Methods
@@ -293,6 +300,11 @@
             BOOL moveHolder = NO;
             CGPoint newPoint = CGPointMake([leftSlideBarHolder center].x + translation.x,
                                            [leftSlideBarHolder center].y);
+            CGFloat scale = 1.0 - SLIDE_BAR_SCALE;
+            CGFloat progress = [self progressPercentForLeftHolderView];
+            scale *= progress;
+            scale += SLIDE_BAR_SCALE;
+            
             if (translation.x > 0)
             {
                 // Dragging Left to Right
@@ -309,6 +321,8 @@
             if (moveHolder)
             {
                 [leftSlideBarHolder setCenter:newPoint];
+                
+                [self scaleView:[_currentViewController view] byPercent:scale];
                 [gesture setTranslation:CGPointMake(0, 0) inView:[self view]];
             }
             break;
@@ -400,14 +414,14 @@
     
     switch (direction)
     {
-        case directionLeft:
+        case DirectionLeft:
         {
             firstColour = [UIColor colorWithWhite:0.0 alpha:0.0];
             secondColour = [UIColor colorWithWhite:0.0 alpha:SLIDE_BAR_ALPHA];
             break;
         }
             
-        case directionRight:
+        case DirectionRight:
         {
             firstColour = [UIColor colorWithWhite:0.0 alpha:SLIDE_BAR_ALPHA];
             secondColour = [UIColor colorWithWhite:0.0 alpha:0.0];

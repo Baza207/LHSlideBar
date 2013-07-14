@@ -17,11 +17,11 @@ typedef enum {
 } LHViewTag;
 
 typedef enum {
-    directionNone,
-    directionLeft,
-    directionRight,
-    directionUp,
-    directionDown
+    DirectionNone,
+    DirectionLeft,
+    DirectionRight,
+    DirectionUp,
+    DirectionDown
 } Direction;
 
 typedef enum {
