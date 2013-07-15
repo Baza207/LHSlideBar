@@ -37,6 +37,8 @@
     _fadeOutAlpha = SLIDE_BAR_ALPHA;
     _animTime = SLIDE_BAR_ANIM_TIME;
     
+    _scalesOnSlide = YES;
+    
     _isLeftSlideBarShowing = NO;
     _slideBarIsDragging = NO;
     
@@ -263,7 +265,7 @@
 
 - (void)scaleView:(UIView *)view byPercent:(double)percent
 {
-    if (view == nil)
+    if (view == nil || _scalesOnSlide == NO)
         return;
     
     CATransform3D transform3D = CATransform3DIdentity;

@@ -48,6 +48,7 @@ typedef enum {
 @property (assign, readonly, nonatomic) CGFloat scaleAmount;        // Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
 @property (assign, readonly, nonatomic) CGFloat fadeOutAlpha;       // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
 @property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slide bar animation to slide in or out. Minimum of 0.1s
+@property (assign, nonatomic) BOOL scalesOnSlide;
 
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController;
 
