@@ -69,7 +69,7 @@ This call can be made from any view controller that imports LHSlideBarController
 LHSlideBar has some pre-set variables for slide animation time, fade out alpha and scale down amount. These dont have to be changed, though if you want to you can.
 
 ***`@property (assign, nonatomic) CGFloat slideBarOffset`***  
-Size of the space on the side of the slide bar when it is open. It must be less than half the width of the slide bar.
+Size of the space on the side of the slide bar when it is open. It must be less than half the width of the slide bar controller.
 
 ***`@property (assign, nonatomic) CGFloat scaleAmount`***  
 Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
