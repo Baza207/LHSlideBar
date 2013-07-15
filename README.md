@@ -13,6 +13,20 @@ To use LHSlideBar add the following files into your project:
 
 LHSlideBar requires **iOS 6**+ to work and uses ARC.
 
+<table>
+	<tr align="center">
+		<td width="260">
+			<img src="http://blog.pigonahill.com/wp-content/uploads/2013/07/LHSlideBar_1.png" width="240px">
+		</td>
+		<td width="260">
+			<img src="http://blog.pigonahill.com/wp-content/uploads/2013/07/LHSlideBar_2.png" width="240px">
+		</td>
+		<td width="260">
+			<img src="http://blog.pigonahill.com/wp-content/uploads/2013/07/LHSlideBar_3.png" width="240px">
+		</td>
+	</tr>
+</table>
+
 ### Implementing LHSlideBar
 
 After adding the relevent files into your project (listed above) you create a new instance of LHSlideBar using the `- (id)initWithViewControllers:(NSArray *)viewControllers` call. With this you need an array of view controllers you want to display with the controller to be passed as the `viewControllers` variable.
