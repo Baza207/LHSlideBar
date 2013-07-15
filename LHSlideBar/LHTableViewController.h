@@ -12,9 +12,10 @@
 
 @interface LHTableViewController : UITableViewController
 
-@property (weak, nonatomic) NSArray *slideBarViewControllers;
+@property (weak, readonly, nonatomic) NSArray *slideBarViewControllers;
 @property (weak, nonatomic) LHSlideBarController *slideBarController;
 
 - (id)initWithStyle:(UITableViewStyle)style withController:(LHSlideBarController *)controller;
+- (void)setSlideBarViewControllers:(NSArray *)slideBarViewControllers;
 
 @end

@@ -15,7 +15,6 @@
 #define SLIDE_BAR_ALPHA         0.8
 #define SLIDE_BAR_ANIM_TIME     0.25
 #define SLIDE_BAR_MIN_ANIM_TIME 0.1
-#define SHADOW_WIDTH            40
 
 @implementation LHSlideBarController
 
@@ -32,6 +31,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    _slideBarOffset = SLIDE_BAR_OFFSET;
+    _scaleAmount = SLIDE_BAR_SCALE;
+    _fadeOutAlpha = SLIDE_BAR_ALPHA;
+    _animTime = SLIDE_BAR_ANIM_TIME;
     
     _isLeftSlideBarShowing = NO;
     _slideBarIsDragging = NO;
@@ -50,18 +54,19 @@
     [[self view] addSubview:leftSlideBarHolder];
     
     _slideBarTableVC = [[LHTableViewController alloc] initWithStyle:UITableViewStylePlain withController:self];
-    [[_slideBarTableVC view] setFrame:CGRectMake(0, 0, viewSize.width-SLIDE_BAR_OFFSET, viewSize.height)];
+    [[_slideBarTableVC view] setFrame:CGRectMake(0, 0, viewSize.width - _slideBarOffset, viewSize.height)];
     [_slideBarTableVC setSlideBarViewControllers:_leftViewControllers];
     [leftSlideBarHolder addSubview:[_slideBarTableVC view]];
     
-    leftSlideBarShadow = [[UIView alloc] initWithFrame:CGRectMake([[_slideBarTableVC view] bounds].size.width, 0, SHADOW_WIDTH, viewSize.height)];
+    leftSlideBarShadow = [[UIView alloc] initWithFrame:CGRectMake([[_slideBarTableVC view] bounds].size.width, 0, _slideBarOffset, viewSize.height)];
     [leftSlideBarShadow setAutoresizingMask:UIViewAutoresizingFlexibleLeftMargin];
     [leftSlideBarShadow setBackgroundColor:[UIColor clearColor]];
     [leftSlideBarShadow addLinearGradientInDirection:DirectionRight];
+    [leftSlideBarShadow setAlpha:_fadeOutAlpha];
     [leftSlideBarHolder addSubview:leftSlideBarShadow];
     
     if (_leftViewControllers && [_leftViewControllers count] > 0)
-        [self pushViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
+        [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -73,7 +78,7 @@
 
 - (void)showLeftSlideBar:(id)sender
 {
-    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:SLIDE_BAR_ANIM_TIME];
+    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime];
 }
 
 #pragma mark - Custom Setter and Getter Methods
@@ -82,18 +87,70 @@
 {
     if (_slideBarTableVC)
         [_slideBarTableVC setSlideBarViewControllers:_leftViewControllers];
+    
+    if (_leftViewControllers && [_leftViewControllers count] > 0)
+        [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
+}
+
+- (void)setSlideBarOffset:(CGFloat)offset
+{
+    if (offset > [[self view] bounds].size.width/2)
+        _slideBarOffset = [[self view] bounds].size.width/2;
+    else
+        _slideBarOffset = offset;
+    
+    [[_slideBarTableVC view] setFrame:CGRectMake(0, 0, [[_slideBarTableVC view] bounds].size.width - _slideBarOffset, [[_slideBarTableVC view] bounds].size.height)];
+    [leftSlideBarShadow setFrame:CGRectMake([[_slideBarTableVC view] bounds].size.width, 0, _slideBarOffset, [[_slideBarTableVC view] bounds].size.height)];
+}
+
+- (void)setScaleAmount:(CGFloat)scale
+{
+    if (scale > 1.0)
+        _scaleAmount = 1.0;
+    else if (scale < 0.0)
+        _scaleAmount = 0.0;
+    else
+        _scaleAmount = scale;
+}
+
+- (void)setFadeOutAlpha:(CGFloat)alpha
+{
+    if (alpha > 1.0)
+        _fadeOutAlpha = 1.0;
+    else if (alpha < 0.0)
+        _fadeOutAlpha = 0.0;
+    else
+        _fadeOutAlpha = alpha;
+    
+    if (leftSlideBarShadow)
+        [leftSlideBarShadow setAlpha:_fadeOutAlpha];
+}
+
+- (void)setAnimTime:(CGFloat)animTime
+{
+    if (animTime < SLIDE_BAR_MIN_ANIM_TIME)
+        _animTime = SLIDE_BAR_MIN_ANIM_TIME;
+    else
+        _animTime = animTime;
 }
 
 #pragma mark - Push, Pop and Swap Methods
 
-- (void)pushViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
+- (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
 {
-    __weak UIViewController *newViewController = [_leftViewControllers objectAtIndex:index];
-    [self swapViewController:_currentViewController forNewViewController:newViewController inSlideBarHolder:slideBarHolder animated:animated];
-    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:animated animTime:SLIDE_BAR_ANIM_TIME];
-    _currentViewController = newViewController;
-    _currentIndex = index;
+    __weak UIViewController *viewController = [_leftViewControllers objectAtIndex:index];
+    [self swapViewController:viewController inSlideBarHolder:slideBarHolder animated:animated];
+}
+
+- (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
+{
+    if (viewController == nil)
+        NSLog(@"Error: View Controller to swap to nil!");
     
+    [self swapViewController:_currentViewController forNewViewController:viewController inSlideBarHolder:slideBarHolder animated:animated];
+    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:animated animTime:_animTime];
+    _currentViewController = viewController;
+    _currentIndex = [_leftViewControllers indexOfObject:viewController];
 }
 
 - (void)swapViewController:(UIViewController *)viewController forNewViewController:(UIViewController *)newViewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
@@ -102,7 +159,7 @@
         return;
     
     [self willMoveToParentViewController:newViewController];
-    [self scaleViewController:newViewController byPercent:SLIDE_BAR_SCALE animated:NO];
+    [self scaleViewController:newViewController byPercent:_scaleAmount animated:NO];
     
     if (viewController)
     {
@@ -126,15 +183,13 @@
     CGPoint selfCenter = [[self view] center];
     
     CGFloat scalePercent = 1.0;
-    CGFloat blackoutAlpha = 0.0;
     
     switch (position)
     {
         case LHSlideBarPosCenter:
         {
             center = CGPointMake(selfCenter.x, selfCenter.y - 20);
-            scalePercent = SLIDE_BAR_SCALE;
-            blackoutAlpha = SLIDE_BAR_ALPHA;
+            scalePercent = _scaleAmount;
             break;
         }
             
@@ -142,7 +197,6 @@
         {
             center = CGPointMake(-selfCenter.x, selfCenter.y - 20);
             scalePercent = 1.0;
-            blackoutAlpha = 0.0;
             break;
         }
             
@@ -150,7 +204,6 @@
         {
             center = CGPointMake([[self view] bounds].size.width + selfCenter.x, selfCenter.y - 20);
             scalePercent = 1.0;
-            blackoutAlpha = 0.0;
             break;
         }
             
@@ -223,7 +276,7 @@
 {
     if (animated)
     {
-        [UIView animateWithDuration:SLIDE_BAR_ANIM_TIME
+        [UIView animateWithDuration:_animTime
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
@@ -279,7 +332,7 @@
     if (_isLeftSlideBarShowing)
     {
         if (CGRectContainsPoint([leftSlideBarShadow frame], touchPoint))
-            [self pushViewControllerAtIndex:_currentIndex inSlideBarHolder:leftSlideBarHolder animated:YES];
+            [self swapViewControllerAtIndex:_currentIndex inSlideBarHolder:leftSlideBarHolder animated:YES];
     }
 }
 
@@ -300,10 +353,10 @@
             BOOL moveHolder = NO;
             CGPoint newPoint = CGPointMake([leftSlideBarHolder center].x + translation.x,
                                            [leftSlideBarHolder center].y);
-            CGFloat scale = 1.0 - SLIDE_BAR_SCALE;
+            CGFloat scale = 1.0 - _scaleAmount;
             CGFloat progress = [self progressPercentForLeftHolderView];
             scale *= progress;
-            scale += SLIDE_BAR_SCALE;
+            scale += _scaleAmount;
             
             if (translation.x > 0)
             {
@@ -331,7 +384,7 @@
         case UIGestureRecognizerStateEnded:
         {
             CGPoint velocity = [gesture velocityInView:[self view]];
-            NSTimeInterval animDuration = SLIDE_BAR_ANIM_TIME;
+            NSTimeInterval animDuration = _animTime;
             LHSlideBarPos pos = LHSlideBarPosNull;
             
             // Left SlideBar is Hidden
@@ -342,7 +395,7 @@
                 pos = LHSlideBarPosCenter;
                 
                 CGFloat percent = translation.x / [self view].bounds.size.width;
-                animDuration = SLIDE_BAR_ANIM_TIME * percent;
+                animDuration = _animTime * percent;
             }
             else if (velocity.x < 0)
             {
@@ -350,7 +403,7 @@
                 pos = LHSlideBarPosOffLeft;
                 
                 CGFloat percent = 1 - (fabs(translation.x) / [self view].bounds.size.width);
-                animDuration = SLIDE_BAR_ANIM_TIME * percent;
+                animDuration = _animTime * percent;
             }
             else
             {
@@ -359,8 +412,8 @@
                     pos = LHSlideBarPosOffLeft;
             }
             
-            if (animDuration > SLIDE_BAR_ANIM_TIME)
-                animDuration = SLIDE_BAR_ANIM_TIME;
+            if (animDuration > _animTime)
+                animDuration = _animTime;
             if (animDuration < SLIDE_BAR_MIN_ANIM_TIME)
                 animDuration = SLIDE_BAR_MIN_ANIM_TIME;
             
@@ -416,13 +469,13 @@
         case DirectionLeft:
         {
             firstColour = [UIColor colorWithWhite:0.0 alpha:0.0];
-            secondColour = [UIColor colorWithWhite:0.0 alpha:SLIDE_BAR_ALPHA];
+            secondColour = [UIColor colorWithWhite:0.0 alpha:1.0];
             break;
         }
             
         case DirectionRight:
         {
-            firstColour = [UIColor colorWithWhite:0.0 alpha:SLIDE_BAR_ALPHA];
+            firstColour = [UIColor colorWithWhite:0.0 alpha:1.0];
             secondColour = [UIColor colorWithWhite:0.0 alpha:0.0];
             break;
         }

@@ -43,11 +43,24 @@ typedef enum {
 @property (assign, readonly, nonatomic) BOOL isLeftSlideBarShowing;
 @property (assign, readonly, nonatomic) BOOL slideBarIsDragging;
 
+// User changable variables
+@property (assign, readonly, nonatomic) CGFloat slideBarOffset;     // Size of the space on the side of the slide bar when it is open. It must be less than half the width of the slide bar controller.
+@property (assign, readonly, nonatomic) CGFloat scaleAmount;        // Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
+@property (assign, readonly, nonatomic) CGFloat fadeOutAlpha;       // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
+@property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slide bar animation to slide in or out. Minimum of 0.1s
+
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController;
 
 - (id)initWithViewControllers:(NSArray *)viewControllers;
+
 - (void)setViewControllers:(NSArray *)viewControllers;
-- (void)pushViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
+- (void)setSlideBarOffset:(CGFloat)offset;
+- (void)setScaleAmount:(CGFloat)scale;
+- (void)setFadeOutAlpha:(CGFloat)alpha;
+- (void)setAnimTime:(CGFloat)animTime;
+
+- (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
+- (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
 - (void)showLeftSlideBar:(id)sender;
 
 @end

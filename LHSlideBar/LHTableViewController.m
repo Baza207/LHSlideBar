@@ -36,6 +36,14 @@
     [super didReceiveMemoryWarning];
 }
 
+#pragma mark - Custom Getter and Setter Methods
+
+- (void)setSlideBarViewControllers:(NSArray *)slideBarViewControllers
+{
+    _slideBarViewControllers = slideBarViewControllers;
+    [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -84,7 +92,7 @@
     {
         case 0:
         {
-            [_slideBarController pushViewControllerAtIndex:[indexPath row] inSlideBarHolder:[[self view] superview] animated:YES];
+            [_slideBarController swapViewControllerAtIndex:[indexPath row] inSlideBarHolder:[[self view] superview] animated:YES];
             [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
