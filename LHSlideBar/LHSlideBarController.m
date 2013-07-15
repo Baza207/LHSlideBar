@@ -12,10 +12,10 @@
 
 #define SLIDE_BAR_OFFSET        40
 #define SLIDE_BAR_SCALE         0.9
-#define SLIDE_BAR_ALPHA         0.8
+#define SLIDE_BAR_ALPHA         0.6
 #define SLIDE_BAR_ANIM_TIME     0.25
 #define SLIDE_BAR_MIN_ANIM_TIME 0.1
-#define IPHONE_CORNER_RADIUS    2
+#define IPHONE_CORNER_RADIUS    2.0
 
 @implementation LHSlideBarController
 
@@ -38,11 +38,14 @@
     _fadeOutAlpha = SLIDE_BAR_ALPHA;
     _animTime = SLIDE_BAR_ANIM_TIME;
     
+    _transformType = LHTransformRotate;
     _scalesOnSlide = YES;
     _keepRoundedCornersWhenScaling = YES;
     
     _isLeftSlideBarShowing = NO;
     _slideBarIsDragging = NO;
+    
+    [self setCustomSlideTransformValue:nil];
     
     CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
     
@@ -143,6 +146,11 @@
         _animTime = animTime;
 }
 
+- (void)setCustomSlideTransformValue:(NSValue *)customSlideTransformValue
+{
+    customSlideTransform = [_customSlideTransformValue CATransform3DValue];
+}
+
 #pragma mark - Push, Pop and Swap Methods
 
 - (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
@@ -178,7 +186,7 @@
         return;
     
     [self willMoveToParentViewController:newViewController];
-    [self scaleViewController:newViewController byPercent:_scaleAmount animated:NO];
+    [self transformViewController:newViewController byAmount:_scaleAmount animated:NO];
     
     if (viewController)
     {
@@ -192,7 +200,7 @@
     [self addChildViewController:newViewController];
     [self didMoveToParentViewController:newViewController];
     
-    [self scaleViewController:newViewController byPercent:1.0 animated:animated];
+    [self transformViewController:newViewController byAmount:1.0 animated:animated];
 }
 
 - (void)setSlideBarHolder:(UIView *)slideBarHolder toPosition:(LHSlideBarPos)position animated:(BOOL)animated animTime:(NSTimeInterval)animTime
@@ -243,7 +251,7 @@
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              [slideBarHolder setCenter:center];
-                             [self scaleView:[_currentViewController view] byPercent:scalePercent];
+                             [self transformView:[_currentViewController view] byAmount:scalePercent];
                          }
                          completion:^(BOOL finished) {
                              [self setLeftSlideBarIsShowingWithPos:position];
@@ -256,7 +264,7 @@
     else
     {
         [slideBarHolder setCenter:center];
-        [self scaleView:[_currentViewController view] byPercent:scalePercent];
+        [self transformView:[_currentViewController view] byAmount:scalePercent];
         [self setLeftSlideBarIsShowingWithPos:position];
         [_slideBarTableVC endAppearanceTransition];
         
@@ -294,13 +302,30 @@
 
 #pragma mark - Animation and Transformation Methods
 
-- (void)scaleView:(UIView *)view byPercent:(double)percent
+- (CATransform3D)scaleTransform3DWithScale:(CGFloat)scale
+{
+    CATransform3D transform3D = CATransform3DIdentity;
+    transform3D = CATransform3DScale(transform3D, scale, scale, 1);
+    return transform3D;
+}
+
+- (CATransform3D)rotateTransform3DByAmount:(CGFloat)amount
+{
+    CGFloat degree = (1.0 - amount)*-200;
+    CGFloat scale = 1.0 - ((1.0 - amount)/2);
+    
+    CATransform3D transform3D = CATransform3DIdentity;
+    transform3D.m34 = 1.0/-900;
+    transform3D = CATransform3DScale(transform3D, scale, scale, 1);
+    transform3D = CATransform3DTranslate(transform3D, 1, 1, degree*3);
+    transform3D = CATransform3DRotate(transform3D, degree*(M_PI/180.0f), 0, 1, 0);
+    return transform3D;
+}
+
+- (void)transformView:(UIView *)view withTransform:(CATransform3D)transform3D
 {
     if (view == nil || _scalesOnSlide == NO)
         return;
-    
-    CATransform3D transform3D = CATransform3DIdentity;
-    transform3D = CATransform3DScale(transform3D, percent, percent, 1);
     
     [[view layer] setTransform:transform3D];
     
@@ -308,7 +333,35 @@
         [[view layer] setCornerRadius:IPHONE_CORNER_RADIUS];
 }
 
-- (void)scaleViewController:(UIViewController *)viewController byPercent:(double)percent animated:(BOOL)animated
+- (void)transformView:(UIView *)view byAmount:(CGFloat)amount
+{
+    switch (_transformType)
+    {
+        case LHTransformCustom:
+        {
+            if (_customSlideTransformValue != nil)
+                [self transformView:view withTransform:customSlideTransform];
+            break;
+        }
+        
+        case LHTransformScale:
+        {
+            [self transformView:view withTransform:[self scaleTransform3DWithScale:amount]];
+            break;
+        }
+        
+        case LHTransformRotate:
+        {
+            [self transformView:view withTransform:[self rotateTransform3DByAmount:amount]];
+            break;
+        }
+            
+        default:
+            break;
+    }
+}
+
+- (void)transformViewController:(UIViewController *)viewController byAmount:(CGFloat)amount animated:(BOOL)animated
 {
     if (animated)
     {
@@ -316,16 +369,13 @@
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             [self scaleView:[viewController view] byPercent:percent];
+                             [self transformView:[viewController view] byAmount:amount];
                          }
-                         completion:^(BOOL finished) {
-                             if (percent >= 1.0)
-                                 [[[viewController view] layer] setCornerRadius:0.0];
-                         }];
+                         completion:nil];
     }
     else
     {
-        [self scaleView:[viewController view] byPercent:percent];
+        [self transformView:[viewController view] byAmount:amount];
     }
 }
 
@@ -414,7 +464,7 @@
             {
                 [leftSlideBarHolder setCenter:newPoint];
                 
-                [self scaleView:[_currentViewController view] byPercent:scale];
+                [self transformView:[_currentViewController view] byAmount:scale];
                 [gesture setTranslation:CGPointMake(0, 0) inView:[self view]];
             }
             break;

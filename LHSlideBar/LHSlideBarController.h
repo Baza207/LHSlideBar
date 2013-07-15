@@ -31,9 +31,17 @@ typedef enum {
     LHSlideBarPosOffRight
 } LHSlideBarPos;
 
+typedef enum {
+    LHTransformNone = 0,
+    LHTransformCustom,
+    LHTransformScale,
+    LHTransformRotate,
+} LHTransformType;
+
 @interface LHSlideBarController : UIViewController
 {
     UIView *leftSlideBarHolder, *leftSlideBarShadow;
+    CATransform3D customSlideTransform;
 }
 
 @property (strong, readonly, nonatomic) NSArray *leftViewControllers;
@@ -49,8 +57,11 @@ typedef enum {
 @property (assign, readonly, nonatomic) CGFloat fadeOutAlpha;       // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
 @property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slide bar animation to slide in or out. Minimum of 0.1s
 
+@property (assign, nonatomic) LHTransformType transformType;
 @property (assign, nonatomic) BOOL scalesOnSlide;
 @property (assign, nonatomic) BOOL keepRoundedCornersWhenScaling;
+
+@property (strong, readonly, nonatomic) NSValue *customSlideTransformValue;   // Allows users to set there own custom slide transform.
 
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController;
 
