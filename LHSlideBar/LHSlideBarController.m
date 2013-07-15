@@ -80,12 +80,12 @@
 
 #pragma mark - SlideBar Show Methods
 
-- (void)showLeftSlideBar:(id)sender
+- (void)showLeftSlideBarAnimated:(BOOL)animated
 {
-    [self showLeftSlideBar:sender completed:nil];
+    [self showLeftSlideBarAnimated:animated completed:nil];
 }
 
-- (void)showLeftSlideBar:(id)sender completed:(SlideBarCompletionBlock)completionBlock
+- (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
 {
     [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime completed:completionBlock];
 }
