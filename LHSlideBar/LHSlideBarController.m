@@ -78,11 +78,16 @@
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - Button Pressed Methods
+#pragma mark - SlideBar Show Methods
 
 - (void)showLeftSlideBar:(id)sender
 {
-    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime];
+    [self showLeftSlideBar:sender completed:nil];
+}
+
+- (void)showLeftSlideBar:(id)sender completed:(SlideBarCompletionBlock)completionBlock
+{
+    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime completed:completionBlock];
 }
 
 #pragma mark - Custom Setter and Getter Methods
@@ -142,17 +147,27 @@
 
 - (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
 {
+    [self swapViewControllerAtIndex:index inSlideBarHolder:slideBarHolder animated:animated completed:nil];
+}
+
+- (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+{
     __weak UIViewController *viewController = [_leftViewControllers objectAtIndex:index];
-    [self swapViewController:viewController inSlideBarHolder:slideBarHolder animated:animated];
+    [self swapViewController:viewController inSlideBarHolder:slideBarHolder animated:animated completed:completionBlock];
 }
 
 - (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
+{
+    [self swapViewController:viewController inSlideBarHolder:slideBarHolder animated:animated completed:nil];
+}
+
+- (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
 {
     if (viewController == nil)
         NSLog(@"Error: View Controller to swap to nil!");
     
     [self swapViewController:_currentViewController forNewViewController:viewController inSlideBarHolder:slideBarHolder animated:animated];
-    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:animated animTime:_animTime];
+    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:animated animTime:_animTime completed:completionBlock];
     _currentViewController = viewController;
     _currentIndex = [_leftViewControllers indexOfObject:viewController];
 }
@@ -182,16 +197,20 @@
 
 - (void)setSlideBarHolder:(UIView *)slideBarHolder toPosition:(LHSlideBarPos)position animated:(BOOL)animated animTime:(NSTimeInterval)animTime
 {
-//    CGRect rect = CGRectNull;
+    [self setSlideBarHolder:slideBarHolder toPosition:position animated:animated animTime:animTime completed:nil];
+}
+
+- (void)setSlideBarHolder:(UIView *)slideBarHolder toPosition:(LHSlideBarPos)position animated:(BOOL)animated animTime:(NSTimeInterval)animTime completed:(SlideBarCompletionBlock)completionBlock
+{
     CGPoint center = [slideBarHolder center];
     CGPoint selfCenter = [[self view] center];
     
     CGFloat scalePercent = 1.0;
-    
     switch (position)
     {
         case LHSlideBarPosCenter:
         {
+            [_slideBarTableVC beginAppearanceTransition:YES animated:animated];
             center = CGPointMake(selfCenter.x, selfCenter.y - 20);
             scalePercent = _scaleAmount;
             break;
@@ -199,6 +218,7 @@
             
         case LHSlideBarPosOffLeft:
         {
+            [_slideBarTableVC beginAppearanceTransition:NO animated:animated];
             center = CGPointMake(-selfCenter.x, selfCenter.y - 20);
             scalePercent = 1.0;
             break;
@@ -206,6 +226,7 @@
             
         case LHSlideBarPosOffRight:
         {
+            [_slideBarTableVC beginAppearanceTransition:NO animated:animated];
             center = CGPointMake([[self view] bounds].size.width + selfCenter.x, selfCenter.y - 20);
             scalePercent = 1.0;
             break;
@@ -226,6 +247,10 @@
                          }
                          completion:^(BOOL finished) {
                              [self setLeftSlideBarIsShowingWithPos:position];
+                             [_slideBarTableVC endAppearanceTransition];
+                             
+                             if (completionBlock)
+                                 completionBlock();
                          }];
     }
     else
@@ -233,6 +258,10 @@
         [slideBarHolder setCenter:center];
         [self scaleView:[_currentViewController view] byPercent:scalePercent];
         [self setLeftSlideBarIsShowingWithPos:position];
+        [_slideBarTableVC endAppearanceTransition];
+        
+        if (completionBlock)
+            completionBlock();
     }
 }
 
@@ -353,6 +382,8 @@
         case UIGestureRecognizerStateBegan:
         {
             _slideBarIsDragging = YES;
+            [_slideBarTableVC beginAppearanceTransition:(_isLeftSlideBarShowing == NO) animated:YES];
+            
             break;
         }
             

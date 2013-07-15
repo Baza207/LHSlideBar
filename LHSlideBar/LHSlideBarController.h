@@ -63,8 +63,11 @@ typedef enum {
 - (void)setAnimTime:(CGFloat)animTime;
 
 - (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
+- (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 - (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
+- (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 - (void)showLeftSlideBar:(id)sender;
+- (void)showLeftSlideBar:(id)sender completed:(SlideBarCompletionBlock)completionBlock;
 
 @end
 
