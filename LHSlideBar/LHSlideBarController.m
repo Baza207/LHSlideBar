@@ -15,6 +15,7 @@
 #define SLIDE_BAR_ALPHA         0.8
 #define SLIDE_BAR_ANIM_TIME     0.25
 #define SLIDE_BAR_MIN_ANIM_TIME 0.1
+#define IPHONE_CORNER_RADIUS    2
 
 @implementation LHSlideBarController
 
@@ -38,6 +39,7 @@
     _animTime = SLIDE_BAR_ANIM_TIME;
     
     _scalesOnSlide = YES;
+    _keepRoundedCornersWhenScaling = YES;
     
     _isLeftSlideBarShowing = NO;
     _slideBarIsDragging = NO;
@@ -272,6 +274,9 @@
     transform3D = CATransform3DScale(transform3D, percent, percent, 1);
     
     [[view layer] setTransform:transform3D];
+    
+    if (_keepRoundedCornersWhenScaling)
+        [[view layer] setCornerRadius:IPHONE_CORNER_RADIUS];
 }
 
 - (void)scaleViewController:(UIViewController *)viewController byPercent:(double)percent animated:(BOOL)animated
@@ -285,7 +290,8 @@
                              [self scaleView:[viewController view] byPercent:percent];
                          }
                          completion:^(BOOL finished) {
-                             
+                             if (percent >= 1.0)
+                                 [[[viewController view] layer] setCornerRadius:0.0];
                          }];
     }
     else
