@@ -11,7 +11,7 @@
 #import "LHTableViewController.h"
 
 #define SLIDE_BAR_OFFSET        40
-#define SLIDE_BAR_SCALE         0.96
+#define SLIDE_BAR_SCALE         0.9
 #define SLIDE_BAR_ALPHA         0.8
 #define SLIDE_BAR_ANIM_TIME     0.25
 #define SLIDE_BAR_MIN_ANIM_TIME 0.1
@@ -410,6 +410,8 @@
                 // Zero Velocity
                 if (_isLeftSlideBarShowing)
                     pos = LHSlideBarPosOffLeft;
+                else
+                    pos = LHSlideBarPosCenter;
             }
             
             if (animDuration > _animTime)
