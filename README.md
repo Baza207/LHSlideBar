@@ -13,16 +13,18 @@ To use LHSlideBar add the following files into your project:
 
 LHSlideBar requires **iOS 6**+ to work and uses ARC.
 
+### Demo
+
 <table>
 	<tr align="center">
 		<td width="260">
 			<img src="http://blog.pigonahill.com/wp-content/uploads/2013/07/LHSlideBar_1.png" width="240px">
 		</td>
 		<td width="260">
-			<img src="http://blog.pigonahill.com/wp-content/uploads/2013/07/LHSlideBar_2.png" width="240px">
+			<img src="http://blog.pigonahill.com/wp-content/uploads/2013/07/LHSlideBar_4.png" width="240px">
 		</td>
 		<td width="260">
-			<img src="http://blog.pigonahill.com/wp-content/uploads/2013/07/LHSlideBar_3.png" width="240px">
+			<img src="http://blog.pigonahill.com/wp-content/uploads/2013/07/LHSlideBar_5.png" width="240px">
 		</td>
 	</tr>
 </table>
@@ -98,6 +100,18 @@ Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
 
 ***`@property (assign, readonly, nonatomic) CGFloat animTime`***  
 Maximum time for the slide bar animation to slide in or out. Minimum of 0.1s
+
+### Side Animations / Transformations
+
+LHSlideBarController has a `transformType` variable. Set this to choose the type of transformation occours to the view controller when the user drags, opens or dismisses the slide bar.  
+
+***`LHTransformScale`***  
+Scales down the view controller behind the slide bar to the scale set in `scaleAmount`.  
+
+***`LHTransformRotate`***  
+Rotates the view controller in 3D space to look like it is being pushed back under the slide bar ([see demo above](#demo)).  
+
+***Note:*** There is a `LHTransformCustom` option that will allow the use of custom tranformation code. This feature is nto yet working and all relevent code is commented out. Therefore if you use this option, nothing will happen.
 
 ### LHTableViewController
 
