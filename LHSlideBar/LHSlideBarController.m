@@ -10,6 +10,9 @@
 #import "LHSlideBarController.h"
 #import "LHTableViewController.h"
 
+#define DEGREES_TO_RADIANS(angle)   ((angle) / 180.0 * M_PI)
+#define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
+
 #define SLIDE_BAR_OFFSET        40
 #define SLIDE_BAR_SCALE         0.9
 #define SLIDE_BAR_ALPHA         0.6
@@ -311,14 +314,16 @@
 
 - (CATransform3D)rotateTransform3DByAmount:(CGFloat)amount
 {
-    CGFloat degree = (1.0 - amount)*-200;
-    CGFloat scale = 1.0 - ((1.0 - amount)/2);
+    CGFloat diff = 1.0 - amount;
+    CGFloat scale = 1.0 - diff;
+    CGFloat translate = (diff*300) * -1;
+    CGFloat degree = ceil((1.0 - amount) * -100);
     
     CATransform3D transform3D = CATransform3DIdentity;
     transform3D.m34 = 1.0/-900;
     transform3D = CATransform3DScale(transform3D, scale, scale, 1);
-    transform3D = CATransform3DTranslate(transform3D, 1, 1, degree*3);
-    transform3D = CATransform3DRotate(transform3D, degree*(M_PI/180.0f), 0, 1, 0);
+    transform3D = CATransform3DRotate(transform3D, DEGREES_TO_RADIANS(degree), 0, 1, 0);
+    transform3D = CATransform3DTranslate(transform3D, 0, 0, translate);
     return transform3D;
 }
 
