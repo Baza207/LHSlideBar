@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@class LHSlideBar;
+#import "LHSlideBar.h"
 
 typedef void (^SlideBarCompletionBlock)(void);
 
@@ -44,12 +43,14 @@ typedef enum {
 
 @interface LHSlideBarController : UIViewController
 {
-    UIView *leftSlideBarHolder, *leftSlideBarShadow;
+    UIView *leftSlideBarHolder, *rightSlideBarHolder, *leftSlideBarShadow, *rightSlideBarShadow;
 //    CATransform3D customSlideTransform;
 }
 
 @property (strong, readonly, nonatomic) NSArray *leftViewControllers;
-@property (strong, readonly, nonatomic) LHSlideBar *slideBarTableVC;
+@property (strong, readonly, nonatomic) NSArray *rightViewControllers;
+@property (strong, readonly, nonatomic) LHSlideBar *leftSlideBarVC;
+@property (strong, readonly, nonatomic) LHSlideBar *rightSlideBarVC;
 @property (weak, readonly, nonatomic) UIViewController *currentViewController;
 @property (assign, readonly, nonatomic) NSUInteger currentIndex;
 @property (assign, readonly, nonatomic) BOOL isLeftSlideBarShowing;
@@ -69,7 +70,10 @@ typedef enum {
 
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController;
 
-- (id)initWithViewControllers:(NSArray *)viewControllers;
+- (id)initWithLeftViewControllers:(NSArray *)viewControllers;
+
+- (void)setupSlideBarAtPosition:(LHSlideBarPos)pos pushFirstVC:(BOOL)push;
+- (LHSlideBar *)setupSlideBarAtPosition:(LHSlideBarPos)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar;
 
 - (void)setViewControllers:(NSArray *)viewControllers;
 - (void)setSlideBarOffset:(CGFloat)offset;

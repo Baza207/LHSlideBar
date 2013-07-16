@@ -24,7 +24,8 @@
     ViewControllerThree *vcThree = [[ViewControllerThree alloc] initWithNibName:@"ViewControllerThree" bundle:nil];
     
     NSArray *viewControllers = @[vcOne, vcTwo, vcThree];
-    _slideBarController = [[LHSlideBarController alloc] initWithViewControllers:viewControllers];
+    _slideBarController = [[LHSlideBarController alloc] initWithLeftViewControllers:viewControllers];
+    [_slideBarController setupSlideBarAtPosition:LHSlideBarPosLeft pushFirstVC:YES];
     [_window setRootViewController:_slideBarController];
     [_window makeKeyAndVisible];
     
