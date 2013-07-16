@@ -189,7 +189,7 @@
         return;
     
     [self willMoveToParentViewController:newViewController];
-    [self transformViewController:newViewController byAmount:_scaleAmount animated:NO];
+    [self transformViewController:newViewController withProgress:0.0 animated:NO];
     
     if (viewController)
     {
@@ -203,7 +203,7 @@
     [self addChildViewController:newViewController];
     [self didMoveToParentViewController:newViewController];
     
-    [self transformViewController:newViewController byAmount:1.0 animated:animated];
+    [self transformViewController:newViewController withProgress:1.0 animated:animated];
 }
 
 - (void)setSlideBarHolder:(UIView *)slideBarHolder toPosition:(LHSlideBarPos)position animated:(BOOL)animated animTime:(NSTimeInterval)animTime
@@ -216,14 +216,14 @@
     CGPoint center = [slideBarHolder center];
     CGPoint selfCenter = [[self view] center];
     
-    CGFloat scalePercent = 1.0;
+    CGFloat progress = 1.0;
     switch (position)
     {
         case LHSlideBarPosCenter:
         {
             [_slideBarTableVC beginAppearanceTransition:YES animated:animated];
             center = CGPointMake(selfCenter.x, selfCenter.y - 20);
-            scalePercent = _scaleAmount;
+            progress = 0.0;
             break;
         }
             
@@ -231,7 +231,7 @@
         {
             [_slideBarTableVC beginAppearanceTransition:NO animated:animated];
             center = CGPointMake(-selfCenter.x, selfCenter.y - 20);
-            scalePercent = 1.0;
+            progress = 1.0;
             break;
         }
             
@@ -239,7 +239,7 @@
         {
             [_slideBarTableVC beginAppearanceTransition:NO animated:animated];
             center = CGPointMake([[self view] bounds].size.width + selfCenter.x, selfCenter.y - 20);
-            scalePercent = 1.0;
+            progress = 1.0;
             break;
         }
             
@@ -254,7 +254,7 @@
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              [slideBarHolder setCenter:center];
-                             [self transformView:[_currentViewController view] byAmount:scalePercent];
+                             [self transformView:[_currentViewController view] withProgress:progress];
                          }
                          completion:^(BOOL finished) {
                              [self setLeftSlideBarIsShowingWithPos:position];
@@ -267,7 +267,7 @@
     else
     {
         [slideBarHolder setCenter:center];
-        [self transformView:[_currentViewController view] byAmount:scalePercent];
+        [self transformView:[_currentViewController view] withProgress:progress];
         [self setLeftSlideBarIsShowingWithPos:position];
         [_slideBarTableVC endAppearanceTransition];
         
@@ -305,25 +305,24 @@
 
 #pragma mark - Animation and Transformation Methods
 
-- (CATransform3D)scaleTransform3DWithScale:(CGFloat)scale
+- (CATransform3D)scaleTransform3DWithProgress:(CGFloat)progress
 {
+    CGFloat scale = [self scaleFromProgress:progress];
     CATransform3D transform3D = CATransform3DIdentity;
     transform3D = CATransform3DScale(transform3D, scale, scale, 1);
     return transform3D;
 }
 
-- (CATransform3D)rotateTransform3DByAmount:(CGFloat)amount
+- (CATransform3D)rotateTransform3DWithProgress:(CGFloat)progress
 {
-    CGFloat diff = 1.0 - amount;
-    CGFloat scale = 1.0 - diff;
-    CGFloat translate = (diff*300) * -1;
-    CGFloat degree = ceil((1.0 - amount) * -100);
+    CGFloat progressRev = 1.0 - progress;
+    CGFloat translate = (progressRev * 60) * -1;
+    CGFloat degree = ceil(progressRev * -20);
     
     CATransform3D transform3D = CATransform3DIdentity;
     transform3D.m34 = 1.0/-900;
-    transform3D = CATransform3DScale(transform3D, scale, scale, 1);
     transform3D = CATransform3DRotate(transform3D, DEGREES_TO_RADIANS(degree), 0, 1, 0);
-    transform3D = CATransform3DTranslate(transform3D, 0, 0, translate);
+    transform3D = CATransform3DTranslate(transform3D, translate/3, 0, translate);
     return transform3D;
 }
 
@@ -338,7 +337,7 @@
         [[view layer] setCornerRadius:IPHONE_CORNER_RADIUS];
 }
 
-- (void)transformView:(UIView *)view byAmount:(CGFloat)amount
+- (void)transformView:(UIView *)view withProgress:(CGFloat)progress
 {
     switch (_transformType)
     {
@@ -351,13 +350,13 @@
         
         case LHTransformScale:
         {
-            [self transformView:view withTransform:[self scaleTransform3DWithScale:amount]];
+            [self transformView:view withTransform:[self scaleTransform3DWithProgress:progress]];
             break;
         }
         
         case LHTransformRotate:
         {
-            [self transformView:view withTransform:[self rotateTransform3DByAmount:amount]];
+            [self transformView:view withTransform:[self rotateTransform3DWithProgress:progress]];
             break;
         }
             
@@ -366,7 +365,7 @@
     }
 }
 
-- (void)transformViewController:(UIViewController *)viewController byAmount:(CGFloat)amount animated:(BOOL)animated
+- (void)transformViewController:(UIViewController *)viewController withProgress:(CGFloat)progress animated:(BOOL)animated
 {
     if (animated)
     {
@@ -374,13 +373,13 @@
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             [self transformView:[viewController view] byAmount:amount];
+                             [self transformView:[viewController view] withProgress:progress];
                          }
                          completion:nil];
     }
     else
     {
-        [self transformView:[viewController view] byAmount:amount];
+        [self transformView:[viewController view] withProgress:progress];
     }
 }
 
@@ -389,6 +388,14 @@
     CGFloat difference = (-[[self view] center].x) - [[self view] center].x;
     CGFloat progress = [leftSlideBarHolder center].x / difference;
     return progress + 0.5;
+}
+
+- (CGFloat)scaleFromProgress:(CGFloat)progress
+{
+    CGFloat scale = 1.0 - _scaleAmount;
+    scale *= progress;
+    scale += _scaleAmount;
+    return scale;
 }
 
 #pragma mark - Size Methods
@@ -447,10 +454,8 @@
             BOOL moveHolder = NO;
             CGPoint newPoint = CGPointMake([leftSlideBarHolder center].x + translation.x,
                                            [leftSlideBarHolder center].y);
-            CGFloat scale = 1.0 - _scaleAmount;
+            
             CGFloat progress = [self progressPercentForLeftHolderView];
-            scale *= progress;
-            scale += _scaleAmount;
             
             if (translation.x > 0)
             {
@@ -469,7 +474,7 @@
             {
                 [leftSlideBarHolder setCenter:newPoint];
                 
-                [self transformView:[_currentViewController view] byAmount:scale];
+                [self transformView:[_currentViewController view] withProgress:progress];
                 [gesture setTranslation:CGPointMake(0, 0) inView:[self view]];
             }
             break;
