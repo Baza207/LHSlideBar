@@ -15,7 +15,7 @@
 
 #define SLIDE_BAR_OFFSET        40
 #define SLIDE_BAR_SCALE         0.9
-#define SLIDE_BAR_ALPHA         0.6
+#define SLIDE_BAR_ALPHA         0.75
 #define SLIDE_BAR_ANIM_TIME     0.25
 #define SLIDE_BAR_MIN_ANIM_TIME 0.1
 #define IPHONE_CORNER_RADIUS    2.0
@@ -339,6 +339,8 @@
 
 - (void)transformView:(UIView *)view withProgress:(CGFloat)progress
 {
+    [leftSlideBarShadow setAlpha:[self alphaFromProgress:progress]];
+    
     switch (_transformType)
     {
         case LHTransformCustom:
@@ -396,6 +398,13 @@
     scale *= progress;
     scale += _scaleAmount;
     return scale;
+}
+
+- (CGFloat)alphaFromProgress:(CGFloat)progress
+{
+    CGFloat alpha = 1.0 - progress;
+    alpha *= _fadeOutAlpha;
+    return alpha;
 }
 
 #pragma mark - Size Methods
