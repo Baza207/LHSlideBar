@@ -48,7 +48,7 @@
     _isLeftSlideBarShowing = NO;
     _slideBarIsDragging = NO;
     
-    [self setCustomSlideTransformValue:nil];
+//    [self setCustomSlideTransformValue:nil];
     
     CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
     
@@ -149,10 +149,10 @@
         _animTime = animTime;
 }
 
-- (void)setCustomSlideTransformValue:(NSValue *)customSlideTransformValue
-{
-    customSlideTransform = [_customSlideTransformValue CATransform3DValue];
-}
+//- (void)setCustomSlideTransformValue:(NSValue *)customSlideTransformValue
+//{
+//    customSlideTransform = [_customSlideTransformValue CATransform3DValue];
+//}
 
 #pragma mark - Push, Pop and Swap Methods
 
@@ -175,7 +175,7 @@
 - (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
 {
     if (viewController == nil)
-        NSLog(@"Error: View Controller to swap to nil!");
+        NSLog(@"LHSlideBar Error: View Controller to swap to nil!");
     
     [self swapViewController:_currentViewController forNewViewController:viewController inSlideBarHolder:slideBarHolder animated:animated];
     [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:animated animTime:_animTime completed:completionBlock];
@@ -343,8 +343,8 @@
     {
         case LHTransformCustom:
         {
-            if (_customSlideTransformValue != nil)
-                [self transformView:view withTransform:customSlideTransform];
+//            if (_customSlideTransformValue != nil)
+//                [self transformView:view withTransform:customSlideTransform];
             break;
         }
         

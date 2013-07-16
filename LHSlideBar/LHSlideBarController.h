@@ -41,7 +41,7 @@ typedef enum {
 @interface LHSlideBarController : UIViewController
 {
     UIView *leftSlideBarHolder, *leftSlideBarShadow;
-    CATransform3D customSlideTransform;
+//    CATransform3D customSlideTransform;
 }
 
 @property (strong, readonly, nonatomic) NSArray *leftViewControllers;
@@ -72,6 +72,7 @@ typedef enum {
 - (void)setScaleAmount:(CGFloat)scale;
 - (void)setFadeOutAlpha:(CGFloat)alpha;
 - (void)setAnimTime:(CGFloat)animTime;
+//- (void)setCustomSlideTransformValue:(NSValue *)customSlideTransformValue;
 
 - (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
 - (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
