@@ -8,7 +8,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import "LHSlideBarController.h"
-#import "LHTableViewController.h"
+#import "LHSlideBar.h"
 
 #define DEGREES_TO_RADIANS(angle)   ((angle) / 180.0 * M_PI)
 #define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
@@ -42,7 +42,7 @@
     _animTime = SLIDE_BAR_ANIM_TIME;
     
     _transformType = LHTransformRotate;
-    _scalesOnSlide = YES;
+    _animatesOnSlide = YES;
     _keepRoundedCornersWhenScaling = YES;
     
     _isLeftSlideBarShowing = NO;
@@ -63,7 +63,7 @@
     [leftSlideBarHolder setBackgroundColor:[UIColor clearColor]];
     [[self view] addSubview:leftSlideBarHolder];
     
-    _slideBarTableVC = [[LHTableViewController alloc] initWithStyle:UITableViewStylePlain withController:self];
+    _slideBarTableVC = [[LHSlideBar alloc] initWithStyle:UITableViewStylePlain withController:self];
     [[_slideBarTableVC view] setFrame:CGRectMake(0, 0, viewSize.width - _slideBarOffset, viewSize.height)];
     [_slideBarTableVC setSlideBarViewControllers:_leftViewControllers];
     [leftSlideBarHolder addSubview:[_slideBarTableVC view]];
@@ -78,6 +78,8 @@
     if (_leftViewControllers && [_leftViewControllers count] > 0)
         [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -328,7 +330,7 @@
 
 - (void)transformView:(UIView *)view withTransform:(CATransform3D)transform3D
 {
-    if (view == nil || _scalesOnSlide == NO)
+    if (view == nil || _animatesOnSlide == NO)
         return;
     
     [[view layer] setTransform:transform3D];

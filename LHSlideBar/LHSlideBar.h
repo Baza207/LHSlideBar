@@ -1,5 +1,5 @@
 //
-//  LHTableViewController.h
+//  LHSlideBar.h
 //  LHSlideBar
 //
 //  Created by James Barrow on 12/07/2013.
@@ -10,7 +10,7 @@
 
 @class LHSlideBarController;
 
-@interface LHTableViewController : UITableViewController
+@interface LHSlideBar : UITableViewController
 
 @property (weak, readonly, nonatomic) NSArray *slideBarViewControllers;
 @property (weak, nonatomic) LHSlideBarController *slideBarController;

@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2A7F5EBC17934D6900ABF4AF /* LHSlideBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F5EB917934D6900ABF4AF /* LHSlideBarController.m */; };
-		2A7F5EBD17934D6900ABF4AF /* LHTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F5EBB17934D6900ABF4AF /* LHTableViewController.m */; };
+		2A7F5EBD17934D6900ABF4AF /* LHSlideBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F5EBB17934D6900ABF4AF /* LHSlideBar.m */; };
 		2A8226291790701F0075F4C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A8226281790701F0075F4C8 /* UIKit.framework */; };
 		2A82262B1790701F0075F4C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A82262A1790701F0075F4C8 /* Foundation.framework */; };
 		2A82262D1790701F0075F4C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A82262C1790701F0075F4C8 /* CoreGraphics.framework */; };
@@ -30,8 +30,8 @@
 /* Begin PBXFileReference section */
 		2A7F5EB817934D6900ABF4AF /* LHSlideBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHSlideBarController.h; sourceTree = "<group>"; };
 		2A7F5EB917934D6900ABF4AF /* LHSlideBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHSlideBarController.m; sourceTree = "<group>"; };
-		2A7F5EBA17934D6900ABF4AF /* LHTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHTableViewController.h; sourceTree = "<group>"; };
-		2A7F5EBB17934D6900ABF4AF /* LHTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHTableViewController.m; sourceTree = "<group>"; };
+		2A7F5EBA17934D6900ABF4AF /* LHSlideBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHSlideBar.h; sourceTree = "<group>"; };
+		2A7F5EBB17934D6900ABF4AF /* LHSlideBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHSlideBar.m; sourceTree = "<group>"; };
 		2A8226251790701F0075F4C8 /* LHSlideBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LHSlideBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2A8226281790701F0075F4C8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		2A82262A1790701F0075F4C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -77,8 +77,8 @@
 			children = (
 				2A7F5EB817934D6900ABF4AF /* LHSlideBarController.h */,
 				2A7F5EB917934D6900ABF4AF /* LHSlideBarController.m */,
-				2A7F5EBA17934D6900ABF4AF /* LHTableViewController.h */,
-				2A7F5EBB17934D6900ABF4AF /* LHTableViewController.m */,
+				2A7F5EBA17934D6900ABF4AF /* LHSlideBar.h */,
+				2A7F5EBB17934D6900ABF4AF /* LHSlideBar.m */,
 			);
 			name = LHSlideBar;
 			path = ../LHSlideBar;
@@ -230,7 +230,7 @@
 				2AE6653A17932A9500468D68 /* ViewControllerThree.m in Sources */,
 				2AE6653C17932A9500468D68 /* ViewControllerTwo.m in Sources */,
 				2A7F5EBC17934D6900ABF4AF /* LHSlideBarController.m in Sources */,
-				2A7F5EBD17934D6900ABF4AF /* LHTableViewController.m in Sources */,
+				2A7F5EBD17934D6900ABF4AF /* LHSlideBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

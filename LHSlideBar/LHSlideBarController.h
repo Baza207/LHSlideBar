@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@class LHTableViewController;
+@class LHSlideBar;
 
 typedef void (^SlideBarCompletionBlock)(void);
 
@@ -27,6 +27,10 @@ typedef enum {
 typedef enum {
     LHSlideBarPosNull = -1,
     LHSlideBarPosCenter,
+    LHSlideBarPosCenterLeft,
+    LHSlideBarPosCenterRight,
+    LHSlideBarPosLeft,
+    LHSlideBarPosRight,
     LHSlideBarPosOffLeft,
     LHSlideBarPosOffRight
 } LHSlideBarPos;
@@ -45,7 +49,7 @@ typedef enum {
 }
 
 @property (strong, readonly, nonatomic) NSArray *leftViewControllers;
-@property (strong, readonly, nonatomic) LHTableViewController *slideBarTableVC;
+@property (strong, readonly, nonatomic) LHSlideBar *slideBarTableVC;
 @property (weak, readonly, nonatomic) UIViewController *currentViewController;
 @property (assign, readonly, nonatomic) NSUInteger currentIndex;
 @property (assign, readonly, nonatomic) BOOL isLeftSlideBarShowing;
@@ -58,10 +62,10 @@ typedef enum {
 @property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slide bar animation to slide in or out. Minimum of 0.1s
 
 @property (assign, nonatomic) LHTransformType transformType;
-@property (assign, nonatomic) BOOL scalesOnSlide;
+@property (assign, nonatomic) BOOL animatesOnSlide;
 @property (assign, nonatomic) BOOL keepRoundedCornersWhenScaling;
 
-@property (strong, readonly, nonatomic) NSValue *customSlideTransformValue;   // Allows users to set there own custom slide transform.
+//@property (strong, readonly, nonatomic) NSValue *customSlideTransformValue;   // Allows users to set there own custom slide transform.
 
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController;
 
