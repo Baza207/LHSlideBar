@@ -34,9 +34,14 @@
     [super didReceiveMemoryWarning];
 }
 
-- (IBAction)backButtonPressed:(id)sender
+- (IBAction)showLeftSlideBar:(id)sender
 {
     [[self slideBarController] showLeftSlideBarAnimated:YES];
+}
+
+- (IBAction)showRightSlideBar:(id)sender
+{
+    [[self slideBarController] showRightSlideBarAnimated:YES];
 }
 
 @end

@@ -16,7 +16,7 @@ typedef enum {
 } LHViewTag;
 
 typedef enum {
-    DirectionNone,
+    DirectionNone = 0,
     DirectionLeft,
     DirectionRight,
     DirectionUp,
@@ -26,13 +26,14 @@ typedef enum {
 typedef enum {
     LHSlideBarPosNull = -1,
     LHSlideBarPosCenter,
-    LHSlideBarPosCenterLeft,
-    LHSlideBarPosCenterRight,
-    LHSlideBarPosLeft,
-    LHSlideBarPosRight,
     LHSlideBarPosOffLeft,
     LHSlideBarPosOffRight
 } LHSlideBarPos;
+
+typedef enum {
+    LHSlideBarSideLeft = 0,
+    LHSlideBarSideRight,
+} LHSlideBarSide;
 
 typedef enum {
     LHTransformNone = 0,
@@ -43,7 +44,8 @@ typedef enum {
 
 @interface LHSlideBarController : UIViewController
 {
-    UIView *leftSlideBarHolder, *rightSlideBarHolder, *leftSlideBarShadow, *rightSlideBarShadow;
+    UIView *leftSlideBarHolder, *leftSlideBarShadow;
+    UIView *rightSlideBarHolder, *rightSlideBarShadow;
 //    CATransform3D customSlideTransform;
 }
 
@@ -53,8 +55,10 @@ typedef enum {
 @property (strong, readonly, nonatomic) LHSlideBar *rightSlideBarVC;
 @property (weak, readonly, nonatomic) UIViewController *currentViewController;
 @property (assign, readonly, nonatomic) NSUInteger currentIndex;
-@property (assign, readonly, nonatomic) BOOL isLeftSlideBarShowing;
-@property (assign, readonly, nonatomic) BOOL slideBarIsDragging;
+@property (assign, readonly, nonatomic, getter = isLeftSlideBarShowing) BOOL leftSlideBarShowing;
+@property (assign, readonly, nonatomic, getter = isRightSlideBarShowing) BOOL rightSlideBarShowing;
+@property (assign, readonly, nonatomic) BOOL leftSlideBarIsDragging;
+@property (assign, readonly, nonatomic) BOOL rightSlideBarIsDragging;
 
 // User changable variables
 @property (assign, readonly, nonatomic) CGFloat slideBarOffset;     // Size of the space on the side of the slide bar when it is open. It must be less than half the width of the slide bar controller.
@@ -71,11 +75,15 @@ typedef enum {
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController;
 
 - (id)initWithLeftViewControllers:(NSArray *)viewControllers;
+- (id)initWithRightViewControllers:(NSArray *)viewControllers;
+- (id)initWithLeftViewControllers:(NSArray *)leftViewControllers andRightViewControllers:(NSArray *)rightViewControllers;
 
-- (void)setupSlideBarAtPosition:(LHSlideBarPos)pos pushFirstVC:(BOOL)push;
-- (LHSlideBar *)setupSlideBarAtPosition:(LHSlideBarPos)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar;
+- (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push;
+- (LHSlideBar *)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar;
 
-- (void)setViewControllers:(NSArray *)viewControllers;
+- (void)setLeftViewControllers:(NSArray *)viewControllers;
+- (void)setRightViewControllers:(NSArray *)viewControllers;
+
 - (void)setSlideBarOffset:(CGFloat)offset;
 - (void)setScaleAmount:(CGFloat)scale;
 - (void)setFadeOutAlpha:(CGFloat)alpha;
@@ -86,8 +94,11 @@ typedef enum {
 - (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 - (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
 - (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
+
 - (void)showLeftSlideBarAnimated:(BOOL)animated;
 - (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
+- (void)showRightSlideBarAnimated:(BOOL)animated;
+- (void)showRightSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 
 @end
 
