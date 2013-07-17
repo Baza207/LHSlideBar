@@ -1,25 +1,15 @@
 //
-//  ViewControllerOne.m
+//  TestViewController.m
 //  LHSlideBar
 //
 //  Created by James Barrow on 12/07/2013.
 //  Copyright (c) 2013 Pig on a Hill. All rights reserved.
 //
 
-#import "ViewControllerOne.h"
+#import "TestViewController.h"
 #import "LHSlideBarController.h"
 
-@implementation ViewControllerOne
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self)
-    {
-        [self setTitle:@"View Controller 1"];
-    }
-    return self;
-}
+@implementation TestViewController
 
 - (void)viewDidLoad
 {
@@ -32,6 +22,13 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (void)setTestNumber:(NSUInteger)number andColour:(UIColor *)colour
+{
+    [[self view] setBackgroundColor:colour];
+    [_numLabel setText:[NSString stringWithFormat:@"%d", number]];
+    [self setTitle:[NSString stringWithFormat:@"View Controller %d", number]];
 }
 
 - (IBAction)showLeftSlideBar:(id)sender

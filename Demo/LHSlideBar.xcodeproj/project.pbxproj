@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A642EF7179697D1007ED6D5 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A642EF51796956B007ED6D5 /* TestViewController.m */; };
+		2A642EF817969A57007ED6D5 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A642EF61796956B007ED6D5 /* TestViewController.xib */; };
 		2A7F5EBC17934D6900ABF4AF /* LHSlideBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F5EB917934D6900ABF4AF /* LHSlideBarController.m */; };
 		2A7F5EBD17934D6900ABF4AF /* LHSlideBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F5EBB17934D6900ABF4AF /* LHSlideBar.m */; };
 		2A8226291790701F0075F4C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A8226281790701F0075F4C8 /* UIKit.framework */; };
@@ -19,15 +21,12 @@
 		2AE6653417932A9500468D68 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 2AE6652017932A9500468D68 /* InfoPlist.strings */; };
 		2AE6653517932A9500468D68 /* LHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE6652317932A9500468D68 /* LHAppDelegate.m */; };
 		2AE6653717932A9500468D68 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE6652617932A9500468D68 /* main.m */; };
-		2AE6653817932A9500468D68 /* ViewControllerOne.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE6652917932A9500468D68 /* ViewControllerOne.m */; };
-		2AE6653917932A9500468D68 /* ViewControllerOne.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AE6652A17932A9500468D68 /* ViewControllerOne.xib */; };
-		2AE6653A17932A9500468D68 /* ViewControllerThree.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE6652C17932A9500468D68 /* ViewControllerThree.m */; };
-		2AE6653B17932A9500468D68 /* ViewControllerThree.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AE6652D17932A9500468D68 /* ViewControllerThree.xib */; };
-		2AE6653C17932A9500468D68 /* ViewControllerTwo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE6652F17932A9500468D68 /* ViewControllerTwo.m */; };
-		2AE6653D17932A9500468D68 /* ViewControllerTwo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2AE6653017932A9500468D68 /* ViewControllerTwo.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A642EF41796956B007ED6D5 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
+		2A642EF51796956B007ED6D5 /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
+		2A642EF61796956B007ED6D5 /* TestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
 		2A7F5EB817934D6900ABF4AF /* LHSlideBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHSlideBarController.h; sourceTree = "<group>"; };
 		2A7F5EB917934D6900ABF4AF /* LHSlideBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHSlideBarController.m; sourceTree = "<group>"; };
 		2A7F5EBA17934D6900ABF4AF /* LHSlideBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHSlideBar.h; sourceTree = "<group>"; };
@@ -46,15 +45,6 @@
 		2AE6652417932A9500468D68 /* LHSlideBar-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "LHSlideBar-Info.plist"; sourceTree = "<group>"; };
 		2AE6652517932A9500468D68 /* LHSlideBar-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "LHSlideBar-Prefix.pch"; sourceTree = "<group>"; };
 		2AE6652617932A9500468D68 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		2AE6652817932A9500468D68 /* ViewControllerOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerOne.h; sourceTree = "<group>"; };
-		2AE6652917932A9500468D68 /* ViewControllerOne.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerOne.m; sourceTree = "<group>"; };
-		2AE6652A17932A9500468D68 /* ViewControllerOne.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewControllerOne.xib; sourceTree = "<group>"; };
-		2AE6652B17932A9500468D68 /* ViewControllerThree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerThree.h; sourceTree = "<group>"; };
-		2AE6652C17932A9500468D68 /* ViewControllerThree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerThree.m; sourceTree = "<group>"; };
-		2AE6652D17932A9500468D68 /* ViewControllerThree.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewControllerThree.xib; sourceTree = "<group>"; };
-		2AE6652E17932A9500468D68 /* ViewControllerTwo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerTwo.h; sourceTree = "<group>"; };
-		2AE6652F17932A9500468D68 /* ViewControllerTwo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerTwo.m; sourceTree = "<group>"; };
-		2AE6653017932A9500468D68 /* ViewControllerTwo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ViewControllerTwo.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,25 +109,11 @@
 			children = (
 				2AE6652217932A9500468D68 /* LHAppDelegate.h */,
 				2AE6652317932A9500468D68 /* LHAppDelegate.m */,
-				2AE6652717932A9500468D68 /* Test View Controllers */,
+				2A642EF41796956B007ED6D5 /* TestViewController.h */,
+				2A642EF51796956B007ED6D5 /* TestViewController.m */,
+				2A642EF61796956B007ED6D5 /* TestViewController.xib */,
 			);
 			path = "Demo Classes";
-			sourceTree = "<group>";
-		};
-		2AE6652717932A9500468D68 /* Test View Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				2AE6652817932A9500468D68 /* ViewControllerOne.h */,
-				2AE6652917932A9500468D68 /* ViewControllerOne.m */,
-				2AE6652A17932A9500468D68 /* ViewControllerOne.xib */,
-				2AE6652B17932A9500468D68 /* ViewControllerThree.h */,
-				2AE6652C17932A9500468D68 /* ViewControllerThree.m */,
-				2AE6652D17932A9500468D68 /* ViewControllerThree.xib */,
-				2AE6652E17932A9500468D68 /* ViewControllerTwo.h */,
-				2AE6652F17932A9500468D68 /* ViewControllerTwo.m */,
-				2AE6653017932A9500468D68 /* ViewControllerTwo.xib */,
-			);
-			path = "Test View Controllers";
 			sourceTree = "<group>";
 		};
 		2AE6653E17932AAA00468D68 /* Supporting Files */ = {
@@ -207,13 +183,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A642EF817969A57007ED6D5 /* TestViewController.xib in Resources */,
 				2AE6653117932A9500468D68 /* Default-568h@2x.png in Resources */,
 				2AE6653217932A9500468D68 /* Default.png in Resources */,
 				2AE6653317932A9500468D68 /* Default@2x.png in Resources */,
 				2AE6653417932A9500468D68 /* InfoPlist.strings in Resources */,
-				2AE6653917932A9500468D68 /* ViewControllerOne.xib in Resources */,
-				2AE6653B17932A9500468D68 /* ViewControllerThree.xib in Resources */,
-				2AE6653D17932A9500468D68 /* ViewControllerTwo.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,11 +198,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A642EF7179697D1007ED6D5 /* TestViewController.m in Sources */,
 				2AE6653517932A9500468D68 /* LHAppDelegate.m in Sources */,
 				2AE6653717932A9500468D68 /* main.m in Sources */,
-				2AE6653817932A9500468D68 /* ViewControllerOne.m in Sources */,
-				2AE6653A17932A9500468D68 /* ViewControllerThree.m in Sources */,
-				2AE6653C17932A9500468D68 /* ViewControllerTwo.m in Sources */,
 				2A7F5EBC17934D6900ABF4AF /* LHSlideBarController.m in Sources */,
 				2A7F5EBD17934D6900ABF4AF /* LHSlideBar.m in Sources */,
 			);

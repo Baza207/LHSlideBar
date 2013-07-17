@@ -90,15 +90,15 @@ typedef enum {
 - (void)setAnimTime:(CGFloat)animTime;
 //- (void)setCustomSlideTransformValue:(NSValue *)customSlideTransformValue;
 
-- (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
-- (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
-- (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated;
-- (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
-
 - (void)showLeftSlideBarAnimated:(BOOL)animated;
 - (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 - (void)showRightSlideBarAnimated:(BOOL)animated;
 - (void)showRightSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
+
+- (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated;
+- (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
+- (void)dismissSlideBar:(LHSlideBar *)slideBar withIndex:(NSUInteger)index animated:(BOOL)animated;
+- (void)dismissSlideBar:(LHSlideBar *)slideBar withIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 
 @end
 

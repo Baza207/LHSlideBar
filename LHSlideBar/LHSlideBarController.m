@@ -163,28 +163,6 @@
     return slideBar;
 }
 
-#pragma mark - SlideBar Show Methods
-
-- (void)showLeftSlideBarAnimated:(BOOL)animated
-{
-    [self showLeftSlideBarAnimated:animated completed:nil];
-}
-
-- (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
-{
-    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime completed:completionBlock];
-}
-
-- (void)showRightSlideBarAnimated:(BOOL)animated
-{
-    [self showRightSlideBarAnimated:animated completed:nil];
-}
-
-- (void)showRightSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
-{
-    [self setSlideBarHolder:rightSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime completed:completionBlock];
-}
-
 #pragma mark - Custom Setter and Getter Methods
 
 - (void)setLeftViewControllers:(NSArray *)viewControllers
@@ -264,7 +242,58 @@
 //    customSlideTransform = [_customSlideTransformValue CATransform3DValue];
 //}
 
-#pragma mark - Push, Pop and Swap Methods
+#pragma mark - Show SlideBar Methods
+
+- (void)showLeftSlideBarAnimated:(BOOL)animated
+{
+    [self showLeftSlideBarAnimated:animated completed:nil];
+}
+
+- (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+{
+    [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime completed:completionBlock];
+}
+
+- (void)showRightSlideBarAnimated:(BOOL)animated
+{
+    [self showRightSlideBarAnimated:animated completed:nil];
+}
+
+- (void)showRightSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+{
+    [self setSlideBarHolder:rightSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime completed:completionBlock];
+}
+
+#pragma mark - Dismiss SlideBar Methods
+
+- (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated
+{
+    [self dismissSlideBar:slideBar withIndex:NSNotFound animated:animated completed:nil];
+}
+
+- (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+{
+    [self dismissSlideBar:slideBar withIndex:NSNotFound animated:animated completed:completionBlock];
+}
+
+- (void)dismissSlideBar:(LHSlideBar *)slideBar withIndex:(NSUInteger)index animated:(BOOL)animated
+{
+    [self dismissSlideBar:slideBar withIndex:index animated:animated completed:nil];
+}
+
+- (void)dismissSlideBar:(LHSlideBar *)slideBar withIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+{
+    __weak UIView *slideBarHolder = nil;
+    if (slideBar == _leftSlideBarVC)
+        slideBarHolder = leftSlideBarHolder;
+    else if (slideBar == _rightSlideBarVC)
+        slideBarHolder = rightSlideBarHolder;
+    
+    if (slideBarHolder)
+        [self swapViewControllerAtIndex:index inSlideBarHolder:slideBarHolder animated:animated completed:completionBlock];
+}
+
+#pragma mark - Swap SlideBar Methods
 
 - (void)swapViewControllerAtIndex:(NSUInteger)index inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
 {
@@ -279,7 +308,10 @@
     else if (slideBarHolder == rightSlideBarHolder)
         viewControllers = _rightViewControllers;
     
-    __weak UIViewController *viewController = [viewControllers objectAtIndex:index];
+    __weak UIViewController *viewController = nil;
+    if (index != NSNotFound)
+        viewController = [viewControllers objectAtIndex:index];
+    
     [self swapViewController:viewController inSlideBarHolder:slideBarHolder animated:animated completed:completionBlock];
 }
 
@@ -290,9 +322,6 @@
 
 - (void)swapViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
 {
-    if (viewController == nil)
-        NSLog(@"LHSlideBar Error: View Controller to swap to nil!");
-    
     __weak NSArray *viewControllers = nil;
     LHSlideBarPos pos = LHSlideBarPosNull;
     if (slideBarHolder == leftSlideBarHolder)
@@ -311,14 +340,24 @@
     
     [self swapViewController:_currentViewController forNewViewController:viewController inSlideBarHolder:slideBarHolder animated:animated];
     [self setSlideBarHolder:slideBarHolder toPosition:pos animated:animated animTime:_animTime completed:completionBlock];
-    _currentViewController = viewController;
-    _currentIndex = [viewControllers indexOfObject:viewController];
+    
+    if (viewController != nil)
+    {
+        _currentViewController = viewController;
+        _currentIndex = [viewControllers indexOfObject:viewController];
+    }
 }
 
 - (void)swapViewController:(UIViewController *)viewController forNewViewController:(UIViewController *)newViewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
 {
-    if (viewController == newViewController)
+    if (viewController == newViewController || newViewController == nil)
+    {
+        if (newViewController == nil)
+            newViewController = _currentViewController;
+        
+        [self transformViewController:newViewController inSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
         return;
+    }
     
     [self willMoveToParentViewController:newViewController];
     [self transformViewController:newViewController inSlideBarHolder:slideBarHolder withProgress:0.0 animated:NO];
@@ -337,6 +376,8 @@
     
     [self transformViewController:newViewController inSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
 }
+
+#pragma mark - Swap SlideBar Position Methods
 
 - (void)setSlideBarHolder:(UIView *)slideBarHolder toPosition:(LHSlideBarPos)position animated:(BOOL)animated animTime:(NSTimeInterval)animTime
 {
@@ -587,19 +628,12 @@
     if (_leftSlideBarShowing)
     {
         if (CGRectContainsPoint([leftSlideBarShadow frame], touchPoint))
-        {
-            [self swapViewControllerAtIndex:_currentIndex inSlideBarHolder:leftSlideBarHolder animated:YES];
-            return;
-        }
+            [self dismissSlideBar:_leftSlideBarVC animated:YES];
     }
-    
-    if (_rightSlideBarShowing)
+    else if (_rightSlideBarShowing)
     {
         if (CGRectContainsPoint([rightSlideBarShadow frame], touchPoint))
-        {
-            [self swapViewControllerAtIndex:_currentIndex inSlideBarHolder:rightSlideBarHolder animated:YES];
-            return;
-        }
+            [self dismissSlideBar:_rightSlideBarVC animated:YES];
     }
 }
 

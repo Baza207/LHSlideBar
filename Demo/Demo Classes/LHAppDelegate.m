@@ -9,9 +9,7 @@
 #import "LHAppDelegate.h"
 #import "LHSlideBarController.h"
 
-#import "ViewControllerOne.h"
-#import "ViewControllerTwo.h"
-#import "ViewControllerThree.h"
+#import "TestViewController.h"
 
 @implementation LHAppDelegate
 
@@ -19,12 +17,22 @@
 {
     _window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    ViewControllerOne *vcOne = [[ViewControllerOne alloc] initWithNibName:@"ViewControllerOne" bundle:nil];
-    ViewControllerTwo *vcTwo = [[ViewControllerTwo alloc] initWithNibName:@"ViewControllerTwo" bundle:nil];
-    ViewControllerThree *vcThree = [[ViewControllerThree alloc] initWithNibName:@"ViewControllerThree" bundle:nil];
+    TestViewController *vcOne = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
+    TestViewController *vcTwo = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
+    TestViewController *vcThree = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
+    TestViewController *vcFour = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
+    TestViewController *vcFive = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
+    TestViewController *vcSix = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
+    
+    [vcOne setTestNumber:1 andColour:[UIColor orangeColor]];
+    [vcTwo setTestNumber:2 andColour:[UIColor yellowColor]];
+    [vcThree setTestNumber:3 andColour:[UIColor greenColor]];
+    [vcFour setTestNumber:4 andColour:[UIColor blueColor]];
+    [vcFive setTestNumber:5 andColour:[UIColor purpleColor]];
+    [vcSix setTestNumber:6 andColour:[UIColor redColor]];
     
     NSArray *viewControllersL = @[vcOne, vcTwo, vcThree];
-    NSArray *viewControllersR = @[vcThree, vcTwo, vcOne];
+    NSArray *viewControllersR = @[vcFour, vcFive, vcSix];
     _slideBarController = [[LHSlideBarController alloc] initWithLeftViewControllers:viewControllersL andRightViewControllers:viewControllersR];
     [_slideBarController setupSlideBarAtPosition:LHSlideBarSideLeft pushFirstVC:YES];
     [_slideBarController setupSlideBarAtPosition:LHSlideBarSideRight pushFirstVC:NO];
