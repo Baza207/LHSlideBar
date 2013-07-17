@@ -515,16 +515,20 @@
     return transform3D;
 }
 
-- (CATransform3D)rotateTransform3DWithProgress:(CGFloat)progress
+- (CATransform3D)rotateTransform3DWithProgress:(CGFloat)progress fromSide:(LHSlideBarSide)side
 {
     CGFloat progressRev = 1.0 - progress;
     CGFloat translate = (progressRev * 60) * -1;
     CGFloat degree = ceil(progressRev * -20);
     
+    NSInteger reverse = 1;
+    if (side == LHSlideBarSideRight)
+        reverse = -1;
+    
     CATransform3D transform3D = CATransform3DIdentity;
     transform3D.m34 = 1.0/-900;
-    transform3D = CATransform3DRotate(transform3D, DEGREES_TO_RADIANS(degree), 0, 1, 0);
-    transform3D = CATransform3DTranslate(transform3D, translate/3, 0, translate);
+    transform3D = CATransform3DRotate(transform3D, DEGREES_TO_RADIANS(degree*reverse), 0, 1, 0);
+    transform3D = CATransform3DTranslate(transform3D, (translate/3)*reverse, 0, translate);
     return transform3D;
 }
 
@@ -541,10 +545,17 @@
 
 - (void)transformView:(UIView *)view inSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress
 {
+    LHSlideBarSide side = LHSlideBarSideNone;
     if (slideBarHolder == leftSlideBarHolder)
+    {
         [leftSlideBarShadow setAlpha:[self alphaFromProgress:progress]];
+        side = LHSlideBarSideLeft;
+    }
     else if (slideBarHolder == rightSlideBarHolder)
+    {
         [rightSlideBarShadow setAlpha:[self alphaFromProgress:progress]];
+        side = LHSlideBarSideRight;
+    }
     
     switch (_transformType)
     {
@@ -563,7 +574,7 @@
         
         case LHTransformRotate:
         {
-            [self transformView:view withTransform:[self rotateTransform3DWithProgress:progress]];
+            [self transformView:view withTransform:[self rotateTransform3DWithProgress:progress fromSide:side]];
             break;
         }
             

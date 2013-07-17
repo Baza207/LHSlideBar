@@ -31,7 +31,8 @@ typedef enum {
 } LHSlideBarPos;
 
 typedef enum {
-    LHSlideBarSideLeft = 0,
+    LHSlideBarSideNone = -1,
+    LHSlideBarSideLeft,
     LHSlideBarSideRight,
 } LHSlideBarSide;
 
