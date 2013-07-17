@@ -62,10 +62,10 @@ typedef enum {
 @property (assign, readonly, nonatomic) BOOL rightSlideBarIsDragging;
 
 // User changable variables
-@property (assign, readonly, nonatomic) CGFloat slideBarOffset;     // Size of the space on the side of the slide bar when it is open. It must be less than half the width of the slide bar controller.
+@property (assign, readonly, nonatomic) CGFloat slideBarOffset;     // Size of the space on the side of the slideBar when it is open. It must be less than half the width of the slideBar controller.
 @property (assign, readonly, nonatomic) CGFloat scaleAmount;        // Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
 @property (assign, readonly, nonatomic) CGFloat fadeOutAlpha;       // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
-@property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slide bar animation to slide in or out. Minimum of 0.1s
+@property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slideBar animation to slide in or out. Minimum of 0.1s
 
 @property (assign, nonatomic) LHTransformType transformType;
 @property (assign, nonatomic) BOOL animatesOnSlide;
@@ -80,10 +80,11 @@ typedef enum {
 - (id)initWithLeftViewControllers:(NSArray *)leftViewControllers andRightViewControllers:(NSArray *)rightViewControllers;
 
 - (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push;
-- (LHSlideBar *)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar;
+- (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar;
 
-- (void)setLeftViewControllers:(NSArray *)viewControllers;
-- (void)setRightViewControllers:(NSArray *)viewControllers;
+- (void)setLeftViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push;
+- (void)setRightViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push;
+- (void)setLeftViewControllers:(NSArray *)leftViewControllers rightViewControllers:(NSArray *)rightViewControllers andPushFirstVConSide:(LHSlideBarSide)side;
 
 - (void)setSlideBarOffset:(CGFloat)offset;
 - (void)setScaleAmount:(CGFloat)scale;

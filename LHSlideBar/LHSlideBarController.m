@@ -91,7 +91,7 @@
     [self setupSlideBarAtPosition:pos pushFirstVC:push withSlideBar:slideBar];
 }
 
-- (LHSlideBar *)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar
+- (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar
 {
     CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
     
@@ -159,13 +159,11 @@
         default:
             break;
     }
-    
-    return slideBar;
 }
 
 #pragma mark - Custom Setter and Getter Methods
 
-- (void)setLeftViewControllers:(NSArray *)viewControllers
+- (void)setLeftViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push
 {
     if (_leftSlideBarVC)
         [_leftSlideBarVC setSlideBarViewControllers:_leftViewControllers];
@@ -174,13 +172,19 @@
         [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
 }
 
-- (void)setRightViewControllers:(NSArray *)viewControllers
+- (void)setRightViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push
 {
     if (_rightSlideBarVC)
         [_rightSlideBarVC setSlideBarViewControllers:_rightViewControllers];
     
     if (_rightViewControllers && [_rightViewControllers count] > 0)
         [self swapViewControllerAtIndex:0 inSlideBarHolder:rightSlideBarHolder animated:NO];
+}
+
+- (void)setLeftViewControllers:(NSArray *)leftViewControllers rightViewControllers:(NSArray *)rightViewControllers andPushFirstVConSide:(LHSlideBarSide)side
+{
+    [self setLeftViewControllers:leftViewControllers andPushFirstVC:(side == LHSlideBarSideLeft)];
+    [self setRightViewControllers:rightViewControllers andPushFirstVC:(side == LHSlideBarSideRight)];
 }
 
 - (void)setSlideBarOffset:(CGFloat)offset
@@ -682,7 +686,7 @@
                 // Dragging Left to Right
                 if ((_leftSlideBarShowing == NO && _rightSlideBarShowing == NO) || _leftSlideBarShowing == YES)
                 {
-                    NSLog(@" Left Slide Bar -> Start");
+                    NSLog(@" Left SlideBar -> Start");
                     if (_leftSlideBarVC == nil)
                         return;
                     
@@ -693,7 +697,7 @@
                 }
                 else if (_rightSlideBarShowing)
                 {
-                    NSLog(@"Right Slide Bar -> Start");
+                    NSLog(@"Right SlideBar -> Start");
                     if (_rightSlideBarVC == nil)
                         return;
                     
@@ -708,7 +712,7 @@
                 // Dragging Right to Left
                 if ((_leftSlideBarShowing == NO && _rightSlideBarShowing == NO) || _rightSlideBarShowing == YES)
                 {
-                    NSLog(@"Right Slide Bar <- Start");
+                    NSLog(@"Right SlideBar <- Start");
                     if (_rightSlideBarVC == nil)
                         return;
                     
@@ -719,7 +723,7 @@
                 }
                 else if (_leftSlideBarShowing)
                 {
-                    NSLog(@" Left Slide Bar <- Start");
+                    NSLog(@" Left SlideBar <- Start");
                     if (_leftSlideBarVC == nil)
                         return;
                     
