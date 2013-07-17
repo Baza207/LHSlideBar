@@ -289,20 +289,20 @@
 
 - (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated
 {
-    [self dismissSlideBar:slideBar swappingVCIndex:NSNotFound animated:animated completed:nil];
+    [self dismissSlideBar:slideBar swapToIndex:NSNotFound animated:animated completed:nil];
 }
 
 - (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
 {
-    [self dismissSlideBar:slideBar swappingVCIndex:NSNotFound animated:animated completed:completionBlock];
+    [self dismissSlideBar:slideBar swapToIndex:NSNotFound animated:animated completed:completionBlock];
 }
 
-- (void)dismissSlideBar:(LHSlideBar *)slideBar swappingVCIndex:(NSUInteger)index animated:(BOOL)animated
+- (void)dismissSlideBar:(LHSlideBar *)slideBar swapToIndex:(NSUInteger)index animated:(BOOL)animated
 {
-    [self dismissSlideBar:slideBar swappingVCIndex:index animated:animated completed:nil];
+    [self dismissSlideBar:slideBar swapToIndex:index animated:animated completed:nil];
 }
 
-- (void)dismissSlideBar:(LHSlideBar *)slideBar swappingVCIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+- (void)dismissSlideBar:(LHSlideBar *)slideBar swapToIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
 {
     __weak UIView *slideBarHolder = nil;
     if (slideBar == _leftSlideBarVC)

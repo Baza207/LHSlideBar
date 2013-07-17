@@ -87,7 +87,7 @@
     {
         case 0:
         {
-            [_slideBarController dismissSlideBar:self swappingVCIndex:[indexPath row] animated:YES];
+            [_slideBarController dismissSlideBar:self swapToIndex:[indexPath row] animated:YES];
             [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
