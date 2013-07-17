@@ -825,10 +825,18 @@
                 return;
             
             CGPoint velocity = [gesture velocityInView:[self view]];
-            NSTimeInterval animDuration = _animTime;
             LHSlideBarPos pos = LHSlideBarPosNull;
             
-            // Left SlideBar is Hidden
+            CGFloat diff = 0.0;
+            if ([slideBarHolder center].x < [[self view] center].x)
+                diff = [[self view] center].x + [slideBarHolder center].x;
+            else if ([slideBarHolder center].x > [[self view] center].x)
+                diff = ([[self view] bounds].size.width + [[self view] center].x) - [slideBarHolder center].x;
+            else
+                diff = 160.0;
+            
+            NSTimeInterval animDuration = _animTime;
+            CGFloat percent = diff / [self view].bounds.size.width;
             
             if (velocity.x > 0)
             {
@@ -838,7 +846,9 @@
                 else if (_rightSlideBarIsDragging)
                     pos = LHSlideBarPosOffRight;
                 
-                CGFloat percent = translation.x / [self view].bounds.size.width;
+                if ([slideBarHolder center].x < [[self view] center].x)
+                    percent = 1.0 - percent;
+                
                 animDuration = _animTime * percent;
             }
             else if (velocity.x < 0)
@@ -849,7 +859,9 @@
                 else if (_rightSlideBarIsDragging)
                     pos = LHSlideBarPosCenter;
                 
-                CGFloat percent = 1 - (fabs(translation.x) / [self view].bounds.size.width);
+               if ([slideBarHolder center].x > [[self view] center].x)
+                    percent = 1.0 - percent;
+                
                 animDuration = _animTime * percent;
             }
             else
