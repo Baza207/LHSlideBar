@@ -94,11 +94,13 @@ typedef enum {
 - (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 - (void)showRightSlideBarAnimated:(BOOL)animated;
 - (void)showRightSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
+- (void)showSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated;
+- (void)showSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 
 - (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated;
 - (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
-- (void)dismissSlideBar:(LHSlideBar *)slideBar withIndex:(NSUInteger)index animated:(BOOL)animated;
-- (void)dismissSlideBar:(LHSlideBar *)slideBar withIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
+- (void)dismissSlideBar:(LHSlideBar *)slideBar swappingVCIndex:(NSUInteger)index animated:(BOOL)animated;
+- (void)dismissSlideBar:(LHSlideBar *)slideBar swappingVCIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
 
 @end
 
