@@ -53,9 +53,13 @@ If you  just use `- (id)init` you can use the following methods to set or update
 ### Setting up a LHSlideBar in your LHSlideBarController
 
 To include a sideBar in you slideBar controller us the following method:  
-`- (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push`  
+```
+- (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push
+```  
 There are two positions you can set slideBars, left and right. You can not have more than these two slideBars in your controller. If you want to use a subclassed version of LHSlideBar then use the following method setting your sub-classed slideBar as `slideBar`:  
-`- (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar`
+```
+- (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar
+```
 
 
 ##### Example Code (code for setting up LHSlideBarController with 1 slideBar on the left with 3 view controllers)
