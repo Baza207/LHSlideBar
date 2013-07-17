@@ -72,10 +72,10 @@
     
 //    [self setCustomSlideTransformValue:nil];
     
-//    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureChanged:)];
-//    [panGestureRecognizer setMaximumNumberOfTouches:1];
-//    [panGestureRecognizer setMinimumNumberOfTouches:1];
-//    [[self view] addGestureRecognizer:panGestureRecognizer];
+    UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureChanged:)];
+    [panGestureRecognizer setMaximumNumberOfTouches:1];
+    [panGestureRecognizer setMinimumNumberOfTouches:1];
+    [[self view] addGestureRecognizer:panGestureRecognizer];
 }
 
 - (void)didReceiveMemoryWarning
@@ -686,7 +686,6 @@
                 // Dragging Left to Right
                 if ((_leftSlideBarShowing == NO && _rightSlideBarShowing == NO) || _leftSlideBarShowing == YES)
                 {
-                    NSLog(@" Left SlideBar -> Start");
                     if (_leftSlideBarVC == nil)
                         return;
                     
@@ -697,7 +696,6 @@
                 }
                 else if (_rightSlideBarShowing)
                 {
-                    NSLog(@"Right SlideBar -> Start");
                     if (_rightSlideBarVC == nil)
                         return;
                     
@@ -712,7 +710,6 @@
                 // Dragging Right to Left
                 if ((_leftSlideBarShowing == NO && _rightSlideBarShowing == NO) || _rightSlideBarShowing == YES)
                 {
-                    NSLog(@"Right SlideBar <- Start");
                     if (_rightSlideBarVC == nil)
                         return;
                     
@@ -723,7 +720,6 @@
                 }
                 else if (_leftSlideBarShowing)
                 {
-                    NSLog(@" Left SlideBar <- Start");
                     if (_leftSlideBarVC == nil)
                         return;
                     
@@ -734,12 +730,7 @@
                 }
             }
             else
-            {
-                NSLog(@"Else - Start");
-                _leftSlideBarIsDragging = NO;
-                _rightSlideBarIsDragging = NO;
                 return;
-            }
             
             [slideBar beginAppearanceTransition:(isSlideBarShowing == NO) animated:YES];
             
@@ -750,7 +741,6 @@
         {
             if (_leftSlideBarIsDragging)
             {
-                NSLog(@" Left Dragging -> Changed");
                 if (_leftSlideBarVC == nil)
                     return;
                 
@@ -758,36 +748,50 @@
             }
             else if (_rightSlideBarIsDragging)
             {
-                NSLog(@"Right Dragging <- Changed");
                 if (_rightSlideBarVC == nil)
                     return;
                 
                 slideBarHolder = rightSlideBarHolder;
             }
             else
-            {
-                NSLog(@"Else - Changed");
                 return;
-            }
             
             BOOL moveHolder = NO;
             CGPoint newPoint = CGPointMake([slideBarHolder center].x + translation.x,
                                            [slideBarHolder center].y);
             
-            CGFloat progress = [self progressPercentForHolderView:slideBarHolder];
-            
             if (translation.x > 0)
             {
                 // Dragging Left to Right
-                if (newPoint.x < [[self view] center].x)
-                    moveHolder = YES;
+                if (_leftSlideBarIsDragging)
+                {
+                    if (newPoint.x < [[self view] center].x)
+                        moveHolder = YES;
+                }
+                else if (_rightSlideBarIsDragging)
+                {
+                    if (newPoint.x < [[self view] bounds].size.width + [[self view] center].x)
+                        moveHolder = YES;
+                }
             }
             else if (translation.x < 0)
             {
                 // Dragging Right to Left
-                if (newPoint.x >= -[[self view] center].x)
-                    moveHolder = YES;
+                if (_leftSlideBarIsDragging)
+                {
+                    if (newPoint.x >= -[[self view] center].x)
+                        moveHolder = YES;
+                }
+                else if (_rightSlideBarIsDragging)
+                {
+                    if (newPoint.x > [[self view] center].x)
+                        moveHolder = YES;
+                }
             }
+            
+            CGFloat progress = [self progressPercentForHolderView:slideBarHolder];
+            if (_rightSlideBarIsDragging)
+                progress *= -1.0;
             
             if (moveHolder)
             {
@@ -803,7 +807,6 @@
         {
             if (_leftSlideBarIsDragging)
             {
-                NSLog(@" Left Dragging -> Ended");
                 if (_leftSlideBarVC == nil)
                     return;
                 
@@ -812,7 +815,6 @@
             }
             else if (_rightSlideBarIsDragging)
             {
-                NSLog(@"Right Dragging <- Ended");
                 if (_rightSlideBarVC == nil)
                     return;
                 
@@ -820,10 +822,7 @@
                 slideBarHolder = rightSlideBarHolder;
             }
             else
-            {
-                NSLog(@"Else - Ended");
                 return;
-            }
             
             CGPoint velocity = [gesture velocityInView:[self view]];
             NSTimeInterval animDuration = _animTime;
@@ -834,7 +833,10 @@
             if (velocity.x > 0)
             {
                 // Dragging Left to Right
-                pos = LHSlideBarPosCenter;
+                if (_leftSlideBarIsDragging)
+                    pos = LHSlideBarPosCenter;
+                else if (_rightSlideBarIsDragging)
+                    pos = LHSlideBarPosOffRight;
                 
                 CGFloat percent = translation.x / [self view].bounds.size.width;
                 animDuration = _animTime * percent;
@@ -842,7 +844,10 @@
             else if (velocity.x < 0)
             {
                 // Dragging Right to Left
-                pos = LHSlideBarPosOffLeft;
+                if (_leftSlideBarIsDragging)
+                    pos = LHSlideBarPosOffLeft;
+                else if (_rightSlideBarIsDragging)
+                    pos = LHSlideBarPosCenter;
                 
                 CGFloat percent = 1 - (fabs(translation.x) / [self view].bounds.size.width);
                 animDuration = _animTime * percent;
@@ -850,8 +855,10 @@
             else
             {
                 // Zero Velocity
-                if (isSlideBarShowing)
+                if (_leftSlideBarIsDragging)
                     pos = LHSlideBarPosOffLeft;
+                else if (_rightSlideBarIsDragging)
+                    pos = LHSlideBarPosOffRight;
                 else
                     pos = LHSlideBarPosCenter;
             }
