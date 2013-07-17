@@ -35,14 +35,18 @@ LHSlideBar requires **iOS 6**+ to work and uses ARC.
 ### Implementing LHSlideBar
 
 After adding the relevant files into your project (listed above) you create a new instance of LHSlideBar using one of the custom init methods. With this, you need an array of view controllers you want to display with the controller in that slideBar to be passed as the `viewControllers` variable. All the init calls are listed below and work in the same way:  
-`- (id)initWithLeftViewControllers:(NSArray *)viewControllers`  
-`- (id)initWithRightViewControllers:(NSArray *)viewControllers;`  
-`- (id)initWithLeftViewControllers:(NSArray *)leftViewControllers andRightViewControllers:(NSArray *)rightViewControllers`  
+```
+- (id)initWithLeftViewControllers:(NSArray *)viewControllers
+- (id)initWithRightViewControllers:(NSArray *)viewControllers
+- (id)initWithLeftViewControllers:(NSArray *)leftViewControllers andRightViewControllers:(NSArray *)rightViewControllers
+```
 
 If you  just use `- (id)init` you can use the following methods to set or update you view controllers at a later date.  
-`- (void)setLeftViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push`
-`- (void)setRightViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push`
-`- (void)setLeftViewControllers:(NSArray *)leftViewControllers rightViewControllers:(NSArray *)rightViewControllers andPushFirstVConSide:(LHSlideBarSide)side`
+```
+- (void)setLeftViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push
+- (void)setRightViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push
+- (void)setLeftViewControllers:(NSArray *)leftViewControllers rightViewControllers:(NSArray *)rightViewControllers andPushFirstVConSide:(LHSlideBarSide)side
+```
 
 **Note:** When you update the view controllers for a slide bar then the first view controller in the array will automatically be swapped to.
 
@@ -75,12 +79,14 @@ Then, just add _slideBarController to you view hierarchy. It can be treated like
 
 To open the slide bar you need to call one of the following:
 
-`- (void)showLeftSlideBarAnimated:(BOOL)animated`  
-`- (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock`  
-`- (void)showRightSlideBarAnimated:(BOOL)animated`  
-`- (void)showRightSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock`  
-`- (void)showSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated`  
-`- (void)showSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock`  
+```
+- (void)showLeftSlideBarAnimated:(BOOL)animated
+- (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+- (void)showRightSlideBarAnimated:(BOOL)animated
+- (void)showRightSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+- (void)showSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated
+- (void)showSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+```
 
 If you are calling these methods inside a subclassed version of `LHSlideBar` then it is recommended you use `showSlideBar:animated:` or `showSlideBar:animated:completed:` and pass `self` as the `slideBar` variable.
 
@@ -99,10 +105,12 @@ The completion blocks for these methods will get called and run when the animati
 
 To open the slide bar you need to call one of the following:
 
-`- (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated`  
-`- (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock`  
-`- (void)dismissSlideBar:(LHSlideBar *)slideBar swappingVCIndex:(NSUInteger)index animated:(BOOL)animated`  
-`- (void)dismissSlideBar:(LHSlideBar *)slideBar swappingVCIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock`  
+```
+- (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated
+- (void)dismissSlideBar:(LHSlideBar *)slideBar animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+- (void)dismissSlideBar:(LHSlideBar *)slideBar swappingVCIndex:(NSUInteger)index animated:(BOOL)animated
+- (void)dismissSlideBar:(LHSlideBar *)slideBar swappingVCIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
+```
 
 When dismissing a slideBar you must specify an index for the current view controller to swap to. If you just want to dismiss the slideBar without swapping the current view controller set `index` to `NSNotFound` or use ether the `dismissSlideBar:animated:` or `dismissSlideBar:animated:completed:` methods.
 
