@@ -416,13 +416,17 @@
     CGPoint center = [slideBarHolder center];
     CGPoint selfCenter = [[self view] center];
     
+    CGFloat offset = 0.0;
+    if ([LHSlideBarController deviceSystemMajorVersion] < 7)
+        offset = 20.0;
+    
     CGFloat progress = 1.0;
     switch (position)
     {
         case LHSlideBarPosCenter:
         {
             [slideBar beginAppearanceTransition:YES animated:animated];
-            center = CGPointMake(selfCenter.x, selfCenter.y - 20);
+            center = CGPointMake(selfCenter.x, selfCenter.y - offset);
             progress = 0.0;
             break;
         }
@@ -430,7 +434,7 @@
         case LHSlideBarPosOffLeft:
         {
             [slideBar beginAppearanceTransition:NO animated:animated];
-            center = CGPointMake(-selfCenter.x, selfCenter.y - 20);
+            center = CGPointMake(-selfCenter.x, selfCenter.y - offset);
             progress = 1.0;
             break;
         }
@@ -438,7 +442,7 @@
         case LHSlideBarPosOffRight:
         {
             [slideBar beginAppearanceTransition:NO animated:animated];
-            center = CGPointMake([[self view] bounds].size.width + selfCenter.x, selfCenter.y - 20);
+            center = CGPointMake([[self view] bounds].size.width + selfCenter.x, selfCenter.y - offset);
             progress = 1.0;
             break;
         }
@@ -627,13 +631,17 @@
     return alpha;
 }
 
-#pragma mark - Size Methods
+#pragma mark - General Methods
 
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController
 {
     CGSize viewSize = [[UIScreen mainScreen] bounds].size;
-    if (![[UIApplication sharedApplication] isStatusBarHidden])
-        viewSize.height -= 20;
+    
+    if ([LHSlideBarController deviceSystemMajorVersion] < 7)
+    {
+        if (![[UIApplication sharedApplication] isStatusBarHidden])
+            viewSize.height -= 20;
+    }
     
     if ([viewController navigationController])
     {
@@ -645,6 +653,18 @@
         viewSize.height -= 49;
     
     return viewSize;
+}
+
++ (NSUInteger) deviceSystemMajorVersion
+{
+    static NSUInteger _deviceSystemMajorVersion = -1;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        _deviceSystemMajorVersion = [[[[[UIDevice currentDevice] systemVersion] componentsSeparatedByString:@"."] objectAtIndex:0] intValue];
+    });
+    
+    return _deviceSystemMajorVersion;
 }
 
 #pragma mark - Touch and Touch Methods

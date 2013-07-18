@@ -24,6 +24,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    if ([LHSlideBarController deviceSystemMajorVersion] < 7)
+        [[self tableView] setContentInset:UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)];
 }
 
 - (void)didReceiveMemoryWarning

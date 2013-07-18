@@ -74,6 +74,7 @@ typedef enum {
 //@property (strong, readonly, nonatomic) NSValue *customSlideTransformValue;   // Allows users to set there own custom slide transform.
 
 + (CGSize)viewSizeForViewController:(UIViewController *)viewController;
++ (NSUInteger) deviceSystemMajorVersion;
 
 - (id)initWithLeftViewControllers:(NSArray *)viewControllers;
 - (id)initWithRightViewControllers:(NSArray *)viewControllers;

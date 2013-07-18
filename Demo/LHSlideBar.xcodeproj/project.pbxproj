@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		2A642EF7179697D1007ED6D5 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A642EF51796956B007ED6D5 /* TestViewController.m */; };
 		2A642EF817969A57007ED6D5 /* TestViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A642EF61796956B007ED6D5 /* TestViewController.xib */; };
+		2A670ED8179770C200468434 /* Icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A670ED4179770C200468434 /* Icon-72.png */; };
+		2A670ED9179770C200468434 /* Icon-72@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A670ED5179770C200468434 /* Icon-72@2x.png */; };
+		2A670EDA179770C200468434 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A670ED6179770C200468434 /* Icon.png */; };
+		2A670EDB179770C200468434 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2A670ED7179770C200468434 /* Icon@2x.png */; };
 		2A7F5EBC17934D6900ABF4AF /* LHSlideBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F5EB917934D6900ABF4AF /* LHSlideBarController.m */; };
 		2A7F5EBD17934D6900ABF4AF /* LHSlideBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7F5EBB17934D6900ABF4AF /* LHSlideBar.m */; };
 		2A8226291790701F0075F4C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A8226281790701F0075F4C8 /* UIKit.framework */; };
@@ -27,6 +31,10 @@
 		2A642EF41796956B007ED6D5 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		2A642EF51796956B007ED6D5 /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		2A642EF61796956B007ED6D5 /* TestViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
+		2A670ED4179770C200468434 /* Icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72.png"; sourceTree = SOURCE_ROOT; };
+		2A670ED5179770C200468434 /* Icon-72@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-72@2x.png"; sourceTree = SOURCE_ROOT; };
+		2A670ED6179770C200468434 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = SOURCE_ROOT; };
+		2A670ED7179770C200468434 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = SOURCE_ROOT; };
 		2A7F5EB817934D6900ABF4AF /* LHSlideBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHSlideBarController.h; sourceTree = "<group>"; };
 		2A7F5EB917934D6900ABF4AF /* LHSlideBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LHSlideBarController.m; sourceTree = "<group>"; };
 		2A7F5EBA17934D6900ABF4AF /* LHSlideBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LHSlideBar.h; sourceTree = "<group>"; };
@@ -119,6 +127,10 @@
 		2AE6653E17932AAA00468D68 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				2A670ED6179770C200468434 /* Icon.png */,
+				2A670ED7179770C200468434 /* Icon@2x.png */,
+				2A670ED4179770C200468434 /* Icon-72.png */,
+				2A670ED5179770C200468434 /* Icon-72@2x.png */,
 				2AE6652417932A9500468D68 /* LHSlideBar-Info.plist */,
 				2AE6652017932A9500468D68 /* InfoPlist.strings */,
 				2AE6652617932A9500468D68 /* main.m */,
@@ -188,6 +200,10 @@
 				2AE6653217932A9500468D68 /* Default.png in Resources */,
 				2AE6653317932A9500468D68 /* Default@2x.png in Resources */,
 				2AE6653417932A9500468D68 /* InfoPlist.strings in Resources */,
+				2A670ED8179770C200468434 /* Icon-72.png in Resources */,
+				2A670ED9179770C200468434 /* Icon-72@2x.png in Resources */,
+				2A670EDA179770C200468434 /* Icon.png in Resources */,
+				2A670EDB179770C200468434 /* Icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
