@@ -5,8 +5,7 @@ LHSlideBar is a side bar slide in navigation for iOS. Currently it works only fo
 
 To use LHSlideBar add the following files into your project:  
 
-LHSlideBar/
-
+- LHSlideBar/
 - LHSlideBarController.h
 - LHSlideBarController.m
 - LHSlideBar.h
@@ -174,3 +173,12 @@ You can add any type of UIViewController or subclassed versions there of into a 
   [self setTitle:@"My View Controllers Title"];
 }
 ```
+
+## License
+
+LHSPNservice is available under the MIT license. See the [LICENSE](https://github.com/Baza207/LHSlideBar/blob/master/LICENSE) file for more info.
+
+### Creator
+
+[James Barrow - Pig on a Hill](http://pigonahill.com)  
+[@PigonaHill](https://twitter.com/PigonaHill)
