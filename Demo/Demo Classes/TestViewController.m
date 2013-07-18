@@ -19,6 +19,13 @@
     [[self view] setFrame:CGRectMake(0, 0, viewSize.width, viewSize.height)];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [_transformSegControl setSelectedSegmentIndex:[[self slideBarController] transformType]-1];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -39,6 +46,11 @@
 - (IBAction)showRightSlideBar:(id)sender
 {
     [[self slideBarController] showRightSlideBarAnimated:YES];
+}
+
+- (IBAction)transformSegControlChanged:(UISegmentedControl *)sender
+{
+    [[self slideBarController] setTransformType:[sender selectedSegmentIndex]+1];
 }
 
 @end

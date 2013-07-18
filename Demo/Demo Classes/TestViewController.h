@@ -11,6 +11,7 @@
 @interface TestViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *numLabel;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *transformSegControl;
 
 - (void)setTestNumber:(NSUInteger)number andColour:(UIColor *)colour;
 

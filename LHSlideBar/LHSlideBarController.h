@@ -37,7 +37,7 @@ typedef enum {
 } LHSlideBarSide;
 
 typedef enum {
-    LHTransformNone = 0,
+    LHTransformNone = -1,
     LHTransformCustom,
     LHTransformScale,
     LHTransformRotate,
