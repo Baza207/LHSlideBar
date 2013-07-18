@@ -31,6 +31,8 @@ LHSlideBar requires **iOS 6**+ to work and uses ARC.
 	</tr>
 </table>
 
+## [Demo Video Avaliable Here!](http://youtu.be/E-YB22lHVjM)
+
 ### Implementing LHSlideBar
 
 After adding the relevant files into your project (listed above) you create a new instance of LHSlideBar using one of the custom init methods. With this, you need an array of view controllers you want to display with the controller in that slideBar to be passed as the `viewControllers` variable. All the init calls are listed below and work in the same way:  
