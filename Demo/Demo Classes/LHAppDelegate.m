@@ -8,7 +8,6 @@
 
 #import "LHAppDelegate.h"
 #import "LHSlideBarController.h"
-
 #import "TestViewController.h"
 
 @implementation LHAppDelegate

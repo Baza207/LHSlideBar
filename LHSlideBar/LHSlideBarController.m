@@ -102,6 +102,11 @@
     return navController;
 }
 
+- (UINavigationItem *)navigationItem
+{
+    return [navController navigationItem];
+}
+
 #pragma mark - Setup SlideBar Methods
 
 - (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push
@@ -548,18 +553,29 @@
     
     if (_keepRoundedCornersWhenAnim)
     {
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:[view bounds]
-                                                       byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
-                                                             cornerRadii:CGSizeMake(IPHONE_CORNER_RADIUS, IPHONE_CORNER_RADIUS)];
-        CAShapeLayer *maskLayer = [CAShapeLayer layer];
-        [maskLayer setFrame:[view bounds]];
-        [maskLayer setPath:[maskPath CGPath]];
-        [[view layer] setMask:maskLayer];
+        if ([[UIApplication sharedApplication] statusBarStyle] == UIStatusBarStyleDefault)
+        {
+            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:[view bounds]
+                                                           byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
+                                                                 cornerRadii:CGSizeMake(IPHONE_CORNER_RADIUS, IPHONE_CORNER_RADIUS)];
+            CAShapeLayer *maskLayer = [CAShapeLayer layer];
+            [maskLayer setFrame:[view bounds]];
+            [maskLayer setPath:[maskPath CGPath]];
+            [[view layer] setMask:maskLayer];
+        }
+        else
+        {
+            [[navController view] setClipsToBounds:YES];
+            [[[navController view] layer] setCornerRadius:IPHONE_CORNER_RADIUS];
+        }
         
         view = [[self navigationController] view];
     }
     else
+    {
         [[view layer] setMask:nil];
+        [[view layer] setCornerRadius:0.0];
+    }
     
     [[view layer] setTransform:transform3D];
 }
