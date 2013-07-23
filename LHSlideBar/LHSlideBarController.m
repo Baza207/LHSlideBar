@@ -152,7 +152,10 @@
             if (push)
             {
                 if (_leftViewControllers && [_leftViewControllers count] > 0)
+                {
+                    [[slideBar tableView] selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
                     [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
+                }
             }
             break;
         }
@@ -175,7 +178,10 @@
             if (push)
             {
                 if (_rightViewControllers && [_rightViewControllers count] > 0)
+                {
+                    [[slideBar tableView] selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
                     [self swapViewControllerAtIndex:0 inSlideBarHolder:rightSlideBarHolder animated:NO];
+                }
             }
             break;
         }
@@ -328,14 +334,33 @@
 
 - (void)dismissSlideBar:(LHSlideBar *)slideBar swapToIndex:(NSUInteger)index animated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock
 {
+    NSIndexPath *selectedRowIndexPath = nil;
+    __weak UITableView *tableView = nil;
     __weak UIView *slideBarHolder = nil;
     if (slideBar == _leftSlideBarVC)
+    {
+        tableView = [_rightSlideBarVC tableView];
+        if (tableView != nil)
+            selectedRowIndexPath = [tableView indexPathForSelectedRow];
+        
         slideBarHolder = leftSlideBarHolder;
+    }
     else if (slideBar == _rightSlideBarVC)
+    {
+        tableView = [_leftSlideBarVC tableView];
+        if (tableView != nil)
+            selectedRowIndexPath = [tableView indexPathForSelectedRow];
+        
         slideBarHolder = rightSlideBarHolder;
+    }
     
     if (slideBarHolder)
+    {
+        if (tableView != nil && selectedRowIndexPath != nil)
+            [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
+        
         [self swapViewControllerAtIndex:index inSlideBarHolder:slideBarHolder animated:animated completed:completionBlock];
+    }
 }
 
 #pragma mark - Swap SlideBar Methods

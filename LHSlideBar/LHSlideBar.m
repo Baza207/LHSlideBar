@@ -17,6 +17,9 @@
     if (self)
     {
         _slideBarController = controller;
+        _currentVCSelectedStyle = UITableViewCellSelectionStyleBlue;
+        
+        [self setClearsSelectionOnViewWillAppear:NO];
     }
     return self;
 }
@@ -71,6 +74,8 @@
         {
             __weak UIViewController *viewController = [_slideBarViewControllers objectAtIndex:[indexPath row]];
             [[cell textLabel] setText:[viewController title]];
+            [[cell imageView] setImage:[[viewController tabBarItem] image]];
+            [cell setSelectionStyle:_currentVCSelectedStyle];
             
             break;
         }
@@ -91,7 +96,6 @@
         case 0:
         {
             [_slideBarController dismissSlideBar:self swapToIndex:[indexPath row] animated:YES];
-            [[self tableView] deselectRowAtIndexPath:indexPath animated:YES];
             break;
         }
             
