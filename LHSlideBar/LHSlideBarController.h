@@ -70,7 +70,8 @@ typedef enum {
 
 @property (assign, nonatomic) LHTransformType transformType;
 @property (assign, nonatomic) BOOL animatesOnSlide;
-@property (assign, nonatomic) BOOL keepRoundedCornersWhenScaling;
+@property (assign, nonatomic) BOOL keepRoundedCornersWhenAnim;
+@property (assign, nonatomic) BOOL animateSwappingNavController;
 
 //@property (strong, readonly, nonatomic) NSValue *customSlideTransformValue;   // Allows users to set there own custom slide transform.
 

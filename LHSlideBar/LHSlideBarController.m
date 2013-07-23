@@ -63,7 +63,8 @@
     
     _transformType = LHTransformRotate;
     _animatesOnSlide = YES;
-    _keepRoundedCornersWhenScaling = YES;
+    _keepRoundedCornersWhenAnim = YES;
+    _animateSwappingNavController = NO;
     
     _leftSlideBarShowing = NO;
     _rightSlideBarShowing = NO;
@@ -386,15 +387,12 @@
         if (newViewController == nil)
             newViewController = _currentViewController;
         
-        [self transformViewController:newViewController inSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
+        [self transformViewControllerInSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
         return;
     }
     
-    [self transformViewController:newViewController inSlideBarHolder:slideBarHolder withProgress:0.0 animated:NO];
-    
-    [[self navigationController] setViewControllers:@[newViewController] animated:NO];
-    
-    [self transformViewController:newViewController inSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
+    [[self navigationController] setViewControllers:@[newViewController] animated:_animateSwappingNavController];
+    [self transformViewControllerInSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
 }
 
 #pragma mark - Swap SlideBar Position Methods
@@ -457,7 +455,7 @@
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
                              [slideBarHolder setCenter:center];
-                             [self transformView:[_currentViewController view] inSlideBarHolder:slideBarHolder withProgress:progress];
+                             [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
                          }
                          completion:^(BOOL finished) {
                              
@@ -470,7 +468,7 @@
     else
     {
         [slideBarHolder setCenter:center];
-        [self transformView:[_currentViewController view] inSlideBarHolder:slideBarHolder withProgress:progress];
+        [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
         [self setSlideBar:slideBar isShowingWithPos:position];
         [slideBar endAppearanceTransition];
         
@@ -539,12 +537,13 @@
     return transform3D;
 }
 
-- (void)transformView:(UIView *)view withTransform:(CATransform3D)transform3D
+- (void)transformViewWithTransform:(CATransform3D)transform3D
 {
+    __weak UIView *view = [navController view];
     if (view == nil || _animatesOnSlide == NO)
         return;
     
-    if (_keepRoundedCornersWhenScaling)
+    if (_keepRoundedCornersWhenAnim)
     {
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:[view bounds]
                                                        byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
@@ -562,7 +561,7 @@
     [[view layer] setTransform:transform3D];
 }
 
-- (void)transformView:(UIView *)view inSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress
+- (void)transformViewInSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress
 {
     LHSlideBarSide side = LHSlideBarSideNone;
     if (slideBarHolder == leftSlideBarHolder)
@@ -587,13 +586,13 @@
         
         case LHTransformScale:
         {
-            [self transformView:view withTransform:[self scaleTransform3DWithProgress:progress]];
+            [self transformViewWithTransform:[self scaleTransform3DWithProgress:progress]];
             break;
         }
         
         case LHTransformRotate:
         {
-            [self transformView:view withTransform:[self rotateTransform3DWithProgress:progress fromSide:side]];
+            [self transformViewWithTransform:[self rotateTransform3DWithProgress:progress fromSide:side]];
             break;
         }
             
@@ -602,7 +601,7 @@
     }
 }
 
-- (void)transformViewController:(UIViewController *)viewController inSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress animated:(BOOL)animated
+- (void)transformViewControllerInSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress animated:(BOOL)animated
 {
     if (animated)
     {
@@ -610,13 +609,13 @@
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
-                             [self transformView:[viewController view] inSlideBarHolder:slideBarHolder withProgress:progress];
+                             [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
                          }
                          completion:nil];
     }
     else
     {
-        [self transformView:[viewController view] inSlideBarHolder:slideBarHolder withProgress:progress];
+        [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
     }
 }
 
@@ -806,7 +805,7 @@
             {
                 [slideBarHolder setCenter:newPoint];
                 
-                [self transformView:[_currentViewController view] inSlideBarHolder:slideBarHolder withProgress:progress];
+                [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
                 [gesture setTranslation:CGPointMake(0, 0) inView:[self view]];
             }
             break;
