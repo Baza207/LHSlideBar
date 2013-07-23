@@ -52,6 +52,19 @@
     return [self init];
 }
 
+- (id)init
+{
+    self = [super init];
+    if (self)
+    {
+        navController = [[UINavigationController alloc] init];
+        [[navController view] setFrame:[[self view] bounds]];
+        [[self view] addSubview:[navController view]];
+        [self addChildViewController:navController];
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -72,11 +85,6 @@
     _rightSlideBarIsDragging = NO;
     
 //    [self setCustomSlideTransformValue:nil];
-    
-    navController = [[UINavigationController alloc] init];
-    [[navController view] setFrame:[[self view] bounds]];
-    [[self view] addSubview:[navController view]];
-    [self addChildViewController:navController];
     
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureChanged:)];
     [panGestureRecognizer setMaximumNumberOfTouches:1];
@@ -382,16 +390,11 @@
 
 - (void)swapViewController:(UIViewController *)viewController forNewViewController:(UIViewController *)newViewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
 {
-    if (viewController == newViewController || newViewController == nil)
+    if (viewController != newViewController && newViewController != nil)
     {
-        if (newViewController == nil)
-            newViewController = _currentViewController;
-        
-        [self transformViewControllerInSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
-        return;
+        [[self navigationController] setViewControllers:@[newViewController] animated:_animateSwappingNavController];
     }
     
-    [[self navigationController] setViewControllers:@[newViewController] animated:_animateSwappingNavController];
     [self transformViewControllerInSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
 }
 
@@ -679,16 +682,15 @@
 
 - (void)panGestureChanged:(UIPanGestureRecognizer *)gesture
 {
-    BOOL isSlideBarShowing = NO;
-    __weak UIView *slideBarHolder = nil;
-    __weak LHSlideBar *slideBar = nil;
-    
     CGPoint translation = [gesture translationInView:[self view]];
     
     switch ([gesture state])
     {
         case UIGestureRecognizerStateBegan:
         {
+            BOOL isSlideBarShowing = NO;
+            __weak LHSlideBar *slideBar = nil;
+            
             if (translation.x > 0)
             {
                 // Dragging Left to Right
@@ -747,6 +749,8 @@
             
         case UIGestureRecognizerStateChanged:
         {
+            __weak UIView *slideBarHolder = nil;
+            
             if (_leftSlideBarIsDragging)
             {
                 if (_leftSlideBarVC == nil)
@@ -813,12 +817,13 @@
             
         case UIGestureRecognizerStateEnded:
         {
+            __weak UIView *slideBarHolder = nil;
+            
             if (_leftSlideBarIsDragging)
             {
                 if (_leftSlideBarVC == nil)
                     return;
                 
-                isSlideBarShowing = _leftSlideBarShowing;
                 slideBarHolder = leftSlideBarHolder;
             }
             else if (_rightSlideBarIsDragging)
@@ -826,7 +831,6 @@
                 if (_rightSlideBarVC == nil)
                     return;
                 
-                isSlideBarShowing = _rightSlideBarShowing;
                 slideBarHolder = rightSlideBarHolder;
             }
             else
