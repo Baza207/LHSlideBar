@@ -14,9 +14,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
-    [[self view] setFrame:CGRectMake(0, 0, viewSize.width, viewSize.height)];
 }
 
 - (void)viewDidAppear:(BOOL)animated

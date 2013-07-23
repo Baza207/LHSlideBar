@@ -45,6 +45,7 @@ typedef enum {
 
 @interface LHSlideBarController : UIViewController
 {
+    UINavigationController *navController;
     UIView *leftSlideBarHolder, *leftSlideBarShadow;
     UIView *rightSlideBarHolder, *rightSlideBarShadow;
 //    CATransform3D customSlideTransform;
@@ -73,7 +74,6 @@ typedef enum {
 
 //@property (strong, readonly, nonatomic) NSValue *customSlideTransformValue;   // Allows users to set there own custom slide transform.
 
-+ (CGSize)viewSizeForViewController:(UIViewController *)viewController;
 + (NSUInteger) deviceSystemMajorVersion;
 
 - (id)initWithLeftViewControllers:(NSArray *)viewControllers;

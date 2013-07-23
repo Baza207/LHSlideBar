@@ -72,6 +72,11 @@
     
 //    [self setCustomSlideTransformValue:nil];
     
+    navController = [[UINavigationController alloc] init];
+    [[navController view] setFrame:[[self view] bounds]];
+    [[self view] addSubview:[navController view]];
+    [self addChildViewController:navController];
+    
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureChanged:)];
     [panGestureRecognizer setMaximumNumberOfTouches:1];
     [panGestureRecognizer setMinimumNumberOfTouches:1];
@@ -81,6 +86,11 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+- (UINavigationController *)navigationController
+{
+    return navController;
 }
 
 #pragma mark - Setup SlideBar Methods
@@ -93,7 +103,7 @@
 
 - (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push withSlideBar:(LHSlideBar *)slideBar
 {
-    CGSize viewSize = [LHSlideBarController viewSizeForViewController:self];
+    CGSize viewSize = [[self view] bounds].size;
     
     UIView *slideBarHolder = [[UIView alloc] initWithFrame:CGRectMake(0, 0, viewSize.width, viewSize.height)];
     [slideBarHolder setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
@@ -380,20 +390,9 @@
         return;
     }
     
-    [self willMoveToParentViewController:newViewController];
     [self transformViewController:newViewController inSlideBarHolder:slideBarHolder withProgress:0.0 animated:NO];
     
-    if (viewController)
-    {
-        [[self view] insertSubview:[newViewController view] belowSubview:[viewController view]];
-        [[viewController view] removeFromSuperview];
-        [viewController removeFromParentViewController];
-    }
-    else
-        [[self view] insertSubview:[newViewController view] belowSubview:slideBarHolder];
-    
-    [self addChildViewController:newViewController];
-    [self didMoveToParentViewController:newViewController];
+    [[self navigationController] setViewControllers:@[newViewController] animated:NO];
     
     [self transformViewController:newViewController inSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
 }
@@ -545,10 +544,22 @@
     if (view == nil || _animatesOnSlide == NO)
         return;
     
-    [[view layer] setTransform:transform3D];
-    
     if (_keepRoundedCornersWhenScaling)
-        [[view layer] setCornerRadius:IPHONE_CORNER_RADIUS];
+    {
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:[view bounds]
+                                                       byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
+                                                             cornerRadii:CGSizeMake(IPHONE_CORNER_RADIUS, IPHONE_CORNER_RADIUS)];
+        CAShapeLayer *maskLayer = [CAShapeLayer layer];
+        [maskLayer setFrame:[view bounds]];
+        [maskLayer setPath:[maskPath CGPath]];
+        [[view layer] setMask:maskLayer];
+        
+        view = [[self navigationController] view];
+    }
+    else
+        [[view layer] setMask:nil];
+    
+    [[view layer] setTransform:transform3D];
 }
 
 - (void)transformView:(UIView *)view inSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress
@@ -632,28 +643,6 @@
 }
 
 #pragma mark - General Methods
-
-+ (CGSize)viewSizeForViewController:(UIViewController *)viewController
-{
-    CGSize viewSize = [[UIScreen mainScreen] bounds].size;
-    
-    if ([LHSlideBarController deviceSystemMajorVersion] < 7)
-    {
-        if (![[UIApplication sharedApplication] isStatusBarHidden])
-            viewSize.height -= 20;
-    }
-    
-    if ([viewController navigationController])
-    {
-        if ([[viewController navigationController] isNavigationBarHidden])
-            viewSize.height -= 44;
-    }
-    
-    if ([viewController tabBarController])
-        viewSize.height -= 49;
-    
-    return viewSize;
-}
 
 + (NSUInteger) deviceSystemMajorVersion
 {
@@ -922,14 +911,14 @@
 
 - (LHSlideBarController *)slideBarController
 {
-    if([self.parentViewController isKindOfClass:[LHSlideBarController class]])
+    if ([[self parentViewController] isKindOfClass:[LHSlideBarController class]])
     {
-        return (LHSlideBarController *)self.parentViewController;
+        return (LHSlideBarController *)[self parentViewController];
     }
-    else if([[self parentViewController ] isKindOfClass:[UINavigationController class]] &&
-            [[[self parentViewController ] parentViewController] isKindOfClass:[LHSlideBarController class]])
+    else if ([[self parentViewController] isKindOfClass:[UINavigationController class]] &&
+            [[[self parentViewController] parentViewController] isKindOfClass:[LHSlideBarController class]])
     {
-        return (LHSlideBarController *)[self.parentViewController parentViewController];
+        return (LHSlideBarController *)[[self parentViewController] parentViewController];
     }
     else
     {
