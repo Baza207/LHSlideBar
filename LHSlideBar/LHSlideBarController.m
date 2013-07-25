@@ -57,6 +57,23 @@
     self = [super init];
     if (self)
     {
+        _slideBarOffset = SLIDE_BAR_OFFSET;
+        _scaleAmount = SLIDE_BAR_SCALE;
+        _fadeOutAlpha = SLIDE_BAR_ALPHA;
+        _animTime = SLIDE_BAR_ANIM_TIME;
+        
+        _transformType = LHTransformRotate;
+        _animatesOnSlide = YES;
+        _keepRoundedCornersWhenAnim = YES;
+        _animateSwappingNavController = NO;
+        
+        _leftSlideBarShowing = NO;
+        _rightSlideBarShowing = NO;
+        _leftSlideBarIsDragging = NO;
+        _rightSlideBarIsDragging = NO;
+        
+//        [self setCustomSlideTransformValue:nil];
+        
         navController = [[UINavigationController alloc] init];
         [[navController view] setFrame:[[self view] bounds]];
         [[self view] addSubview:[navController view]];
@@ -68,23 +85,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    _slideBarOffset = SLIDE_BAR_OFFSET;
-    _scaleAmount = SLIDE_BAR_SCALE;
-    _fadeOutAlpha = SLIDE_BAR_ALPHA;
-    _animTime = SLIDE_BAR_ANIM_TIME;
-    
-    _transformType = LHTransformRotate;
-    _animatesOnSlide = YES;
-    _keepRoundedCornersWhenAnim = YES;
-    _animateSwappingNavController = NO;
-    
-    _leftSlideBarShowing = NO;
-    _rightSlideBarShowing = NO;
-    _leftSlideBarIsDragging = NO;
-    _rightSlideBarIsDragging = NO;
-    
-//    [self setCustomSlideTransformValue:nil];
     
     UIPanGestureRecognizer *panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panGestureChanged:)];
     [panGestureRecognizer setMaximumNumberOfTouches:1];
@@ -111,7 +111,7 @@
 
 - (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push
 {
-    LHSlideBar *slideBar = [[LHSlideBar alloc] initWithStyle:UITableViewStylePlain withController:self];
+    LHSlideBar *slideBar = [[LHSlideBar alloc] initWithController:self];
     [self setupSlideBarAtPosition:pos pushFirstVC:push withSlideBar:slideBar];
 }
 

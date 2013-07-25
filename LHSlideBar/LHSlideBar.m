@@ -11,15 +11,23 @@
 
 @implementation LHSlideBar
 
-- (id)initWithStyle:(UITableViewStyle)style withController:(LHSlideBarController *)controller
+- (id)initWithController:(LHSlideBarController *)controller
 {
-    self = [super initWithStyle:style];
+    self = [super init];
     if (self)
     {
         _slideBarController = controller;
         _currentVCSelectedStyle = UITableViewCellSelectionStyleBlue;
         
-        [self setClearsSelectionOnViewWillAppear:NO];
+        _navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, [[self view] bounds].size.width, 44)];
+        [_navigationBar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
+        [[self view] addSubview:_navigationBar];
+        
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, [[self view] bounds].size.width, [[self view] bounds].size.height - [_navigationBar bounds].size.height)];
+        [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+        [_tableView setDelegate:self];
+        [_tableView setDataSource:self];
+        [[self view] addSubview:_tableView];
     }
     return self;
 }
@@ -101,6 +109,59 @@
             
         default:
             break;
+    }
+}
+
+#pragma mark - Navigation Bar Methods
+
+- (void)setNavigationBarHidden:(BOOL)hidden
+{
+    [self setNavigationBarHidden:hidden animated:NO];
+}
+
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated
+{
+    if ((_navigationBarHidden && hidden) || (!_navigationBarHidden && !hidden))
+        return;
+    
+    CGRect navBarRect, tableViewRect = CGRectNull;
+    if (hidden)
+    {
+        CGFloat statusBarOffset = 0.0;
+        if (![[UIApplication sharedApplication] isStatusBarHidden])
+            statusBarOffset = -20.0;
+        
+        navBarRect = CGRectMake(0.0, statusBarOffset-[_navigationBar bounds].size.height, [_navigationBar bounds].size.width, [_navigationBar bounds].size.height);
+        tableViewRect = CGRectMake(0.0, 0.0, [[self view] bounds].size.width, [[self view] bounds].size.height);
+    }
+    else
+    {
+        navBarRect = CGRectMake(0.0, 0.0, [_navigationBar bounds].size.width, [_navigationBar bounds].size.height);
+        tableViewRect = CGRectMake(0.0, 0.0, [[self view] bounds].size.width, [[self view] bounds].size.height - [_navigationBar bounds].size.height);
+    }
+    
+    if (CGRectIsNull(navBarRect) || CGRectIsNull(tableViewRect))
+        return;
+    
+    if (animated)
+    {
+        [UIView animateWithDuration:0.25
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             [_navigationBar setFrame:navBarRect];
+                             [_tableView setFrame:tableViewRect];
+                         }
+                         completion:^(BOOL finished) {
+                             _navigationBarHidden = hidden;
+                         }];
+    }
+    else
+    {
+        [_navigationBar setFrame:navBarRect];
+        [_tableView setFrame:tableViewRect];
+        
+        _navigationBarHidden = hidden;
     }
 }
 

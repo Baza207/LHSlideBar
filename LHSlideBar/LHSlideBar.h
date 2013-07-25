@@ -10,13 +10,16 @@
 
 @class LHSlideBarController;
 
-@interface LHSlideBar : UITableViewController
+@interface LHSlideBar : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
+@property (strong, nonatomic) UITableView *tableView;
+@property (assign, nonatomic) UITableViewCellSelectionStyle currentVCSelectedStyle;
+@property (strong, nonatomic) UINavigationBar *navigationBar;
+@property (assign, readonly, nonatomic) BOOL navigationBarHidden;
 @property (weak, readonly, nonatomic) NSArray *slideBarViewControllers;
 @property (weak, nonatomic) LHSlideBarController *slideBarController;
-@property (assign, nonatomic) UITableViewCellSelectionStyle currentVCSelectedStyle;
 
-- (id)initWithStyle:(UITableViewStyle)style withController:(LHSlideBarController *)controller;
+- (id)initWithController:(LHSlideBarController *)controller;
 - (void)setSlideBarViewControllers:(NSArray *)slideBarViewControllers;
 
 @end
