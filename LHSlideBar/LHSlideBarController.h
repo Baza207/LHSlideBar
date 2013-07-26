@@ -73,6 +73,9 @@ typedef enum {
 @property (assign, nonatomic) BOOL keepRoundedCornersWhenAnim;
 @property (assign, nonatomic) BOOL animateSwappingNavController;
 
+@property(strong, readonly, nonatomic) UIBarButtonItem *leftBarButtonItem;
+@property(strong, readonly, nonatomic) UIBarButtonItem *rightBarButtonItem;
+
 //@property (strong, readonly, nonatomic) NSValue *customSlideTransformValue;   // Allows users to set there own custom slide transform.
 
 + (NSUInteger) deviceSystemMajorVersion;
@@ -93,6 +96,9 @@ typedef enum {
 - (void)setFadeOutAlpha:(CGFloat)alpha;
 - (void)setAnimTime:(CGFloat)animTime;
 //- (void)setCustomSlideTransformValue:(NSValue *)customSlideTransformValue;
+
+- (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem;
+- (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem;
 
 - (void)showLeftSlideBarAnimated:(BOOL)animated;
 - (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;

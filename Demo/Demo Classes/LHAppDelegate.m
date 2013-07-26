@@ -35,6 +35,13 @@
     _slideBarController = [[LHSlideBarController alloc] initWithLeftViewControllers:viewControllersL andRightViewControllers:viewControllersR];
     [_slideBarController setupSlideBarAtPosition:LHSlideBarSideLeft pushFirstVC:YES];
     [_slideBarController setupSlideBarAtPosition:LHSlideBarSideRight pushFirstVC:NO];
+    
+    UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithTitle:@"LSB" style:UIBarButtonItemStylePlain target:_slideBarController action:@selector(showLeftSlideBarAnimated:)];
+    [_slideBarController setLeftBarButtonItem:leftBarButton];
+    
+    UIBarButtonItem *rightBarButton = [[UIBarButtonItem alloc] initWithTitle:@"RSB" style:UIBarButtonItemStylePlain target:_slideBarController action:@selector(showRightSlideBarAnimated:)];
+    [_slideBarController setRightBarButtonItem:rightBarButton];
+    
     [_window setRootViewController:_slideBarController];
     [_window makeKeyAndVisible];
     

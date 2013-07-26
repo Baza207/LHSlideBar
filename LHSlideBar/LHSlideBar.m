@@ -23,6 +23,9 @@
         [_navigationBar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
         [[self view] addSubview:_navigationBar];
         
+        UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
+        [_navigationBar setItems:@[navigationItem]];
+        
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, [[self view] bounds].size.width, [[self view] bounds].size.height - [_navigationBar bounds].size.height)];
         [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [_tableView setDelegate:self];

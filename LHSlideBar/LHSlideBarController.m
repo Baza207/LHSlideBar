@@ -276,6 +276,31 @@
 //    customSlideTransform = [_customSlideTransformValue CATransform3DValue];
 //}
 
+- (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem
+{
+    _leftBarButtonItem = leftBarButtonItem;
+    
+    if (_leftBarButtonItem)
+        [[_currentViewController navigationItem] setLeftBarButtonItem:_leftBarButtonItem];
+}
+
+- (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem
+{
+    _rightBarButtonItem = rightBarButtonItem;
+    
+    if (_rightBarButtonItem)
+        [[_currentViewController navigationItem] setRightBarButtonItem:_rightBarButtonItem];
+}
+
+- (void)updateBarButtonItems
+{
+    if (_leftBarButtonItem)
+        [[_currentViewController navigationItem] setLeftBarButtonItem:_leftBarButtonItem];
+    
+    if (_rightBarButtonItem)
+        [[_currentViewController navigationItem] setRightBarButtonItem:_rightBarButtonItem];
+}
+
 #pragma mark - Show SlideBar Methods
 
 - (void)showLeftSlideBarAnimated:(BOOL)animated
@@ -415,6 +440,7 @@
     {
         _currentViewController = viewController;
         _currentIndex = [viewControllers indexOfObject:viewController];
+        [self updateBarButtonItems];
     }
 }
 
