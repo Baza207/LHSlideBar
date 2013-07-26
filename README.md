@@ -220,7 +220,7 @@ LHSlideBar shows a table in the slideBar to allows selecting which view controll
 
 ### View Controllers in a LHSlideBarController
 
-You can add any type of UIViewController or subclassed versions there of into a LHSLideBar's viewControllers array. To set the title of a set the view controllers `@property(nonatomic, copy) NSString *title` property. This is the string value that LHSlideBar will use to populate the table with so remember to set it when init you view controller or after it has loaded.
+You can add any type of UIViewController or subclassed versions there of into a LHSLideBar's viewControllers array. To set the title of a set the view controllers `@property(nonatomic, copy) NSString *title` property. If you want to add an icon or image then LHSlideBar uses a UIViewController's instance of UITabBarItem's `image` variable. These values must be set in the `- (id)init` method for the view controller so that LHSlideBar can use then to populate the table.
 
 ##### Example Code
 
@@ -228,7 +228,23 @@ You can add any type of UIViewController or subclassed versions there of into a 
 - (void)viewDidLoad
 {
   [self setTitle:@"My View Controllers Title"];
+  [[self tabBarItem] setImage:[UIImage imageNamed:@"imageName"]];
 }
+```
+
+### UINavigationBar
+
+LHSlideBar also has a navigation bar that can be used. This method works as a standard UINavigationBar and comes with an pre-initialised UINavigationItem. Methods are provided for setting the visability of the navigation bar, as listed below:
+
+```
+- (void)setNavigationBarHidden:(BOOL)hidden;
+- (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
+```
+
+Accessing the propeties of the navigation bar come from the following variable, otherwise the UINavigationBar works the same as any other.
+
+```
+@property (strong, nonatomic) UINavigationBar *navigationBar
 ```
 
 ## License
