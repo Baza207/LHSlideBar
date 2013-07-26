@@ -278,27 +278,32 @@
 
 - (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem
 {
-    _leftBarButtonItem = leftBarButtonItem;
-    
-    if (_leftBarButtonItem)
-        [[_currentViewController navigationItem] setLeftBarButtonItem:_leftBarButtonItem];
+    [self setLeftBarButtonItem:leftBarButtonItem animated:NO];
 }
 
 - (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem
 {
+    [self setRightBarButtonItem:rightBarButtonItem animated:NO];
+}
+
+- (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem animated:(BOOL)animated
+{
+    _leftBarButtonItem = leftBarButtonItem;
+    
+    [[_currentViewController navigationItem] setLeftBarButtonItem:_leftBarButtonItem animated:animated];
+}
+
+- (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem animated:(BOOL)animated
+{
     _rightBarButtonItem = rightBarButtonItem;
     
-    if (_rightBarButtonItem)
-        [[_currentViewController navigationItem] setRightBarButtonItem:_rightBarButtonItem];
+    [[_currentViewController navigationItem] setRightBarButtonItem:_rightBarButtonItem animated:animated];
 }
 
 - (void)updateBarButtonItems
 {
-    if (_leftBarButtonItem)
-        [[_currentViewController navigationItem] setLeftBarButtonItem:_leftBarButtonItem];
-    
-    if (_rightBarButtonItem)
-        [[_currentViewController navigationItem] setRightBarButtonItem:_rightBarButtonItem];
+    [self setLeftBarButtonItem:_leftBarButtonItem];
+    [self setRightBarButtonItem:_rightBarButtonItem];
 }
 
 #pragma mark - Show SlideBar Methods

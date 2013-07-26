@@ -68,10 +68,12 @@ typedef enum {
 @property (assign, readonly, nonatomic) CGFloat fadeOutAlpha;       // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
 @property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slideBar animation to slide in or out. Minimum of 0.1s
 
+@property (assign, nonatomic) BOOL animatesOnSlide;                 // If set to `NO` then the view controller does not animate when the slideBar in dragged, opened or dismissed. By default this property is set to `YES`.
+@property (assign, nonatomic) BOOL keepRoundedCornersWhenAnim;      // If set to `NO` then the corners will not remain rounded when the drag animation occurs. By default this property is set to `YES`.
+@property (assign, nonatomic) BOOL animateSwappingNavController;    // If set to `YES` then slideBarController's UINavigationController will animate on swapping view controller stack.
+
+// LHSlideBarController has a `transformType` variable. Set this to choose the type of transformation occours to the view controller when the user drags, opens or dismisses the slideBar.
 @property (assign, nonatomic) LHTransformType transformType;
-@property (assign, nonatomic) BOOL animatesOnSlide;
-@property (assign, nonatomic) BOOL keepRoundedCornersWhenAnim;
-@property (assign, nonatomic) BOOL animateSwappingNavController;
 
 @property(strong, readonly, nonatomic) UIBarButtonItem *leftBarButtonItem;
 @property(strong, readonly, nonatomic) UIBarButtonItem *rightBarButtonItem;
@@ -99,6 +101,8 @@ typedef enum {
 
 - (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem;
 - (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem;
+- (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem animated:(BOOL)animated;
+- (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem animated:(BOOL)animated;
 
 - (void)showLeftSlideBarAnimated:(BOOL)animated;
 - (void)showLeftSlideBarAnimated:(BOOL)animated completed:(SlideBarCompletionBlock)completionBlock;
