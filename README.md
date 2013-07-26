@@ -232,7 +232,7 @@ You can add any type of UIViewController or subclassed versions there of into a 
 }
 ```
 
-### UINavigationBar
+### UINavigationBar in LHSlideBar
 
 LHSlideBar also has a navigation bar that can be used. This method works as a standard UINavigationBar and comes with an pre-initialised UINavigationItem. Methods are provided for setting the visability of the navigation bar, as listed below:
 
