@@ -11,9 +11,15 @@ To use LHSlideBar add the following files into your project:
 - LHSlideBar.h
 - LHSlideBar.m
 
+To import this into a class you only need to add the following import line:
+
+```
+#import "LHSlideBarController.h"
+```
+
 **Note:** You also must include the "QuartzCore" framework into your project.
 
-LHSlideBar requires **iOS 6**+ to work and uses ARC.
+LHSlideBar requires **iOS 5**+ to work and uses ARC.
 
 ### Demo
 
@@ -32,6 +38,14 @@ LHSlideBar requires **iOS 6**+ to work and uses ARC.
 </table>
 
 ## [Demo Video Avaliable Here!](http://youtu.be/E-YB22lHVjM)
+
+### A quick note about iOS 7
+
+iOS 7 is of course coming out later in 2013. I have tried to keep all changes that are being made in iOS 7 in mind while developing this framework. Though as iOS 7 is still in beta, there will obviously be some things that don't work at this time.
+
+When the iOS 7 GM comes out, I will try and make any fixes that are needed asap before it becomes live and publicly available.
+
+I have also got some plans for implementing new features that iOS 7 is bringing after it's release to the public. Due to the NDA everyone with a developers licence with Apple signs, I can not discus these here publicly. Also, as a friendly reminder, please don't post any feature requests regarding iOS 7 related methods until it is released.
 
 ### Implementing LHSlideBar
 
@@ -66,6 +80,10 @@ There are two positions you can set slideBars, left and right. You can not have 
 ##### Example Code (code for setting up LHSlideBarController with 1 slideBar on the left with 3 view controllers)
 
 ```
+#import "LHSlideBarController.h"
+
+...
+
 TestViewController *vcOne = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
 TestViewController *vcTwo = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
 TestViewController *vcThree = [[TestViewController alloc] initWithNibName:@"TestViewController" bundle:nil];
@@ -134,14 +152,17 @@ Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
 - `@property (assign, nonatomic) CGFloat fadeOutAlpha`  
 Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
 
-- `@property (assign, readonly, nonatomic) CGFloat animTime`  
+- `@property (assign, nonatomic) CGFloat animTime`  
 Maximum time for the slideBar animation to slide in or out. Minimum of 0.1s
 
 - `@property (assign, nonatomic) BOOL animatesOnSlide`  
 If set to `NO` then the view controller does not animate when the slideBar in dragged, opened or dismissed. By default this property is set to `YES`.
 
-- `@property (assign, nonatomic) BOOL keepRoundedCornersWhenScaling`  
+- `@property (assign, nonatomic) BOOL keepRoundedCornersWhenAnim`  
 If set to `NO` then the corners will not remain rounded when the drag animation occurs. By default this property is set to `YES`.
+
+- `@property (assign, nonatomic) BOOL animateSwappingNavController`
+If set to `YES` then slideBarController's UINavigationController will animate on swapping view controller stack.
 
 ### Side Animations / Transformations
 
@@ -156,6 +177,40 @@ Scales down the view controller behind the slideBar to the scale set in `scaleAm
 Rotates the view controller in 3D space to look like it is being pushed back under the slideBar ([see demo above](#demo)).  
 
 **Note:** There is a `LHTransformCustom` option that will allow the use of custom transformation code. This feature is not yet working and all relevant code is commented out. Therefore if you use this option, nothing will happen.
+
+### Navigation Controller
+
+A slideBarController presents it's view controllers inside of a UINavigationController. This allows ease of use as well as backwards compatability to iOS 5. You can access the UINavigationController instance from within any of the view controllers inside the stack (as is normal behaviour) as well as via the LHSlideBarController instance, like below:
+
+```
+__weak UINavigationController *navController = [_slideBarController navigationController];
+```
+
+To set constant left and right UIBarButtonItems for slideBar controller's navigation controller use the following variables:
+
+- `@property(strong, nonatomic) UIBarButtonItem *leftBarButtonItem`  
+- `@property(strong, nonatomic) UIBarButtonItem *rightBarButtonItem`  
+
+Setting these at any time will update the left and right UIBarButtonItems. There is also a method for making these change with an animation. These methods are as follows:
+
+```
+- (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem;
+- (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem;
+- (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem animated:(BOOL)animated;
+- (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem animated:(BOOL)animated;
+```
+
+These UIBarButtonItems will stay constant when the UINavigationController's view controller stack is swapped.
+
+##### Example Code (code for setting up a UIBarButtonItem to open the left slideBar)
+
+```
+UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithTitle:@"LSB"
+								  style:UIBarButtonItemStylePlain
+								 target:_slideBarController
+				 				 action:@selector(showLeftSlideBarAnimated:)];
+[_slideBarController setLeftBarButtonItem:leftBarButton];
+```
 
 ### LHSlideBar
 
