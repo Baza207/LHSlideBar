@@ -386,7 +386,7 @@
     
     if (slideBarHolder)
     {
-        if (tableView != nil && selectedRowIndexPath != nil)
+        if (tableView != nil && selectedRowIndexPath != nil && index != _currentIndex && index != NSNotFound)
             [tableView deselectRowAtIndexPath:selectedRowIndexPath animated:YES];
         
         [self swapViewControllerAtIndex:index inSlideBarHolder:slideBarHolder animated:animated completed:completionBlock];
@@ -452,9 +452,7 @@
 - (void)swapViewController:(UIViewController *)viewController forNewViewController:(UIViewController *)newViewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
 {
     if (viewController != newViewController && newViewController != nil)
-    {
         [[self navigationController] setViewControllers:@[newViewController] animated:_animateSwappingNavController];
-    }
     
     [self transformViewControllerInSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
 }
