@@ -195,20 +195,34 @@
 
 - (void)setLeftViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push
 {
+    _leftViewControllers = viewControllers;
+    
     if (_leftSlideBarVC)
+    {
         [_leftSlideBarVC setSlideBarViewControllers:_leftViewControllers];
     
-    if (_leftViewControllers && [_leftViewControllers count] > 0)
-        [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
+        if (_leftViewControllers && [_leftViewControllers count] > 0 && push)
+        {
+            [[_leftSlideBarVC tableView] selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
+        }
+    }
 }
 
 - (void)setRightViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push
 {
+    _rightViewControllers = viewControllers;
+    
     if (_rightSlideBarVC)
+    {
         [_rightSlideBarVC setSlideBarViewControllers:_rightViewControllers];
     
-    if (_rightViewControllers && [_rightViewControllers count] > 0)
-        [self swapViewControllerAtIndex:0 inSlideBarHolder:rightSlideBarHolder animated:NO];
+        if (_rightViewControllers && [_rightViewControllers count] > 0 && push)
+        {
+            [[_rightSlideBarVC tableView] selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
+            [self swapViewControllerAtIndex:0 inSlideBarHolder:rightSlideBarHolder animated:NO];
+        }
+    }
 }
 
 - (void)setLeftViewControllers:(NSArray *)leftViewControllers rightViewControllers:(NSArray *)rightViewControllers andPushFirstVConSide:(LHSlideBarSide)side
