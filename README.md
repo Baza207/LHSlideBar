@@ -249,7 +249,7 @@ Accessing the propeties of the navigation bar come from the following variable, 
 
 ## License
 
-LHSPNservice is available under the MIT license. See the [LICENSE](https://github.com/Baza207/LHSlideBar/blob/master/LICENSE) file for more info.
+LHSlideBar is available under the MIT license. See the [LICENSE](https://github.com/Baza207/LHSlideBar/blob/master/LICENSE) file for more info.
 
 ### Creator
 
