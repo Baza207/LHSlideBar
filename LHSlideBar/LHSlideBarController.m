@@ -204,7 +204,7 @@
         if (_leftViewControllers && [_leftViewControllers count] > 0 && push)
         {
             [[_leftSlideBarVC tableView] selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-            [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:NO];
+            [self swapViewControllerAtIndex:0 inSlideBarHolder:leftSlideBarHolder animated:YES];
         }
     }
 }
@@ -220,7 +220,7 @@
         if (_rightViewControllers && [_rightViewControllers count] > 0 && push)
         {
             [[_rightSlideBarVC tableView] selectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] animated:NO scrollPosition:UITableViewScrollPositionNone];
-            [self swapViewControllerAtIndex:0 inSlideBarHolder:rightSlideBarHolder animated:NO];
+            [self swapViewControllerAtIndex:0 inSlideBarHolder:rightSlideBarHolder animated:YES];
         }
     }
 }
