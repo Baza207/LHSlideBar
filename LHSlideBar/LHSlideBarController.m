@@ -57,15 +57,33 @@
     self = [super init];
     if (self)
     {
-        _slideBarOffset = SLIDE_BAR_OFFSET;
-        _scaleAmount = SLIDE_BAR_SCALE;
-        _fadeOutAlpha = SLIDE_BAR_ALPHA;
-        _animTime = SLIDE_BAR_ANIM_TIME;
+        mainContainerView = [[UIView alloc] initWithFrame:[[self view] bounds]];
+        [mainContainerView setBackgroundColor:[UIColor clearColor]];
+        [mainContainerView setClipsToBounds:YES];
+        [[self view] addSubview:mainContainerView];
         
-        _transformType = LHTransformRotate;
-        _animatesOnSlide = YES;
-        _keepRoundedCornersWhenAnim = YES;
-        _animateSwappingNavController = NO;
+        _backgroundView = [[UIView alloc] initWithFrame:[mainContainerView bounds]];
+        [_backgroundView setBackgroundColor:[UIColor clearColor]];
+        [_backgroundView setClipsToBounds:YES];
+        [mainContainerView addSubview:_backgroundView];
+        
+        navController = [[UINavigationController alloc] init];
+        [[navController view] setFrame:[mainContainerView bounds]];
+        [[navController view] setClipsToBounds:YES];
+        [mainContainerView addSubview:[navController view]];
+        [self addChildViewController:navController];
+        
+        [self setSlideBarOffset:SLIDE_BAR_OFFSET];
+        [self setScaleAmount:SLIDE_BAR_SCALE];
+        [self setFadeOutAlpha:SLIDE_BAR_ALPHA];
+        [self setAnimTime:SLIDE_BAR_ANIM_TIME];
+        
+        [self setTransformType:LHTransformRotate];
+        [self setAnimatesOnSlide:YES];
+        [self setAnimateSwappingNavController:NO];
+        [self setKeepRoundedCornersWhenAnim:YES];
+        [self setRoundCornersOnLeftSlideBar:YES];
+        [self setRoundCornersOnRightSlideBar:YES];
         
         _leftSlideBarShowing = NO;
         _rightSlideBarShowing = NO;
@@ -73,11 +91,6 @@
         _rightSlideBarIsDragging = NO;
         
 //        [self setCustomSlideTransformValue:nil];
-        
-        navController = [[UINavigationController alloc] init];
-        [[navController view] setFrame:[[self view] bounds]];
-        [[self view] addSubview:[navController view]];
-        [self addChildViewController:navController];
     }
     return self;
 }
@@ -125,6 +138,7 @@
     [slideBarHolder setBackgroundColor:[UIColor clearColor]];
     [[self view] addSubview:slideBarHolder];
     
+    [[slideBar view] setClipsToBounds:YES];
     [slideBarHolder addSubview:[slideBar view]];
     
     UIView *slideBarShadow = [[UIView alloc] init];
@@ -147,6 +161,7 @@
             leftSlideBarShadow = slideBarShadow;
             _leftSlideBarVC = slideBar;
             
+            [self setRoundCornersOnLeftSlideBar:_roundCornersOnLeftSlideBar];
             [self setSlideBarHolder:leftSlideBarHolder toPosition:LHSlideBarPosOffLeft animated:NO animTime:_animTime];
             
             if (push)
@@ -173,6 +188,7 @@
             rightSlideBarShadow = slideBarShadow;
             _rightSlideBarVC = slideBar;
             
+            [self setRoundCornersOnRightSlideBar:_roundCornersOnRightSlideBar];
             [self setSlideBarHolder:rightSlideBarHolder toPosition:LHSlideBarPosOffRight animated:NO animTime:_animTime];
             
             if (push)
@@ -229,6 +245,14 @@
 {
     [self setLeftViewControllers:leftViewControllers andPushFirstVC:(side == LHSlideBarSideLeft)];
     [self setRightViewControllers:rightViewControllers andPushFirstVC:(side == LHSlideBarSideRight)];
+}
+
+- (void)setBackgroundView:(UIView *)backgroundView
+{
+    [mainContainerView insertSubview:backgroundView belowSubview:_backgroundView];
+    [_backgroundView removeFromSuperview];
+    
+    _backgroundView = backgroundView;
 }
 
 - (void)setSlideBarOffset:(CGFloat)offset
@@ -289,6 +313,80 @@
 //{
 //    customSlideTransform = [_customSlideTransformValue CATransform3DValue];
 //}
+
+- (void)setKeepRoundedCornersWhenAnim:(BOOL)keepRoundedCornersWhenAnim
+{
+    _keepRoundedCornersWhenAnim = keepRoundedCornersWhenAnim;
+    
+    if (_keepRoundedCornersWhenAnim)
+    {
+        if ([[UIApplication sharedApplication] statusBarStyle] == UIStatusBarStyleDefault)
+        {
+            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:[mainContainerView bounds]
+                                                           byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
+                                                                 cornerRadii:CGSizeMake(IPHONE_CORNER_RADIUS, IPHONE_CORNER_RADIUS)];
+            CAShapeLayer *maskLayer = [CAShapeLayer layer];
+            [maskLayer setFrame:[mainContainerView bounds]];
+            [maskLayer setPath:[maskPath CGPath]];
+            [[mainContainerView layer] setMask:maskLayer];
+        }
+        else
+            [[mainContainerView layer] setCornerRadius:IPHONE_CORNER_RADIUS];
+    }
+    else
+    {
+        [[mainContainerView layer] setMask:nil];
+        [[mainContainerView layer] setCornerRadius:0.0];
+    }
+}
+
+- (void)setRoundCornersOnLeftSlideBar:(BOOL)roundCornersOnLeftSlideBar
+{
+    _roundCornersOnLeftSlideBar = roundCornersOnLeftSlideBar;
+    
+    if (_leftSlideBarVC)
+    {
+        if (_roundCornersOnLeftSlideBar)
+        {
+            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:[[_leftSlideBarVC view] bounds]
+                                                           byRoundingCorners:UIRectCornerTopRight | UIRectCornerBottomRight
+                                                                 cornerRadii:CGSizeMake(IPHONE_CORNER_RADIUS, IPHONE_CORNER_RADIUS)];
+            CAShapeLayer *maskLayer = [CAShapeLayer layer];
+            [maskLayer setFrame:[[_leftSlideBarVC view] bounds]];
+            [maskLayer setPath:[maskPath CGPath]];
+            [[[_leftSlideBarVC view] layer] setMask:maskLayer];
+        }
+        else
+        {
+            [[[_leftSlideBarVC view] layer] setMask:nil];
+            [[[_leftSlideBarVC view] layer] setCornerRadius:0.0];
+        }
+    }
+}
+
+- (void)setRoundCornersOnRightSlideBar:(BOOL)roundCornersOnRightSlideBar
+{
+    _roundCornersOnRightSlideBar = roundCornersOnRightSlideBar;
+    
+    if (_rightSlideBarVC)
+    {
+        if (_roundCornersOnRightSlideBar)
+        {
+            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:[[_rightSlideBarVC view] bounds]
+                                                           byRoundingCorners:UIRectCornerTopLeft | UIRectCornerBottomLeft
+                                                                 cornerRadii:CGSizeMake(IPHONE_CORNER_RADIUS, IPHONE_CORNER_RADIUS)];
+            CAShapeLayer *maskLayer = [CAShapeLayer layer];
+            [maskLayer setFrame:[[_rightSlideBarVC view] bounds]];
+            [maskLayer setPath:[maskPath CGPath]];
+            [[[_rightSlideBarVC view] layer] setMask:maskLayer];
+        }
+        else
+        {
+            [[[_rightSlideBarVC view] layer] setMask:nil];
+            [[[_rightSlideBarVC view] layer] setCornerRadius:0.0];
+        }
+    }
+}
 
 - (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem
 {
@@ -466,7 +564,7 @@
 - (void)swapViewController:(UIViewController *)viewController forNewViewController:(UIViewController *)newViewController inSlideBarHolder:(UIView *)slideBarHolder animated:(BOOL)animated
 {
     if (viewController != newViewController && newViewController != nil)
-        [[self navigationController] setViewControllers:@[newViewController] animated:_animateSwappingNavController];
+        [navController setViewControllers:@[newViewController] animated:_animateSwappingNavController];
     
     [self transformViewControllerInSlideBarHolder:slideBarHolder withProgress:1.0 animated:animated];
 }
@@ -613,41 +711,6 @@
     return transform3D;
 }
 
-- (void)transformViewWithTransform:(CATransform3D)transform3D
-{
-    __weak UIView *view = [navController view];
-    if (view == nil || _animatesOnSlide == NO)
-        return;
-    
-    if (_keepRoundedCornersWhenAnim)
-    {
-        if ([[UIApplication sharedApplication] statusBarStyle] == UIStatusBarStyleDefault)
-        {
-            UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:[view bounds]
-                                                           byRoundingCorners:UIRectCornerBottomLeft | UIRectCornerBottomRight
-                                                                 cornerRadii:CGSizeMake(IPHONE_CORNER_RADIUS, IPHONE_CORNER_RADIUS)];
-            CAShapeLayer *maskLayer = [CAShapeLayer layer];
-            [maskLayer setFrame:[view bounds]];
-            [maskLayer setPath:[maskPath CGPath]];
-            [[view layer] setMask:maskLayer];
-        }
-        else
-        {
-            [[navController view] setClipsToBounds:YES];
-            [[[navController view] layer] setCornerRadius:IPHONE_CORNER_RADIUS];
-        }
-        
-        view = [[self navigationController] view];
-    }
-    else
-    {
-        [[view layer] setMask:nil];
-        [[view layer] setCornerRadius:0.0];
-    }
-    
-    [[view layer] setTransform:transform3D];
-}
-
 - (void)transformViewInSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress
 {
     LHSlideBarSide side = LHSlideBarSideNone;
@@ -673,13 +736,13 @@
         
         case LHTransformScale:
         {
-            [self transformViewWithTransform:[self scaleTransform3DWithProgress:progress]];
+            [[mainContainerView layer] setTransform:[self scaleTransform3DWithProgress:progress]];
             break;
         }
         
         case LHTransformRotate:
         {
-            [self transformViewWithTransform:[self rotateTransform3DWithProgress:progress fromSide:side]];
+            [[mainContainerView layer] setTransform:[self rotateTransform3DWithProgress:progress fromSide:side]];
             break;
         }
             

@@ -45,6 +45,7 @@ typedef enum {
 
 @interface LHSlideBarController : UIViewController
 {
+    UIView *mainContainerView;
     UINavigationController *navController;
     UIView *leftSlideBarHolder, *leftSlideBarShadow;
     UIView *rightSlideBarHolder, *rightSlideBarShadow;
@@ -57,6 +58,7 @@ typedef enum {
 @property (strong, readonly, nonatomic) LHSlideBar *rightSlideBarVC;
 @property (weak, readonly, nonatomic) UIViewController *currentViewController;
 @property (assign, readonly, nonatomic) NSUInteger currentIndex;
+@property (copy, readonly, nonatomic) UIView *backgroundView;
 @property (assign, readonly, nonatomic, getter = isLeftSlideBarShowing) BOOL leftSlideBarShowing;
 @property (assign, readonly, nonatomic, getter = isRightSlideBarShowing) BOOL rightSlideBarShowing;
 @property (assign, readonly, nonatomic) BOOL leftSlideBarIsDragging;
@@ -69,8 +71,10 @@ typedef enum {
 @property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slideBar animation to slide in or out. Minimum of 0.1s
 
 @property (assign, nonatomic) BOOL animatesOnSlide;                 // If set to `NO` then the view controller does not animate when the slideBar in dragged, opened or dismissed. By default this property is set to `YES`.
-@property (assign, nonatomic) BOOL keepRoundedCornersWhenAnim;      // If set to `NO` then the corners will not remain rounded when the drag animation occurs. By default this property is set to `YES`.
 @property (assign, nonatomic) BOOL animateSwappingNavController;    // If set to `YES` then slideBarController's UINavigationController will animate on swapping view controller stack.
+@property (assign, readonly, nonatomic) BOOL keepRoundedCornersWhenAnim;      // If set to `NO` then the corners will not remain rounded when the drag animation occurs. By default this property is set to `YES`.
+@property (assign, readonly, nonatomic) BOOL roundCornersOnLeftSlideBar;
+@property (assign, readonly, nonatomic) BOOL roundCornersOnRightSlideBar;
 
 // LHSlideBarController has a `transformType` variable. Set this to choose the type of transformation occours to the view controller when the user drags, opens or dismisses the slideBar.
 @property (assign, nonatomic) LHTransformType transformType;
@@ -93,11 +97,17 @@ typedef enum {
 - (void)setRightViewControllers:(NSArray *)viewControllers andPushFirstVC:(BOOL)push;
 - (void)setLeftViewControllers:(NSArray *)leftViewControllers rightViewControllers:(NSArray *)rightViewControllers andPushFirstVConSide:(LHSlideBarSide)side;
 
+- (void)setBackgroundView:(UIView *)backgroundView;
+
 - (void)setSlideBarOffset:(CGFloat)offset;
 - (void)setScaleAmount:(CGFloat)scale;
 - (void)setFadeOutAlpha:(CGFloat)alpha;
 - (void)setAnimTime:(CGFloat)animTime;
 //- (void)setCustomSlideTransformValue:(NSValue *)customSlideTransformValue;
+
+- (void)setKeepRoundedCornersWhenAnim:(BOOL)keepRoundedCornersWhenAnim;
+- (void)setRoundCornersOnLeftSlideBar:(BOOL)roundCornersOnLeftSlideBar;
+- (void)setRoundCornersOnRightSlideBar:(BOOL)roundCornersOnRightSlideBar;
 
 - (void)setLeftBarButtonItem:(UIBarButtonItem *)leftBarButtonItem;
 - (void)setRightBarButtonItem:(UIBarButtonItem *)rightBarButtonItem;
