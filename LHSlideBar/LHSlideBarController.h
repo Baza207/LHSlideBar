@@ -41,6 +41,7 @@ typedef enum {
     LHTransformCustom,
     LHTransformScale,
     LHTransformRotate,
+    LHTransformSlide
 } LHTransformType;
 
 @interface LHSlideBarController : UIViewController

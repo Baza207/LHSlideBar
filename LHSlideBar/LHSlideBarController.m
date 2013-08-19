@@ -711,6 +711,23 @@
     return transform3D;
 }
 
+- (CATransform3D)slideTransform3DWithProgress:(CGFloat)progress fromSide:(LHSlideBarSide)side
+{
+    CGFloat progressRev = 1.0 - progress;
+    CGFloat offset = [[navController view] bounds].size.width * progressRev;
+    
+    NSInteger reverse = 1;
+    if (side == LHSlideBarSideRight)
+        reverse = -1;
+    
+    CATransform3D transform3D = CATransform3DIdentity;
+    if (offset < _slideBarOffset)
+        return transform3D;
+    
+    transform3D = CATransform3DTranslate(transform3D, (offset - _slideBarOffset) * reverse, 0, 0);
+    return transform3D;
+}
+
 - (void)transformViewInSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress
 {
     LHSlideBarSide side = LHSlideBarSideNone;
@@ -743,6 +760,12 @@
         case LHTransformRotate:
         {
             [[mainContainerView layer] setTransform:[self rotateTransform3DWithProgress:progress fromSide:side]];
+            break;
+        }
+            
+        case LHTransformSlide:
+        {
+            [[mainContainerView layer] setTransform:[self slideTransform3DWithProgress:progress fromSide:side]];
             break;
         }
             

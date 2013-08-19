@@ -87,7 +87,6 @@
 			children = (
 				2A7F5EB717934D6900ABF4AF /* LHSlideBar */,
 				2AE6651C17932A9500468D68 /* Demo Classes */,
-				2AE6653E17932AAA00468D68 /* Supporting Files */,
 				2A8226271790701F0075F4C8 /* Frameworks */,
 				2A8226261790701F0075F4C8 /* Products */,
 			);
@@ -120,6 +119,7 @@
 				2A642EF41796956B007ED6D5 /* TestViewController.h */,
 				2A642EF51796956B007ED6D5 /* TestViewController.m */,
 				2A642EF61796956B007ED6D5 /* TestViewController.xib */,
+				2AE6653E17932AAA00468D68 /* Supporting Files */,
 			);
 			path = "Demo Classes";
 			sourceTree = "<group>";
@@ -140,7 +140,6 @@
 				2AE6651D17932A9500468D68 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
-			path = "Demo Classes";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -301,7 +300,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Demo Classes/LHSlideBar-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Demo Classes/LHSlideBar-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				WRAPPER_EXTENSION = app;
@@ -314,7 +312,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Demo Classes/LHSlideBar-Prefix.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/Demo Classes/LHSlideBar-Info.plist";
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

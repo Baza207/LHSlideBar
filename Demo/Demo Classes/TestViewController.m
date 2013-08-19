@@ -20,6 +20,7 @@
 {
     [super viewDidAppear:animated];
     
+    [_shadowSwitch setOn:([[self slideBarController] fadeOutAlpha] > 0.0)];
     [_transformSegControl setSelectedSegmentIndex:[[self slideBarController] transformType]-1];
 }
 
@@ -43,6 +44,14 @@
 - (IBAction)showRightSlideBar:(id)sender
 {
     [[self slideBarController] showRightSlideBarAnimated:YES];
+}
+
+- (IBAction)shadowSwithChanged:(UISwitch *)sender
+{
+    if ([sender isOn])
+        [[self slideBarController] setFadeOutAlpha:0.75];
+    else
+        [[self slideBarController] setFadeOutAlpha:0.0];
 }
 
 - (IBAction)transformSegControlChanged:(UISegmentedControl *)sender
