@@ -87,6 +87,7 @@ typedef enum {
 
 + (NSUInteger) deviceSystemMajorVersion;
 
+- (id)initWithFrame:(CGRect)frame;
 - (id)initWithLeftViewControllers:(NSArray *)viewControllers;
 - (id)initWithRightViewControllers:(NSArray *)viewControllers;
 - (id)initWithLeftViewControllers:(NSArray *)leftViewControllers andRightViewControllers:(NSArray *)rightViewControllers;

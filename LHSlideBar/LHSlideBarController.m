@@ -21,6 +21,16 @@
 
 @implementation LHSlideBarController
 
+- (id)initWithFrame:(CGRect)frame
+{
+    self = [super init];
+    if (self)
+    {
+        [[self view] setFrame:frame];
+    }
+    return [self init];
+}
+
 - (id)initWithLeftViewControllers:(NSArray *)viewControllers
 {
     self = [super init];
