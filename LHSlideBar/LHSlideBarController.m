@@ -454,7 +454,7 @@
         slideBarHolder = rightSlideBarHolder;
     
     if (slideBarHolder)
-        [self setSlideBarHolder:rightSlideBarHolder toPosition:LHSlideBarPosCenter animated:YES animTime:_animTime completed:completionBlock];
+        [self setSlideBarHolder:rightSlideBarHolder toPosition:LHSlideBarPosCenter animated:animated animTime:_animTime completed:completionBlock];
 }
 
 #pragma mark - Dismiss SlideBar Methods
@@ -632,8 +632,6 @@
                              [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
                          }
                          completion:^(BOOL finished) {
-                             
-                             [slideBar endAppearanceTransition];
                              [self setSlideBar:slideBar isShowingWithPos:position];
                              if (completionBlock)
                                  completionBlock();
@@ -644,7 +642,6 @@
         [slideBarHolder setCenter:center];
         [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
         [self setSlideBar:slideBar isShowingWithPos:position];
-        [slideBar endAppearanceTransition];
         
         if (completionBlock)
             completionBlock();
@@ -682,6 +679,8 @@
         _leftSlideBarShowing = isShowing;
     else if (slideBar == _rightSlideBarVC)
         _rightSlideBarShowing = isShowing;
+    
+    [slideBar endAppearanceTransition];
 }
 
 #pragma mark - Animation and Transformation Methods
@@ -1062,7 +1061,15 @@
             if (animDuration < SLIDE_BAR_MIN_ANIM_TIME)
                 animDuration = SLIDE_BAR_MIN_ANIM_TIME;
             
-            [self setSlideBarHolder:slideBarHolder toPosition:pos animated:YES animTime:animDuration];
+            __weak LHSlideBar *slideBar = nil;
+            if (slideBarHolder == leftSlideBarHolder)
+                slideBar = _leftSlideBarVC;
+            else if (slideBarHolder == rightSlideBarHolder)
+                slideBar = _rightSlideBarVC;
+            
+            [self setSlideBarHolder:slideBarHolder toPosition:pos animated:YES animTime:animDuration completed:^{
+                [slideBar endAppearanceTransition];
+            }];
             
             _leftSlideBarIsDragging = NO;
             _rightSlideBarIsDragging = NO;
