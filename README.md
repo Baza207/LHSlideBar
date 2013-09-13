@@ -41,6 +41,8 @@ LHSlideBar requires **iOS 5**+ to work and uses ARC.
 
 ### A quick note about iOS 7
 
+**Note:** I have started a local `iOS7` branch, fixing some of the bugs found with the iOS 7 GM. I will push this branch after the 18th Sept 2013 when iOS 7 officially gets released. **If you carry on using Xcode 4 and the iOS 6.1 SDK, LHSlideBar will still work fine, even with iOS 7.** It will only break if you use Xcode 5.
+
 iOS 7 is of course coming out later in 2013. I have tried to keep all changes that are being made in iOS 7 in mind while developing this framework. Though as iOS 7 is still in beta, there will obviously be some things that don't work at this time.
 
 When the iOS 7 GM comes out, I will try and make any fixes that are needed asap before it becomes live and publicly available.
