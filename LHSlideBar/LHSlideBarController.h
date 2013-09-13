@@ -66,10 +66,10 @@ typedef enum {
 @property (assign, readonly, nonatomic) BOOL rightSlideBarIsDragging;
 
 // User changable variables
-@property (assign, readonly, nonatomic) CGFloat slideBarOffset;     // Size of the space on the side of the slideBar when it is open. It must be less than half the width of the slideBar controller.
-@property (assign, readonly, nonatomic) CGFloat scaleAmount;        // Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
-@property (assign, readonly, nonatomic) CGFloat fadeOutAlpha;       // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
-@property (assign, readonly, nonatomic) CGFloat animTime;           // Maximum time for the slideBar animation to slide in or out. Minimum of 0.1s
+@property (assign, readonly, nonatomic) int slideBarOffset;     // Size of the space on the side of the slideBar when it is open. It must be less than half the width of the slideBar controller.
+@property (assign, readonly, nonatomic) float scaleAmount;        // Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
+@property (assign, readonly, nonatomic) float fadeOutAlpha;       // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
+@property (assign, readonly, nonatomic) float animTime;           // Maximum time for the slideBar animation to slide in or out. Minimum of 0.1s
 
 @property (assign, nonatomic) BOOL animatesOnSlide;                 // If set to `NO` then the view controller does not animate when the slideBar in dragged, opened or dismissed. By default this property is set to `YES`.
 @property (assign, nonatomic) BOOL animateSwappingNavController;    // If set to `YES` then slideBarController's UINavigationController will animate on swapping view controller stack.
@@ -101,10 +101,10 @@ typedef enum {
 
 - (void)setBackgroundView:(UIView *)backgroundView;
 
-- (void)setSlideBarOffset:(CGFloat)offset;
-- (void)setScaleAmount:(CGFloat)scale;
-- (void)setFadeOutAlpha:(CGFloat)alpha;
-- (void)setAnimTime:(CGFloat)animTime;
+- (void)setSlideBarOffset:(int)offset;
+- (void)setScaleAmount:(float)scale;
+- (void)setFadeOutAlpha:(float)alpha;
+- (void)setAnimTime:(float)animTime;
 //- (void)setCustomSlideTransformValue:(NSValue *)customSlideTransformValue;
 
 - (void)setKeepRoundedCornersWhenAnim:(BOOL)keepRoundedCornersWhenAnim;

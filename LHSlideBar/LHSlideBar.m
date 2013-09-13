@@ -143,9 +143,9 @@
     CGRect navBarRect, tableViewRect = CGRectNull;
     if (hidden)
     {
-        CGFloat statusBarOffset = 0.0;
+        int8_t statusBarOffset = 0;
         if (![[UIApplication sharedApplication] isStatusBarHidden])
-            statusBarOffset = -20.0;
+            statusBarOffset = -20;
         
         navBarRect = CGRectMake(0.0, statusBarOffset-[_navigationBar bounds].size.height, [_navigationBar bounds].size.width, [_navigationBar bounds].size.height);
         tableViewRect = CGRectMake(0.0, 0.0, [[self view] bounds].size.width, [[self view] bounds].size.height);

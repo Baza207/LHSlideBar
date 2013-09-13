@@ -265,7 +265,7 @@
     _backgroundView = backgroundView;
 }
 
-- (void)setSlideBarOffset:(CGFloat)offset
+- (void)setSlideBarOffset:(int)offset
 {
     if (offset > [[self view] bounds].size.width/2)
         _slideBarOffset = [[self view] bounds].size.width/2;
@@ -285,7 +285,7 @@
     }
 }
 
-- (void)setScaleAmount:(CGFloat)scale
+- (void)setScaleAmount:(float)scale
 {
     if (scale > 1.0)
         _scaleAmount = 1.0;
@@ -295,7 +295,7 @@
         _scaleAmount = scale;
 }
 
-- (void)setFadeOutAlpha:(CGFloat)alpha
+- (void)setFadeOutAlpha:(float)alpha
 {
     if (alpha > 1.0)
         _fadeOutAlpha = 1.0;
@@ -311,7 +311,7 @@
         [rightSlideBarShadow setAlpha:_fadeOutAlpha];
 }
 
-- (void)setAnimTime:(CGFloat)animTime
+- (void)setAnimTime:(float)animTime
 {
     if (animTime < SLIDE_BAR_MIN_ANIM_TIME)
         _animTime = SLIDE_BAR_MIN_ANIM_TIME;
@@ -597,11 +597,11 @@
     CGPoint center = [slideBarHolder center];
     CGPoint selfCenter = [[self view] center];
     
-    CGFloat offset = 0.0;
+    int8_t offset = 0;
     if ([LHSlideBarController deviceSystemMajorVersion] < 7)
-        offset = 20.0;
+        offset = 20;
     
-    CGFloat progress = 1.0;
+    float progress = 1.0;
     switch (position)
     {
         case LHSlideBarPosCenter:
@@ -695,21 +695,21 @@
 
 #pragma mark - Animation and Transformation Methods
 
-- (CATransform3D)scaleTransform3DWithProgress:(CGFloat)progress
+- (CATransform3D)scaleTransform3DWithProgress:(float)progress
 {
-    CGFloat scale = [self scaleFromProgress:progress];
+    float scale = [self scaleFromProgress:progress];
     CATransform3D transform3D = CATransform3DIdentity;
     transform3D = CATransform3DScale(transform3D, scale, scale, 1);
     return transform3D;
 }
 
-- (CATransform3D)rotateTransform3DWithProgress:(CGFloat)progress fromSide:(LHSlideBarSide)side
+- (CATransform3D)rotateTransform3DWithProgress:(float)progress fromSide:(LHSlideBarSide)side
 {
-    CGFloat progressRev = 1.0 - progress;
-    CGFloat translate = (progressRev * 60) * -1;
-    CGFloat degree = ceil(progressRev * -20);
+    float progressRev = 1.0 - progress;
+    float translate = (progressRev * 60) * -1;
+    float degree = ceil(progressRev * -20);
     
-    NSInteger reverse = 1;
+    int8_t reverse = 1;
     if (side == LHSlideBarSideRight)
         reverse = -1;
     
@@ -720,12 +720,12 @@
     return transform3D;
 }
 
-- (CATransform3D)slideTransform3DWithProgress:(CGFloat)progress fromSide:(LHSlideBarSide)side
+- (CATransform3D)slideTransform3DWithProgress:(float)progress fromSide:(LHSlideBarSide)side
 {
-    CGFloat progressRev = 1.0 - progress;
-    CGFloat offset = [[navController view] bounds].size.width * progressRev;
+    float progressRev = 1.0 - progress;
+    float offset = [[navController view] bounds].size.width * progressRev;
     
-    NSInteger reverse = 1;
+    int8_t reverse = 1;
     if (side == LHSlideBarSideRight)
         reverse = -1;
     
@@ -737,7 +737,7 @@
     return transform3D;
 }
 
-- (void)transformViewInSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress
+- (void)transformViewInSlideBarHolder:(UIView *)slideBarHolder withProgress:(float)progress
 {
     LHSlideBarSide side = LHSlideBarSideNone;
     if (slideBarHolder == leftSlideBarHolder)
@@ -783,7 +783,7 @@
     }
 }
 
-- (void)transformViewControllerInSlideBarHolder:(UIView *)slideBarHolder withProgress:(CGFloat)progress animated:(BOOL)animated
+- (void)transformViewControllerInSlideBarHolder:(UIView *)slideBarHolder withProgress:(float)progress animated:(BOOL)animated
 {
     if (animated)
     {
@@ -801,24 +801,24 @@
     }
 }
 
-- (CGFloat)progressPercentForHolderView:(UIView *)slideBarHolder
+- (float)progressPercentForHolderView:(UIView *)slideBarHolder
 {
-    CGFloat difference = (-[[self view] center].x) - [[self view] center].x;
-    CGFloat progress = [slideBarHolder center].x / difference;
+    float difference = (-[[self view] center].x) - [[self view] center].x;
+    float progress = [slideBarHolder center].x / difference;
     return progress + 0.5;
 }
 
-- (CGFloat)scaleFromProgress:(CGFloat)progress
+- (float)scaleFromProgress:(float)progress
 {
-    CGFloat scale = 1.0 - _scaleAmount;
+    float scale = 1.0 - _scaleAmount;
     scale *= progress;
     scale += _scaleAmount;
     return scale;
 }
 
-- (CGFloat)alphaFromProgress:(CGFloat)progress
+- (float)alphaFromProgress:(float)progress
 {
-    CGFloat alpha = 1.0 - progress;
+    float alpha = 1.0 - progress;
     alpha *= _fadeOutAlpha;
     return alpha;
 }
@@ -980,7 +980,7 @@
                 }
             }
             
-            CGFloat progress = [self progressPercentForHolderView:slideBarHolder];
+            float progress = [self progressPercentForHolderView:slideBarHolder];
             if (_rightSlideBarIsDragging)
                 progress *= -1.0;
             
@@ -1018,7 +1018,7 @@
             CGPoint velocity = [gesture velocityInView:[self view]];
             LHSlideBarPos pos = LHSlideBarPosNull;
             
-            CGFloat diff = 0.0;
+            float diff = 0.0;
             if ([slideBarHolder center].x < [[self view] center].x)
                 diff = [[self view] center].x + [slideBarHolder center].x;
             else if ([slideBarHolder center].x > [[self view] center].x)
@@ -1027,7 +1027,7 @@
                 diff = 160.0;
             
             NSTimeInterval animDuration = _animTime;
-            CGFloat percent = diff / [self view].bounds.size.width;
+            float percent = diff / [self view].bounds.size.width;
             
             if (velocity.x > 0)
             {
@@ -1124,8 +1124,8 @@
 
 - (void)addLinearGradientInDirection:(Direction)direction
 {
-    UIColor * firstColour = nil;
-    UIColor * secondColour = nil;
+    UIColor * firstColour = [UIColor clearColor];
+    UIColor * secondColour = [UIColor clearColor];
     
     switch (direction)
     {
