@@ -598,8 +598,8 @@
     CGPoint selfCenter = [[self view] center];
     
     CGFloat offset = 0.0;
-//    if ([LHSlideBarController deviceSystemMajorVersion] < 7)
-//        offset = 20.0;
+    if ([LHSlideBarController deviceSystemMajorVersion] < 7)
+        offset = 20.0;
     
     CGFloat progress = 1.0;
     switch (position)

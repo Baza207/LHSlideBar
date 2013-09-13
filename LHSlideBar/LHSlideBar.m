@@ -19,29 +19,37 @@
         _slideBarController = controller;
         _currentVCSelectedStyle = UITableViewCellSelectionStyleBlue;
         
-        _navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, [[self view] bounds].size.width, 44)];
-        [_navigationBar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
-        [[self view] addSubview:_navigationBar];
+        _navigationBar = [[UINavigationBar alloc] init];
+        _tableView = [[UITableView alloc] init];
         
-        UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
-        [_navigationBar setItems:@[navigationItem]];
         
-        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, [[self view] bounds].size.width, [[self view] bounds].size.height - [_navigationBar bounds].size.height)];
+        if ([LHSlideBarController deviceSystemMajorVersion] < 7)
+        {
+            [_navigationBar setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, 44)];
+            [_tableView setFrame:CGRectMake(0, [_navigationBar bounds].size.height,
+                                            [[self view] bounds].size.width,
+                                            [[self view] bounds].size.height - [_navigationBar bounds].size.height)];
+        }
+        else
+        {
+            [_navigationBar setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, 64)];
+            [_tableView setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, [[self view] bounds].size.height)];
+            [_tableView setContentInset:UIEdgeInsetsMake([_navigationBar bounds].size.height, 0.0, 0.0, 0.0)];
+        }
+        
         [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [_tableView setDelegate:self];
         [_tableView setDataSource:self];
         [[self view] addSubview:_tableView];
+        
+        [_navigationBar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
+        
+        UINavigationItem *navigationItem = [[UINavigationItem alloc] init];
+        [_navigationBar setItems:@[navigationItem]];
+        [[self view] addSubview:_navigationBar];
     }
     return self;
 }
-
-//- (void)viewDidLoad
-//{
-//    [super viewDidLoad];
-//    
-//    if ([LHSlideBarController deviceSystemMajorVersion] >= 7)
-//        [[self tableView] setContentInset:UIEdgeInsetsMake(20.0, 0.0, 0.0, 0.0)];
-//}
 
 - (void)didReceiveMemoryWarning
 {
