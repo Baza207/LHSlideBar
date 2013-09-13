@@ -64,6 +64,11 @@
     [[self tableView] reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
+- (void)setNavBarTitle:(NSString *)title
+{
+    [[_navigationBar topItem] setTitle:title];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

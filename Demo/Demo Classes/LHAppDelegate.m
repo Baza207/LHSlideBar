@@ -36,6 +36,9 @@
     [_slideBarController setupSlideBarAtPosition:LHSlideBarSideLeft pushFirstVC:YES];
     [_slideBarController setupSlideBarAtPosition:LHSlideBarSideRight pushFirstVC:NO];
     
+    [[_slideBarController leftSlideBarVC] setNavBarTitle:@"Left SlideBar"];
+    [[_slideBarController rightSlideBarVC] setNavBarTitle:@"Right SlideBar"];
+    
     UIBarButtonItem *leftBarButton = [[UIBarButtonItem alloc] initWithTitle:@"LSB" style:UIBarButtonItemStylePlain target:_slideBarController action:@selector(showLeftSlideBarAnimated:)];
     [_slideBarController setLeftBarButtonItem:leftBarButton];
     
