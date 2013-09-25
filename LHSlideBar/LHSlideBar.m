@@ -23,6 +23,7 @@
         _tableView = [[UITableView alloc] init];
         
         
+#ifdef __IPHONE_7_0
         if ([LHSlideBarController deviceSystemMajorVersion] < 7)
         {
             [_navigationBar setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, 44)];
@@ -36,6 +37,12 @@
             [_tableView setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, [[self view] bounds].size.height)];
             [_tableView setContentInset:UIEdgeInsetsMake([_navigationBar bounds].size.height, 0.0, 0.0, 0.0)];
         }
+#else
+        _navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, [[self view] bounds].size.width, 44)];
+        [_navigationBar setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleBottomMargin];
+        
+        _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, [[self view] bounds].size.width, [[self view] bounds].size.height - [_navigationBar bounds].size.height)];
+#endif
         
         [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
         [_tableView setDelegate:self];
