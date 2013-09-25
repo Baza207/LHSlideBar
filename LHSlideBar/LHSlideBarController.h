@@ -60,10 +60,13 @@ typedef enum {
 @property (weak, readonly, nonatomic) UIViewController *currentViewController;
 @property (assign, readonly, nonatomic) NSUInteger currentIndex;
 @property (copy, readonly, nonatomic) UIView *backgroundView;
+
+@property (assign, readonly, nonatomic, getter = isLeftSlideBarDragging) BOOL leftSlideBarDragging;
+@property (assign, readonly, nonatomic, getter = isRightSlideBarDragging) BOOL rightSlideBarDragging;
+@property (assign, readonly, nonatomic, getter = isSlideBarDragging) BOOL slideBarIsDragging;
 @property (assign, readonly, nonatomic, getter = isLeftSlideBarShowing) BOOL leftSlideBarShowing;
 @property (assign, readonly, nonatomic, getter = isRightSlideBarShowing) BOOL rightSlideBarShowing;
-@property (assign, readonly, nonatomic) BOOL leftSlideBarIsDragging;
-@property (assign, readonly, nonatomic) BOOL rightSlideBarIsDragging;
+@property (assign, readonly, nonatomic, getter = isSlideBarShowing) BOOL slideBarShowing;
 
 // User changable variables
 @property (assign, readonly, nonatomic) int slideBarOffset;     // Size of the space on the side of the slideBar when it is open. It must be less than half the width of the slideBar controller.

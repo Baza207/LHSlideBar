@@ -36,16 +36,6 @@
     [self setTitle:[NSString stringWithFormat:@"View Controller %d", number]];
 }
 
-- (IBAction)showLeftSlideBar:(id)sender
-{
-    [[self slideBarController] showLeftSlideBarAnimated:YES];
-}
-
-- (IBAction)showRightSlideBar:(id)sender
-{
-    [[self slideBarController] showRightSlideBarAnimated:YES];
-}
-
 - (IBAction)shadowSwithChanged:(UISwitch *)sender
 {
     if ([sender isOn])

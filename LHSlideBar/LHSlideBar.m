@@ -22,7 +22,6 @@
         _navigationBar = [[UINavigationBar alloc] init];
         _tableView = [[UITableView alloc] init];
         
-        
 #ifdef __IPHONE_7_0
         if ([LHSlideBarController deviceSystemMajorVersion] < 7)
         {
@@ -33,7 +32,7 @@
         }
         else
         {
-            [_navigationBar setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, 64)];
+            [_navigationBar setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, 44)];
             [_tableView setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, [[self view] bounds].size.height)];
             [_tableView setContentInset:UIEdgeInsetsMake([_navigationBar bounds].size.height, 0.0, 0.0, 0.0)];
         }

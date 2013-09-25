@@ -97,8 +97,8 @@
         
         _leftSlideBarShowing = NO;
         _rightSlideBarShowing = NO;
-        _leftSlideBarIsDragging = NO;
-        _rightSlideBarIsDragging = NO;
+        _leftSlideBarDragging = NO;
+        _rightSlideBarDragging = NO;
         
 //        [self setCustomSlideTransformValue:nil];
     }
@@ -128,6 +128,26 @@
 - (UINavigationItem *)navigationItem
 {
     return [navController navigationItem];
+}
+
+#pragma mark - Status Bar Methods
+
+- (BOOL)prefersStatusBarHidden
+{
+    NSLog(@"Is Dragging: %@ Is Showing: %@", [self isSlideBarDragging]? @"Yes":@"No", [self isSlideBarShowing]? @"Yes":@"No");
+    
+    if ([self isSlideBarDragging])
+        return YES;
+    
+    if ([self isSlideBarShowing] == NO && [self isSlideBarDragging] == NO)
+        return NO;
+    else
+        return YES;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
 }
 
 #pragma mark - Setup SlideBar Methods
@@ -428,6 +448,16 @@
     [self setRightBarButtonItem:_rightBarButtonItem];
 }
 
+- (BOOL)isSlideBarDragging
+{
+    return (_leftSlideBarDragging || _rightSlideBarDragging);
+}
+
+- (BOOL)isSlideBarShowing
+{
+    return (_leftSlideBarShowing || _rightSlideBarShowing);
+}
+
 #pragma mark - Show SlideBar Methods
 
 - (void)showLeftSlideBarAnimated:(BOOL)animated
@@ -590,9 +620,15 @@
 {
     __weak LHSlideBar *slideBar = nil;
     if (slideBarHolder == leftSlideBarHolder)
+    {
+        _leftSlideBarDragging = YES;
         slideBar = _leftSlideBarVC;
+    }
     else if (slideBarHolder == rightSlideBarHolder)
+    {
+        _rightSlideBarDragging = YES;
         slideBar = _rightSlideBarVC;
+    }
     
     CGPoint center = [slideBarHolder center];
     CGPoint selfCenter = [[self view] center];
@@ -632,6 +668,14 @@
             break;
     }
     
+    [UIView animateWithDuration:0.25
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+                             [self setNeedsStatusBarAppearanceUpdate];
+                     } completion:nil];
+    
     if (animated)
     {
         [UIView animateWithDuration:animTime
@@ -651,8 +695,8 @@
     {
         [slideBarHolder setCenter:center];
         [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
-        [self setSlideBar:slideBar isShowingWithPos:position];
         
+        [self setSlideBar:slideBar isShowingWithPos:position];
         if (completionBlock)
             completionBlock();
     }
@@ -686,11 +730,25 @@
     }
     
     if (slideBar == _leftSlideBarVC)
+    {
+        _leftSlideBarDragging = NO;
         _leftSlideBarShowing = isShowing;
+    }
     else if (slideBar == _rightSlideBarVC)
+    {
+        _rightSlideBarDragging = NO;
         _rightSlideBarShowing = isShowing;
+    }
     
     [slideBar endAppearanceTransition];
+    
+    [UIView animateWithDuration:0.25
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+                             [self setNeedsStatusBarAppearanceUpdate];
+                     } completion:nil];
 }
 
 #pragma mark - Animation and Transformation Methods
@@ -841,7 +899,7 @@
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    if (_leftSlideBarIsDragging || _rightSlideBarIsDragging)
+    if (_leftSlideBarDragging || _rightSlideBarDragging)
         return;
     
     UITouch *touch = [touches anyObject];
@@ -881,7 +939,7 @@
                     isSlideBarShowing = _leftSlideBarShowing;
                     slideBar = _leftSlideBarVC;
                     
-                    _leftSlideBarIsDragging = YES;
+                    _leftSlideBarDragging = YES;
                 }
                 else if (_rightSlideBarShowing)
                 {
@@ -891,7 +949,7 @@
                     isSlideBarShowing = _rightSlideBarShowing;
                     slideBar = _rightSlideBarVC;
                     
-                    _rightSlideBarIsDragging = YES;
+                    _rightSlideBarDragging = YES;
                 }
             }
             else if (translation.x < 0)
@@ -905,7 +963,7 @@
                     isSlideBarShowing = _rightSlideBarShowing;
                     slideBar = _rightSlideBarVC;
                     
-                    _rightSlideBarIsDragging = YES;
+                    _rightSlideBarDragging = YES;
                 }
                 else if (_leftSlideBarShowing)
                 {
@@ -915,13 +973,21 @@
                     isSlideBarShowing = _leftSlideBarShowing;
                     slideBar = _leftSlideBarVC;
                     
-                    _leftSlideBarIsDragging = YES;
+                    _leftSlideBarDragging = YES;
                 }
             }
             else
                 return;
             
             [slideBar beginAppearanceTransition:(isSlideBarShowing == NO) animated:YES];
+            
+            [UIView animateWithDuration:0.25
+                                  delay:0
+                                options:UIViewAnimationOptionCurveEaseInOut
+                             animations:^{
+                                 if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
+                                     [self setNeedsStatusBarAppearanceUpdate];
+                             } completion:nil];
             
             break;
         }
@@ -930,14 +996,14 @@
         {
             __weak UIView *slideBarHolder = nil;
             
-            if (_leftSlideBarIsDragging)
+            if (_leftSlideBarDragging)
             {
                 if (_leftSlideBarVC == nil)
                     return;
                 
                 slideBarHolder = leftSlideBarHolder;
             }
-            else if (_rightSlideBarIsDragging)
+            else if (_rightSlideBarDragging)
             {
                 if (_rightSlideBarVC == nil)
                     return;
@@ -954,12 +1020,12 @@
             if (translation.x > 0)
             {
                 // Dragging Left to Right
-                if (_leftSlideBarIsDragging)
+                if (_leftSlideBarDragging)
                 {
                     if (newPoint.x < [[self view] center].x)
                         moveHolder = YES;
                 }
-                else if (_rightSlideBarIsDragging)
+                else if (_rightSlideBarDragging)
                 {
                     if (newPoint.x < [[self view] bounds].size.width + [[self view] center].x)
                         moveHolder = YES;
@@ -968,12 +1034,12 @@
             else if (translation.x < 0)
             {
                 // Dragging Right to Left
-                if (_leftSlideBarIsDragging)
+                if (_leftSlideBarDragging)
                 {
                     if (newPoint.x >= -[[self view] center].x)
                         moveHolder = YES;
                 }
-                else if (_rightSlideBarIsDragging)
+                else if (_rightSlideBarDragging)
                 {
                     if (newPoint.x > [[self view] center].x)
                         moveHolder = YES;
@@ -981,7 +1047,7 @@
             }
             
             float progress = [self progressPercentForHolderView:slideBarHolder];
-            if (_rightSlideBarIsDragging)
+            if (_rightSlideBarDragging)
                 progress *= -1.0;
             
             if (moveHolder)
@@ -998,14 +1064,14 @@
         {
             __weak UIView *slideBarHolder = nil;
             
-            if (_leftSlideBarIsDragging)
+            if (_leftSlideBarDragging)
             {
                 if (_leftSlideBarVC == nil)
                     return;
                 
                 slideBarHolder = leftSlideBarHolder;
             }
-            else if (_rightSlideBarIsDragging)
+            else if (_rightSlideBarDragging)
             {
                 if (_rightSlideBarVC == nil)
                     return;
@@ -1032,9 +1098,9 @@
             if (velocity.x > 0)
             {
                 // Dragging Left to Right
-                if (_leftSlideBarIsDragging)
+                if (_leftSlideBarDragging)
                     pos = LHSlideBarPosCenter;
-                else if (_rightSlideBarIsDragging)
+                else if (_rightSlideBarDragging)
                     pos = LHSlideBarPosOffRight;
                 
                 if ([slideBarHolder center].x < [[self view] center].x)
@@ -1045,9 +1111,9 @@
             else if (velocity.x < 0)
             {
                 // Dragging Right to Left
-                if (_leftSlideBarIsDragging)
+                if (_leftSlideBarDragging)
                     pos = LHSlideBarPosOffLeft;
-                else if (_rightSlideBarIsDragging)
+                else if (_rightSlideBarDragging)
                     pos = LHSlideBarPosCenter;
                 
                if ([slideBarHolder center].x > [[self view] center].x)
@@ -1058,9 +1124,9 @@
             else
             {
                 // Zero Velocity
-                if (_leftSlideBarIsDragging)
+                if (_leftSlideBarDragging)
                     pos = LHSlideBarPosOffLeft;
-                else if (_rightSlideBarIsDragging)
+                else if (_rightSlideBarDragging)
                     pos = LHSlideBarPosOffRight;
                 else
                     pos = LHSlideBarPosCenter;
@@ -1081,8 +1147,8 @@
                 [slideBar endAppearanceTransition];
             }];
             
-            _leftSlideBarIsDragging = NO;
-            _rightSlideBarIsDragging = NO;
+            _leftSlideBarDragging = NO;
+            _rightSlideBarDragging = NO;
             
             break;
         }
