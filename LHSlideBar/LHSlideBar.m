@@ -69,6 +69,11 @@
     [[_navigationBar topItem] setTitle:title];
 }
 
+- (void)setNavBarView:(UIView *)view
+{
+    [[_navigationBar topItem] setTitleView:view];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -78,11 +83,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    if (_slideBarViewControllers == nil || [_slideBarViewControllers count] <= 0)
+        return 0;
+    
     return [_slideBarViewControllers count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_slideBarViewControllers == nil || [_slideBarViewControllers count] <= 0)
+        return nil;
+    
     static NSString *cellIdentifier = @"UITableViewCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil)
@@ -115,6 +126,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (_slideBarViewControllers == nil || [_slideBarViewControllers count] <= 0)
+        return;
+    
     switch ([indexPath section])
     {
         case 0:
@@ -179,6 +193,18 @@
         
         _navigationBarHidden = hidden;
     }
+}
+
+#pragma mark - Is Showing Methods
+
+- (BOOL)isSlideBarShowing
+{
+    if (self == [_slideBarController leftSlideBarVC])
+        return [_slideBarController isLeftSlideBarShowing];
+    else if (self == [_slideBarController rightSlideBarVC])
+        return [_slideBarController isRightSlideBarShowing];
+    else
+        return NO;
 }
 
 @end

@@ -22,8 +22,11 @@
 - (id)initWithController:(LHSlideBarController *)controller;
 - (void)setSlideBarViewControllers:(NSArray *)slideBarViewControllers;
 - (void)setNavBarTitle:(NSString *)title;
+- (void)setNavBarView:(UIView *)view;
 
 - (void)setNavigationBarHidden:(BOOL)hidden;
 - (void)setNavigationBarHidden:(BOOL)hidden animated:(BOOL)animated;
+
+- (BOOL)isSlideBarShowing;
 
 @end
