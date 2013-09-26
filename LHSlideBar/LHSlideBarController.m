@@ -639,18 +639,12 @@
         slideBar = _rightSlideBarVC;
     }
     
-    CGPoint center = [slideBarHolder center];
     CGRect winRect = [[UIScreen mainScreen] bounds];
-    CGPoint selfCenter = CGPointMake(winRect.size.width/2, winRect.size.height/2);
+    CGPoint center = CGPointMake(winRect.size.width/2, winRect.size.height/2);
     
     int8_t offset = 0;
     if ([LHSlideBarController deviceSystemMajorVersion] < 7)
-    {
-        if ([[UIApplication sharedApplication] isStatusBarHidden] == NO)
-            selfCenter.y += [[UIApplication sharedApplication] statusBarFrame].size.height;
-        
-        offset = [[UIApplication sharedApplication] statusBarFrame].size.height;
-    }
+        offset = [[UIApplication sharedApplication] statusBarFrame].size.height/2;
     
     float progress = 1.0;
     switch (position)
@@ -658,7 +652,7 @@
         case LHSlideBarPosCenter:
         {
             [slideBar beginAppearanceTransition:YES animated:animated];
-            center = CGPointMake(selfCenter.x, selfCenter.y - offset);
+            center = CGPointMake(center.x, center.y - offset);
             progress = 0.0;
             break;
         }
@@ -666,7 +660,7 @@
         case LHSlideBarPosOffLeft:
         {
             [slideBar beginAppearanceTransition:NO animated:animated];
-            center = CGPointMake(-selfCenter.x, selfCenter.y - offset);
+            center = CGPointMake(-center.x, center.y - offset);
             progress = 1.0;
             break;
         }
@@ -674,7 +668,7 @@
         case LHSlideBarPosOffRight:
         {
             [slideBar beginAppearanceTransition:NO animated:animated];
-            center = CGPointMake([[self view] bounds].size.width + selfCenter.x, selfCenter.y - offset);
+            center = CGPointMake([[self view] bounds].size.width + center.x, center.y - offset);
             progress = 1.0;
             break;
         }
