@@ -159,6 +159,22 @@
     return UIStatusBarAnimationSlide;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    if (_hideStatusBarOnShow == NO)
+    {
+        if ([self isSlideBarDragging])
+            return UIStatusBarStyleLightContent;
+        
+        if ([self isSlideBarShowing] == NO && [self isSlideBarDragging] == NO)
+            return UIStatusBarStyleDefault;
+        else
+            return UIStatusBarStyleLightContent;
+    }
+    
+    return UIStatusBarStyleDefault;
+}
+
 #pragma mark - Setup SlideBar Methods
 
 - (void)setupSlideBarAtPosition:(LHSlideBarSide)pos pushFirstVC:(BOOL)push
@@ -189,7 +205,16 @@
     {
         case LHSlideBarSideLeft:
         {
-            [[slideBar view] setFrame:CGRectMake(0, 0, viewSize.width - _slideBarOffset, viewSize.height)];
+            CGRect slideBarRect = CGRectMake(0, 0, viewSize.width - _slideBarOffset, viewSize.height);
+            if ([LHSlideBarController deviceSystemMajorVersion] >= 7)
+            {
+                if (_hideStatusBarOnShow == NO)
+                {
+                    slideBarRect.origin.y += 20.0;
+                    slideBarRect.size.height -= 20.0;
+                }
+            }
+            [[slideBar view] setFrame:slideBarRect];
             [slideBar setSlideBarViewControllers:_leftViewControllers];
             
             [slideBarShadow setFrame:CGRectMake([[slideBar view] bounds].size.width, 0, _slideBarOffset, viewSize.height)];
@@ -216,7 +241,16 @@
             
         case LHSlideBarSideRight:
         {
-            [[slideBar view] setFrame:CGRectMake(_slideBarOffset, 0, viewSize.width - _slideBarOffset, viewSize.height)];
+            CGRect slideBarRect = CGRectMake(_slideBarOffset, 0, viewSize.width - _slideBarOffset, viewSize.height);
+            if ([LHSlideBarController deviceSystemMajorVersion] >= 7)
+            {
+                if (_hideStatusBarOnShow == NO)
+                {
+                    slideBarRect.origin.y += 20.0;
+                    slideBarRect.size.height -= 20.0;
+                }
+            }
+            [[slideBar view] setFrame:slideBarRect];
             [slideBar setSlideBarViewControllers:_rightViewControllers];
             
             [slideBarShadow setFrame:CGRectMake(0, 0, _slideBarOffset, viewSize.height)];
@@ -641,6 +675,7 @@
     
     CGRect winRect = [[UIScreen mainScreen] bounds];
     CGPoint center = CGPointMake(winRect.size.width/2, winRect.size.height/2);
+    CGRect mainRect = [[self view] bounds];
     
     int8_t offset = 0;
     if ([LHSlideBarController deviceSystemMajorVersion] < 7)
@@ -651,12 +686,15 @@
     {
         case LHSlideBarPosCenter:
         {
+            if (_hideStatusBarOnShow == NO)
+                mainRect = CGRectMake(mainRect.origin.x, mainRect.origin.y + 20.0,
+                                  mainRect.size.width, mainRect.size.height - 20.0);
             [slideBar beginAppearanceTransition:YES animated:animated];
             center = CGPointMake(center.x, center.y - offset);
             progress = 0.0;
             break;
         }
-            
+        
         case LHSlideBarPosOffLeft:
         {
             [slideBar beginAppearanceTransition:NO animated:animated];
@@ -691,6 +729,8 @@
                               delay:0
                             options:UIViewAnimationOptionCurveEaseInOut
                          animations:^{
+                             if ([LHSlideBarController deviceSystemMajorVersion] >= 7)
+                                 [mainContainerView setFrame:mainRect];
                              [slideBarHolder setCenter:center];
                              [self transformViewInSlideBarHolder:slideBarHolder withProgress:progress];
                          }
@@ -842,6 +882,20 @@
         case LHTransformRotate:
         {
             [[mainContainerView layer] setTransform:[self rotateTransform3DWithProgress:progress fromSide:side]];
+            
+            if ([LHSlideBarController deviceSystemMajorVersion] >= 7)
+            {
+                if (_hideStatusBarOnShow == NO)
+                {
+                    CGFloat statusBarHeight = (1.0 - progress) * 20.0;
+                    CGRect mainRect = [[self view] frame];
+                    if (_hideStatusBarOnShow == NO)
+                        mainRect = CGRectMake(mainRect.origin.x, mainRect.origin.y + statusBarHeight,
+                                              mainRect.size.width, mainRect.size.height - statusBarHeight);
+                    [mainContainerView setFrame:mainRect];
+                }
+            }
+            
             break;
         }
             

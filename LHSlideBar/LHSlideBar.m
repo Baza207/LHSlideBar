@@ -27,9 +27,6 @@
         CGFloat navHeight = 44.0;
         
 #ifdef __IPHONE_7_0
-        if ([_slideBarController shouldHideStatusBarOnShow] == NO)
-            navHeight += 20.0;
-        
         if ([LHSlideBarController deviceSystemMajorVersion] < 7)
         {
             [_navigationBar setFrame:CGRectMake(0, 0, [[self view] bounds].size.width, navHeight)];

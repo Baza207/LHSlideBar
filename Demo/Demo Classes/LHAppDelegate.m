@@ -33,6 +33,7 @@
     NSArray *viewControllersL = @[vcOne, vcTwo, vcThree];
     NSArray *viewControllersR = @[vcFour, vcFive, vcSix];
     _slideBarController = [[LHSlideBarController alloc] initWithLeftViewControllers:viewControllersL andRightViewControllers:viewControllersR];
+    [_slideBarController setHideStatusBarOnShow:NO];
     [_slideBarController setupSlideBarAtPosition:LHSlideBarSideLeft pushFirstVC:YES];
     [_slideBarController setupSlideBarAtPosition:LHSlideBarSideRight pushFirstVC:NO];
     
