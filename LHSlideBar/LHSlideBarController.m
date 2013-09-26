@@ -67,17 +67,22 @@
     self = [super init];
     if (self)
     {
+        [[self view] setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+        
         mainContainerView = [[UIView alloc] initWithFrame:[[self view] bounds]];
+        [mainContainerView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
         [mainContainerView setBackgroundColor:[UIColor clearColor]];
         [mainContainerView setClipsToBounds:YES];
         [[self view] addSubview:mainContainerView];
         
         _backgroundView = [[UIView alloc] initWithFrame:[mainContainerView bounds]];
+        [_backgroundView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
         [_backgroundView setBackgroundColor:[UIColor clearColor]];
         [_backgroundView setClipsToBounds:YES];
         [mainContainerView addSubview:_backgroundView];
         
         navController = [[UINavigationController alloc] init];
+        [[navController view] setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
         [[navController view] setFrame:[mainContainerView bounds]];
         [[navController view] setClipsToBounds:YES];
         [mainContainerView addSubview:[navController view]];
@@ -134,8 +139,6 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    NSLog(@"Is Dragging: %@ Is Showing: %@", [self isSlideBarDragging]? @"Yes":@"No", [self isSlideBarShowing]? @"Yes":@"No");
-    
     if ([self isSlideBarDragging])
         return YES;
     
@@ -631,11 +634,17 @@
     }
     
     CGPoint center = [slideBarHolder center];
-    CGPoint selfCenter = [[self view] center];
+    CGRect winRect = [[UIScreen mainScreen] bounds];
+    CGPoint selfCenter = CGPointMake(winRect.size.width/2, winRect.size.height/2);
     
     int8_t offset = 0;
     if ([LHSlideBarController deviceSystemMajorVersion] < 7)
-        offset = 20;
+    {
+        if ([[UIApplication sharedApplication] isStatusBarHidden] == NO)
+            selfCenter.y += [[UIApplication sharedApplication] statusBarFrame].size.height;
+        
+        offset = [[UIApplication sharedApplication] statusBarFrame].size.height;
+    }
     
     float progress = 1.0;
     switch (position)
@@ -673,7 +682,7 @@
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
-                             [self setNeedsStatusBarAppearanceUpdate];
+                             [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
                      } completion:nil];
     
     if (animated)
@@ -747,7 +756,7 @@
                         options:UIViewAnimationOptionCurveEaseInOut
                      animations:^{
                          if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
-                             [self setNeedsStatusBarAppearanceUpdate];
+                             [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
                      } completion:nil];
 }
 
@@ -763,6 +772,10 @@
 
 - (CATransform3D)rotateTransform3DWithProgress:(float)progress fromSide:(LHSlideBarSide)side
 {
+    CATransform3D transform3D = CATransform3DIdentity;
+    if (progress >= 1.0)
+        return transform3D;
+    
     float progressRev = 1.0 - progress;
     float translate = (progressRev * 60) * -1;
     float degree = ceil(progressRev * -20);
@@ -771,7 +784,6 @@
     if (side == LHSlideBarSideRight)
         reverse = -1;
     
-    CATransform3D transform3D = CATransform3DIdentity;
     transform3D.m34 = 1.0/-900;
     transform3D = CATransform3DRotate(transform3D, DEGREES_TO_RADIANS(degree*reverse), 0, 1, 0);
     transform3D = CATransform3DTranslate(transform3D, (translate/3)*reverse, 0, translate);
@@ -780,6 +792,10 @@
 
 - (CATransform3D)slideTransform3DWithProgress:(float)progress fromSide:(LHSlideBarSide)side
 {
+    CATransform3D transform3D = CATransform3DIdentity;
+    if (progress >= 1.0)
+        return transform3D;
+    
     float progressRev = 1.0 - progress;
     float offset = [[navController view] bounds].size.width * progressRev;
     
@@ -787,7 +803,6 @@
     if (side == LHSlideBarSideRight)
         reverse = -1;
     
-    CATransform3D transform3D = CATransform3DIdentity;
     if (offset < _slideBarOffset)
         return transform3D;
     
@@ -986,7 +1001,7 @@
                                 options:UIViewAnimationOptionCurveEaseInOut
                              animations:^{
                                  if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)])
-                                     [self setNeedsStatusBarAppearanceUpdate];
+                                     [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
                              } completion:nil];
             
             break;

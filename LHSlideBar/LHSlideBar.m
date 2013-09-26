@@ -16,6 +16,8 @@
     self = [super init];
     if (self)
     {
+        [[self view] setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
+        
         _slideBarController = controller;
         _currentVCSelectedStyle = UITableViewCellSelectionStyleBlue;
         
@@ -43,7 +45,7 @@
         _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, [[self view] bounds].size.width, [[self view] bounds].size.height - [_navigationBar bounds].size.height)];
 #endif
         
-        [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleWidth];
+        [_tableView setAutoresizingMask:UIViewAutoresizingFlexibleHeight];
         [_tableView setDelegate:self];
         [_tableView setDataSource:self];
         [[self view] addSubview:_tableView];
@@ -165,7 +167,7 @@
     {
         int8_t statusBarOffset = 0;
         if (![[UIApplication sharedApplication] isStatusBarHidden])
-            statusBarOffset = -20;
+            statusBarOffset = -[[UIApplication sharedApplication] statusBarFrame].size.height;
         
         navBarRect = CGRectMake(0.0, statusBarOffset-[_navigationBar bounds].size.height, [_navigationBar bounds].size.width, [_navigationBar bounds].size.height);
         tableViewRect = CGRectMake(0.0, 0.0, [[self view] bounds].size.width, [[self view] bounds].size.height);

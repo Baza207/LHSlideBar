@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12E55" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="4510" systemVersion="12F37" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
     <dependencies>
         <deployment defaultVersion="1536" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3742"/>
@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="12">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="12">
                     <rect key="frame" x="60" y="118" width="200" height="344"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                     <fontDescription key="fontDescription" type="system" pointSize="200"/>
@@ -27,46 +27,34 @@
                     <color key="shadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <size key="shadowOffset" width="0.0" height="0.0"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="749" text="Tranform Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="90">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" verticalCompressionResistancePriority="749" text="Tranform Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="90">
                     <rect key="frame" x="20" y="472" width="280" height="21"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="Iqa-fq-dSD"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                     <color key="shadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <size key="shadowOffset" width="0.0" height="1"/>
                 </label>
-                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SlideBar Shadow:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="106">
+                <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="SlideBar Shadow:" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="106">
                     <rect key="frame" x="48" y="89" width="140" height="21"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="21" id="oik-FP-zXf"/>
-                    </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                     <color key="shadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <size key="shadowOffset" width="0.0" height="1"/>
                 </label>
-                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="104">
+                <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="104">
                     <rect key="frame" x="196" y="84" width="51" height="31"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="49" id="9og-8W-PRT"/>
-                    </constraints>
                     <connections>
                         <action selector="shadowSwithChanged:" destination="-1" eventType="valueChanged" id="108"/>
                     </connections>
                 </switch>
-                <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="84">
+                <segmentedControl opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="251" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="84">
                     <rect key="frame" x="20" y="516" width="280" height="33"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="32" id="JPg-KR-wQd"/>
-                    </constraints>
                     <segments>
                         <segment title="Scale"/>
                         <segment title="Rotate"/>
@@ -78,23 +66,6 @@
                 </segmentedControl>
             </subviews>
             <color key="backgroundColor" red="1" green="0.50196081400000003" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-            <constraints>
-                <constraint firstItem="104" firstAttribute="leading" secondItem="106" secondAttribute="trailing" constant="8" symbolic="YES" id="5Ck-Iy-2U7"/>
-                <constraint firstAttribute="trailing" secondItem="104" secondAttribute="trailing" constant="75" id="5ad-wr-nxu"/>
-                <constraint firstItem="90" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="20" symbolic="YES" id="BmP-D4-dcD"/>
-                <constraint firstAttribute="trailing" secondItem="90" secondAttribute="trailing" constant="20" symbolic="YES" id="GXD-N4-HlR"/>
-                <constraint firstAttribute="bottom" secondItem="84" secondAttribute="bottom" constant="20" symbolic="YES" id="JfI-2e-neR"/>
-                <constraint firstItem="84" firstAttribute="top" secondItem="90" secondAttribute="bottom" constant="23" id="KNI-BO-gvz"/>
-                <constraint firstItem="104" firstAttribute="centerY" secondItem="106" secondAttribute="centerY" id="RgF-jW-dIs"/>
-                <constraint firstItem="104" firstAttribute="top" secondItem="1" secondAttribute="top" constant="84" id="TIg-2x-hnf"/>
-                <constraint firstItem="12" firstAttribute="centerX" secondItem="90" secondAttribute="centerX" id="ZP0-Az-viy"/>
-                <constraint firstItem="90" firstAttribute="top" secondItem="12" secondAttribute="bottom" constant="10" id="abC-4z-7sD"/>
-                <constraint firstItem="106" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="48" id="jn0-tv-6cq"/>
-                <constraint firstItem="90" firstAttribute="leading" secondItem="84" secondAttribute="leading" id="jzk-Hv-gWR"/>
-                <constraint firstItem="12" firstAttribute="leading" secondItem="1" secondAttribute="leading" constant="60" id="kSI-hf-6gx"/>
-                <constraint firstItem="12" firstAttribute="top" secondItem="106" secondAttribute="bottom" constant="8" symbolic="YES" id="zJg-f9-ec9"/>
-                <constraint firstItem="84" firstAttribute="trailing" secondItem="90" secondAttribute="trailing" id="za9-Qf-WhD"/>
-            </constraints>
             <simulatedStatusBarMetrics key="simulatedStatusBarMetrics"/>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
