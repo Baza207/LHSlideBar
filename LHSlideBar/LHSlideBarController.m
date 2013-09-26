@@ -99,6 +99,7 @@
         [self setKeepRoundedCornersWhenAnim:YES];
         [self setRoundCornersOnLeftSlideBar:YES];
         [self setRoundCornersOnRightSlideBar:YES];
+        [self setHideStatusBarOnShow:YES];
         
         _leftSlideBarShowing = NO;
         _rightSlideBarShowing = NO;
@@ -139,13 +140,18 @@
 
 - (BOOL)prefersStatusBarHidden
 {
-    if ([self isSlideBarDragging])
-        return YES;
+    if (_hideStatusBarOnShow)
+    {
+        if ([self isSlideBarDragging])
+            return YES;
+        
+        if ([self isSlideBarShowing] == NO && [self isSlideBarDragging] == NO)
+            return NO;
+        else
+            return YES;
+    }
     
-    if ([self isSlideBarShowing] == NO && [self isSlideBarDragging] == NO)
-        return NO;
-    else
-        return YES;
+    return NO;
 }
 
 - (UIStatusBarAnimation)preferredStatusBarUpdateAnimation

@@ -69,16 +69,17 @@ typedef enum {
 @property (assign, readonly, nonatomic, getter = isSlideBarShowing) BOOL slideBarShowing;
 
 // User changable variables
-@property (assign, readonly, nonatomic) int slideBarOffset;     // Size of the space on the side of the slideBar when it is open. It must be less than half the width of the slideBar controller.
-@property (assign, readonly, nonatomic) float scaleAmount;        // Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
-@property (assign, readonly, nonatomic) float fadeOutAlpha;       // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
-@property (assign, readonly, nonatomic) float animTime;           // Maximum time for the slideBar animation to slide in or out. Minimum of 0.1s
+@property (assign, readonly, nonatomic) int slideBarOffset;         // Size of the space on the side of the slideBar when it is open. It must be less than half the width of the slideBar controller.
+@property (assign, readonly, nonatomic) float scaleAmount;          // Scale of the current view controller. 0.0 to 1.0 - 1.0 being 100%
+@property (assign, readonly, nonatomic) float fadeOutAlpha;         // Alpha of the fade out gradient in the slideBarOffset space. 0.0 to 1.0
+@property (assign, readonly, nonatomic) float animTime;             // Maximum time for the slideBar animation to slide in or out. Minimum of 0.1s
 
 @property (assign, nonatomic) BOOL animatesOnSlide;                 // If set to `NO` then the view controller does not animate when the slideBar in dragged, opened or dismissed. By default this property is set to `YES`.
 @property (assign, nonatomic) BOOL animateSwappingNavController;    // If set to `YES` then slideBarController's UINavigationController will animate on swapping view controller stack.
 @property (assign, readonly, nonatomic) BOOL keepRoundedCornersWhenAnim;      // If set to `NO` then the corners will not remain rounded when the drag animation occurs. By default this property is set to `YES`.
 @property (assign, readonly, nonatomic) BOOL roundCornersOnLeftSlideBar;
 @property (assign, readonly, nonatomic) BOOL roundCornersOnRightSlideBar;
+@property (assign, nonatomic, getter = shouldHideStatusBarOnShow) BOOL hideStatusBarOnShow; // iOS 7 only. If set to `YES` then the status bar will hide when the slideBar will appear.
 
 // LHSlideBarController has a `transformType` variable. Set this to choose the type of transformation occours to the view controller when the user drags, opens or dismisses the slideBar.
 @property (assign, nonatomic) LHTransformType transformType;
