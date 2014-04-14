@@ -1,6 +1,13 @@
 LHSlideBar
 ==========
 
+## WARNING!
+This repo is no longer being maintained. I've decided to stop working on this repo due to lack of time, and the fact there are a multitude of sidebar/drawer repos already out there.
+
+One that I would recomend (as I've been using it myself) is [MMDrawerController](https://github.com/mutualmobile/MMDrawerController). It's a very nice base for anyone wanting to add sidebar/drawer style navigation into there app (as well a being solid, stable and a delight to impliment).
+
+==========
+
 LHSlideBar is a side bar slide in navigation for iOS. Currently it works only for the iPhone in portrait but I am planning to adapt it to landscape and the iPad soon. If is a custom controller based on UIViewController for adding slideBar navigation into an app.
 
 To use LHSlideBar add the following files into your project:  
